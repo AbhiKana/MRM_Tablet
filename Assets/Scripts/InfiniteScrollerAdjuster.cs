@@ -13,18 +13,27 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     [SerializeField] int numOfbox;
     private void Start()
     {
-        rectTransform = GetComponent<RectTransform>();
-        if (numOfbox%2 == 0)
+        ScrollPosAdjuster();
+        ScrollSizeAdjuster();
+
+        if (numOfbox == 1)
+            circularScrollingList.enabled = false;
+    }
+
+    private void ScrollSizeAdjuster()
+    {
+        circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
+        prefabWidth = tilePrefab.GetComponent<RectTransform>().sizeDelta.x + space;
+        rectTransform.sizeDelta = new Vector2(prefabWidth * numOfbox, rectTransform.sizeDelta.y);
+        circularScrollingList.GenerateBoxesAndArrange();
+    }
+
+    private void ScrollPosAdjuster()
+    {
+        rectTransform = circularScrollingList.GetComponent<RectTransform>();
+        if (numOfbox % 2 == 0 && numOfbox > 2)
         {
             rectTransform.anchoredPosition = new Vector3(300f, rectTransform.anchoredPosition.y);
         }
-
-        circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
-        prefabWidth = tilePrefab.GetComponent<RectTransform>().sizeDelta.x + space;
-        
-        rectTransform.sizeDelta = new Vector2(prefabWidth * numOfbox, rectTransform.sizeDelta.y);
-        //rectTransform.rect.width = prefabWidth * numOfbox;
-    
-        circularScrollingList.GenerateBoxesAndArrange();
     }
 }
