@@ -33,7 +33,8 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
         rectTransform = circularScrollingList.GetComponent<RectTransform>();
         if (numOfbox % 2 == 0 && numOfbox > 2)
         {
-            rectTransform.anchoredPosition = new Vector3(300f, rectTransform.anchoredPosition.y);
+            //Debug.Log("Move to 300+ pos");
+            rectTransform.anchoredPosition = new Vector3(350f, rectTransform.anchoredPosition.y);
         }
     }
 }

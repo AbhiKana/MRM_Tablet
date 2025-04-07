@@ -10,7 +10,7 @@ public class UIManager : MonoBehaviour
     {
         if (activePanel == panel)
         {
-            panel.SetActive(false);
+            //panel.SetActive(false);
             activePanel = null;
             return;
         }
