@@ -17,6 +17,6 @@ public class FetchQRData : MonoBehaviour
         Debug.Log(data);
         backButton.OpenPage(mrmDetails);
         string url = Url.apiUrl + Url.marbleDetails;
-        fetchData.GetDataFrom(url, data);
-    }
+        fetchData.GetDataFrom(url, data);       
+    }       
 }

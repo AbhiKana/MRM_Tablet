@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb45164491945c24dbfacc5fc259f503, type: 3}
+  m_Name: MarbleQrDataObject
+  m_EditorClassIdentifier: 
+  _marbleApiData:
+    success: 1
+    marbleDetails:
+    - id: 28
+      marble_name: Noir Grand Antique 1
+      description: Test 1
+      dimension: 240X240
+      material: Sandblasted
+      finish: Domus
+      price: 800
+      availability: 50
+      main_img: 1743662605_image 332.png
+      texture_img: 1743662605_image 333.png,1743662605_image 335.png,1743662605_image
+        336.png,1743662605_image 337.png,1743662605_image 338.png
+      category_id: 1
+      created_at: 2025-04-03 12:13:25
+      modify_at: 2025-04-03 12:13:25
