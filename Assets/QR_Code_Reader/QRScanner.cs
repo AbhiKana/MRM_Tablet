@@ -18,6 +18,18 @@ public class QRScanner : MonoBehaviour
     public static UnityEvent<String> OnQRDetect = new UnityEvent<string>(); 
     void OnEnable()
     {
+        Scan();
+
+        FetchQRData.OnDataLoaded.AddListener(Stop);
+        FetchQRData.OnDataLoadError.AddListener(() => 
+        {
+            Stop();
+            Scan();
+        });  
+    }
+
+    private void Scan()
+    {
         QrCode = string.Empty;
         spinner.SetActive(false);
         startWebcam();
@@ -38,6 +50,7 @@ public class QRScanner : MonoBehaviour
     }
     IEnumerator GetQRCode()
     {
+        Debug.Log("ScanAgain");
         IBarcodeReader barCodeReader = new BarcodeReader();
         var snap = new Texture2D(webcamTexture.width, webcamTexture.height, TextureFormat.ARGB32, false);
        
@@ -53,7 +66,8 @@ public class QRScanner : MonoBehaviour
                     {
                         Debug.Log("DECODED TEXT FROM QR: " + QrCode);
                         spinner.SetActive(true);
-                        StartCoroutine(WaitforSec());
+                        OnQRDetect?.Invoke(QrCode);
+                        //StartCoroutine(WaitforSec());
                         break;
                     }
                 }
@@ -65,19 +79,19 @@ public class QRScanner : MonoBehaviour
     }
         
 
-    IEnumerator WaitforSec()
+    void Stop()
     {
-        yield return new WaitForSeconds(2.1f);
+        //yield return new WaitForSeconds(1f);
         if (!String.IsNullOrEmpty(QrCode))
         {
-            OnQRDetect?.Invoke(QrCode);
+            //OnQRDetect?.Invoke(QrCode);
             Debug.Log("Detected");
         }
         else
         {
             Debug.Log("Not Detected");
         }
-            spinner.SetActive(false);
+        spinner.SetActive(false);
         Stopwebcam();
     }
        

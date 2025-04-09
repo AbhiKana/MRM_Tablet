@@ -6,6 +6,15 @@ public class UIManager : MonoBehaviour
 
     private GameObject activePanel = null;
 
+    private void Start()
+    {
+        foreach (GameObject p in panels)
+        {
+            p.SetActive(false);
+        }
+        panels[0].gameObject.SetActive(true);
+    }
+
     public void TogglePanel(GameObject panel)
     {
         if (activePanel == panel)

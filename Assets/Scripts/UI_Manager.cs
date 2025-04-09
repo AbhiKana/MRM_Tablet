@@ -1,17 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackButtonController : MonoBehaviour
+public class UI_Manager : MonoBehaviour
 {
     public GameObject firstPage;
     public GameObject HeaderPage;
-    [SerializeField] private List<GameObject> pageHistory = new List<GameObject>();
+    public GameObject[] listOfObjects;
+    private List<GameObject> pageHistory = new List<GameObject>();
 
     void Start()
     {
+        DisbaleObjects();
         firstPage.SetActive(true);
         pageHistory.Add(firstPage);
+    }
+
+    public void DisbaleObjects()
+    {
+        foreach (GameObject go in listOfObjects)
+        {
+            go.SetActive(false);
+        }
     }
 
     public void OpenPage(GameObject newPage)

@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static MarbleApiData;
 using UnityEngine.Networking;
 using TMPro;
 using UnityEngine.UI;
@@ -16,9 +14,10 @@ public class FetchData : MonoBehaviour
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
     [SerializeField] RawImage CircleImage, TopMarbleImage;
     [SerializeField] RawImage[] BgImages;
+
     public void GetDataFrom(string url, string id)
     {
-        StartCoroutine(PostRequest(url, id));
+        Debug.Log(StartCoroutine(PostRequest(url, id)));
     }
 
     IEnumerator PostRequest(string url, string id)
@@ -35,11 +34,13 @@ public class FetchData : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("Response: " + request.downloadHandler.text);
+                yield return request.downloadHandler.text;
                 //  _marbleApiData = MarbleApiData();
                 // assign json data of scanned marble to scriptable object
+                
                 _marbleQrDatascritable._marbleApiData = JsonUtility.FromJson<MarbleApiData>(request.downloadHandler.text);
-                LoadMarbleTextData();
-                LoadMarbleImageData();
+                //LoadMarbleTextData();
+                //LoadMarbleImageData();
             }
             else
             {
@@ -48,6 +49,7 @@ public class FetchData : MonoBehaviour
         }
     }
 
+    /*
     // load marble text data after QR scan From Scriptable object
     void LoadMarbleTextData()
     {
@@ -71,6 +73,7 @@ public class FetchData : MonoBehaviour
             StartCoroutine(LoadImage(_marbleQrDatascritable._marbleApiData.marbleDetails.texture_img[i], BgImages[i-1]));
         }
     }
+    */
 
     IEnumerator LoadImage(string ImageUrl, RawImage rawImage)
     {
