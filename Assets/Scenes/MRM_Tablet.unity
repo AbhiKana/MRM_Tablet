@@ -16321,12 +16321,7 @@ PrefabInstance:
     - target: {fileID: 8379469071708791203, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: m_Name
-      value: Controllers_with_Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 8379469071708791203, guid: cb4185b2e733025408e085570de6a3c8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
+      value: ClientManager_With_Input
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
