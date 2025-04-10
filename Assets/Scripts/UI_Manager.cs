@@ -3,16 +3,13 @@ using UnityEngine;
 
 public class UI_Manager : MonoBehaviour
 {
-    public GameObject firstPage;
     public GameObject HeaderPage;
     public GameObject[] listOfObjects;
-    private List<GameObject> pageHistory = new List<GameObject>();
+    [SerializeField] private List<GameObject> pageHistory = new List<GameObject>();
 
     void Start()
     {
         DisbaleObjects();
-        firstPage.SetActive(true);
-        pageHistory.Add(firstPage);
     }
 
     public void DisbaleObjects()
@@ -23,6 +20,18 @@ public class UI_Manager : MonoBehaviour
         }
     }
 
+
+    public void OpenPage(int index)
+    {
+        if (pageHistory.Count > 0)
+        {
+            GameObject currentPage = pageHistory[pageHistory.Count - 1];
+            currentPage.SetActive(false);
+        }
+
+        listOfObjects[index].SetActive(true);
+        pageHistory.Add(listOfObjects[index]);
+    }
     public void OpenPage(GameObject newPage)
     {
         if (pageHistory.Count > 0)
@@ -32,7 +41,7 @@ public class UI_Manager : MonoBehaviour
         }
 
         newPage.SetActive(true);
-        pageHistory.Add(newPage);
+        //pageHistory.Add(newPage);
     }
 
     public void GoBack()

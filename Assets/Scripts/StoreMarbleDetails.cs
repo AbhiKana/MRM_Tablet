@@ -12,7 +12,6 @@ public class SpecificMarbleDetails
 
 public class StoreMarbleDetails : MonoBehaviour
 {
-
     [SerializeField] Toggle toggle;
     [SerializeField] RawImage topMarbleData;
     [SerializeField] FetchQRData fetchQRData;
@@ -35,11 +34,9 @@ public class StoreMarbleDetails : MonoBehaviour
 
     public void StoreMarbleData()
     {
-        //Debug.Log("Data loaded");
         var data = fetchQRData._marbleQrDatascritable._marbleApiData.marbleDetails;
         marbleDetails.name = data.marble_name;
         marbleDetails.texture = topMarbleData.texture;
-       // Debug.Log("Marble Name "+data.marble_name);
     }
     public void OnMarbleScan()
     {
@@ -51,7 +48,7 @@ public class StoreMarbleDetails : MonoBehaviour
                 marbleDetails.isSelected = isOn;
                 marbleDetails.name = data.marble_name;
                 marbleDetails.texture = topMarbleData.texture;*/
-                StoreMarbleData();
+                //StoreMarbleData();
                 StoreSelectedMarble(isOn);
             }
         });

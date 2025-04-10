@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class ConnectViaInput : MonoBehaviour
 {
@@ -16,17 +17,23 @@ public class ConnectViaInput : MonoBehaviour
     public string ipKey;
     public bool IsConnected = false;
     public bool IsReconnecting = false;
-    [SerializeField] GameObject FirstPage, SecondPage;
+
+    //Drop ClientInputCanvas panel into ClientManagerwithInput Prefab
+    //Change your Canvas UI according to your story board 
+    //Reference the IP connection Gamobject into the Input Panel varliable in this script through Unity Editor 
+    [SerializeField] GameObject InputPanel;
+
+    public UnityEvent OnConnectToserver;
 
     public void Awake()
     {
-        if (FirstPage != null)
+        if (InputPanel != null)
         {
-            FirstPage.GetComponentInChildren<Button>().onClick.AddListener(() =>
+            InputPanel.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
                 Debug.Log("Auto Click");
                 clientServerSelector.GetSelectType();
-                SetIP(FirstPage.GetComponentInChildren<TMP_InputField>());
+                SetIP(InputPanel.GetComponentInChildren<TMP_InputField>());
             });
         }
     }
@@ -55,26 +62,21 @@ public class ConnectViaInput : MonoBehaviour
         if (PlayerPrefs.HasKey(nameof(ipKey)))
         {
             ipKey = PlayerPrefs.GetString(nameof(ipKey));
-            FirstPage.GetComponentInChildren<TMP_InputField>().text = ipKey;
+            InputPanel.GetComponentInChildren<TMP_InputField>().text = ipKey;
             clientServerSelector.GetSelectType();
             //InitializeClient();
         }
         else
         {
-            FirstPage.SetActive(true);
-            FirstPage.GetComponentInChildren<TMP_InputField>().text = string.Empty;
+            InputPanel.SetActive(true);
+            InputPanel.GetComponentInChildren<TMP_InputField>().text = string.Empty;
         }
     }
 
-    private void UI_Status(bool value1, bool value2)
+    private void UI_Status(bool value1)
     {
-        if (FirstPage != null)
-            FirstPage.SetActive(value1);
-
-        if (SecondPage != null)
-            SecondPage.SetActive(value2);
-
-        IsConnected = false;
+        if (InputPanel != null)
+            InputPanel.SetActive(value1);
     }
 
     private void OnDestroy()
@@ -94,7 +96,7 @@ public class ConnectViaInput : MonoBehaviour
         starting = (starting)(int)clientServerSelector.selectedType;
         if (starting == starting.Client)
         {
-            if (FirstPage != null)
+            if (InputPanel != null)
             {
                 GetIPFrom_InputField();
             }
@@ -121,18 +123,20 @@ public class ConnectViaInput : MonoBehaviour
     {
         if (IsConnected)
         {
-            UI_Status(false, true);
+            UI_Status(false);
+            OnConnectToserver?.Invoke();
+            IsConnected = false;
         }
         if (IsConnected)
         {
             //Debug.Log("Got connected");
             if (IsReconnecting)
             {
+                UI_Status(true);
                 Debug.LogError("Stop Invoke repeating");
                 CancelInvoke("InitializeClient");
                 IsReconnecting = false;
             }
-            UI_Status(false, true);
         }
     }
 

@@ -27,7 +27,7 @@ public class FetchQRData : MonoBehaviour
     {
         requestTC = new WWWRequestTC();
         QRScanner.OnQRDetect.AddListener(LoadData);
-        OnDataLoaded.AddListener(() => ui.OpenPage(mrmDetails));
+        OnDataLoaded.AddListener(() => ui.OpenPage(3)); 
     }
 
     [SerializeField] string fetchedData;
