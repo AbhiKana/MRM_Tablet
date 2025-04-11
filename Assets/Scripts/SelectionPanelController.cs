@@ -1,18 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SelectionPanelController : MonoBehaviour
 {
-    [SerializeField] int noof_marble;
+
+    [SerializeField] StoreMarbleDetails storeMarbleDetails;
     [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform parentObjectToSpawn;
 
-    public void GetSelectedMarbleList(GameObject prefabTile)
+    [SerializeField] int noof_marble;
+
+    List<SelectionTileDetails> previousSelectedList = new List<SelectionTileDetails>();
+
+    //Marble list
+    public void GetSelectedMarbleList()
     {
-        for (int i = 0; i < noof_marble; i++) 
+        foreach (Transform child in parentObjectToSpawn)
         {
-            GameObject marble = Instantiate(tilePrefab);
-            marble.transform.SetParent(parentObjectToSpawn);
-            marble.transform.localScale = Vector3.one;
+            Destroy(child.gameObject);
         }
+
+        noof_marble = storeMarbleDetails.WishListMarble.Count;
+        for (int i = 0; i < noof_marble; i++)
+        {
+            GameObject marbleObj = Instantiate(tilePrefab).gameObject;
+            SelectionTileDetails marble = marbleObj.GetComponent<SelectionTileDetails>();
+
+            if (marble != null)
+            {
+                marble.transform.SetParent(parentObjectToSpawn);
+                marble.transform.localScale = Vector3.one;
+                var tileDetail = storeMarbleDetails.WishListMarble[i];
+                marble.SetTileDetails(tileDetail.mainTexture, tileDetail.marble_name);
+            }
+        }
+        
     }
 }

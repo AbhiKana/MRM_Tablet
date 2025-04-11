@@ -10,16 +10,18 @@ public class FetchQRData : MonoBehaviour
     // Text details info
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
-    [SerializeField] RawImage CircleImage, TopMarbleImage;
-    [SerializeField] RawImage[] BgImages;
+    public RawImage CircleImage, TopMarbleImage;
+    public RawImage[] BgImages;
+
+    public Texture[] boxImageTexture;
 
     [SerializeField] GameObject mrmDetails;
     [SerializeField] UI_Manager ui;
 
     WWWRequestTC requestTC;
 
-    public static UnityEvent OnDataLoaded = new UnityEvent();
-    public static UnityEvent OnDataLoadError = new UnityEvent();
+    public UnityEvent OnDataLoaded;
+    public UnityEvent OnDataLoadError = new UnityEvent();
 
     int totalImageCount = 0;
     int downlaodedImageCount = 0;
@@ -61,6 +63,7 @@ public class FetchQRData : MonoBehaviour
             }
             else 
             {
+                OnDataLoadError?.Invoke();
                 Debug.Log("Couldn't fetch data");
             }
         });
@@ -77,6 +80,8 @@ public class FetchQRData : MonoBehaviour
         MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
     }
 
+
+
     // load marble Image data after QR scan From Scriptable object
     void LoadMarbleImageData()
     {
@@ -89,7 +94,9 @@ public class FetchQRData : MonoBehaviour
             var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
             for (int i = 1; i < count; i++)
             {
+
                 GetImage(marbleDet.texture_img[i], BgImages[i - 1]);
+                boxImageTexture[i - 1] = BgImages[i - 1].texture;
             }
         }
     }
@@ -105,8 +112,8 @@ public class FetchQRData : MonoBehaviour
 
                 if (totalImageCount == downlaodedImageCount)
                 {
-                    Debug.Log("All Image downloaded");
                     OnDataLoaded?.Invoke();
+                    Debug.Log("All Image downloaded");
                     downlaodedImageCount = 0;
                 }
             }

@@ -1,14 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
-using ZXing.QrCode;
 using UnityEngine.Events;
 
 public class QRScanner : MonoBehaviour
 {
+    [SerializeField] FetchQRData fetchQRData;
     WebCamTexture webcamTexture;
     string QrCode = string.Empty;
     public RawImage rawImage;
@@ -20,8 +19,8 @@ public class QRScanner : MonoBehaviour
     {
         Scan();
 
-        FetchQRData.OnDataLoaded.AddListener(Stop);
-        FetchQRData.OnDataLoadError.AddListener(() => 
+        fetchQRData.OnDataLoaded.AddListener(Stop);
+        fetchQRData.OnDataLoadError.AddListener(() => 
         {
             Stop();
             Scan();
@@ -30,6 +29,7 @@ public class QRScanner : MonoBehaviour
 
     private void Scan()
     {
+        Debug.Log("Scanner Open");
         QrCode = string.Empty;
         spinner.SetActive(false);
         startWebcam();
@@ -94,5 +94,10 @@ public class QRScanner : MonoBehaviour
         spinner.SetActive(false);
         Stopwebcam();
     }
-       
+
+    private void OnDisable()
+    {
+        Stop();
+    }
+
 }
