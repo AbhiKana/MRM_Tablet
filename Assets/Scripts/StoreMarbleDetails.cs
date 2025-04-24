@@ -129,7 +129,6 @@ public class StoreMarbleDetails : MonoBehaviour
     {
         list.Add(specificMarbleDetails);
     }
-
     void RemoveSelectedMarble(string name)
     {
         foreach (SpecificMarbleDetails m in list)
@@ -141,7 +140,6 @@ public class StoreMarbleDetails : MonoBehaviour
             }
         }
     }
-
     public void ResetToggle()
     {
         ignoreToggleEvent = true;

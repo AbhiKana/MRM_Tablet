@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,4 +10,16 @@ public class MRM_Details : MonoBehaviour
     public RawImage[] BgImages;
 
     public Toggle isSelected;
+
+    private void Start()
+    {
+        isSelected.onValueChanged.AddListener(RemoveFromList);
+    }
+    public void RemoveFromList(bool val)
+    {
+        if (!val)
+        {
+            Destroy(this.gameObject);
+        }
+    }
 }

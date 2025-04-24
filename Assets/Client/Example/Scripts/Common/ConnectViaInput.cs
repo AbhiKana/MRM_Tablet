@@ -123,16 +123,13 @@ public class ConnectViaInput : MonoBehaviour
     {
         if (IsConnected)
         {
-            UI_Status(false);
+            //UI_Status(false);
             OnConnectToserver?.Invoke();
             IsConnected = false;
-        }
-        if (IsConnected)
-        {
-            //Debug.Log("Got connected");
+        
             if (IsReconnecting)
             {
-                UI_Status(true);
+                //UI_Status(true);
                 Debug.LogError("Stop Invoke repeating");
                 CancelInvoke("InitializeClient");
                 IsReconnecting = false;

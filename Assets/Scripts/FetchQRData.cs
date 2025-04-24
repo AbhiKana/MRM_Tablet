@@ -11,12 +11,13 @@ public class FetchQRData : MonoBehaviour
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
     public RawImage CircleImage, TopMarbleImage;
-    public RawImage[] BgImages;
-
-    public Texture[] boxImageTexture;
-
-    [SerializeField] GameObject mrmDetails;
+    //[SerializeField] GameObject mrmDetails;
     [SerializeField] UI_Manager ui;
+    
+    [SerializeField] string fetchedData;
+    
+    public RawImage[] BgImages;    
+    public Texture[] boxImageTexture;
 
     WWWRequestTC requestTC;
 
@@ -31,8 +32,6 @@ public class FetchQRData : MonoBehaviour
         QRScanner.OnQRDetect.AddListener(LoadData);
         OnDataLoaded.AddListener(() => ui.OpenPage(3)); 
     }
-
-    [SerializeField] string fetchedData;
 
     public void LoadData(string data)
     {
@@ -79,8 +78,6 @@ public class FetchQRData : MonoBehaviour
         MarbleMaterial.text = _marbleQrDatascritable._marbleApiData.marbleDetails.material;
         MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
     }
-
-
 
     // load marble Image data after QR scan From Scriptable object
     void LoadMarbleImageData()

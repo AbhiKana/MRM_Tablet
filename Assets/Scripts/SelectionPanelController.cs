@@ -34,6 +34,5 @@ public class SelectionPanelController : MonoBehaviour
                 marble.SetTileDetails(tileDetail.mainTexture, tileDetail.marble_name);
             }
         }
-        
     }
 }

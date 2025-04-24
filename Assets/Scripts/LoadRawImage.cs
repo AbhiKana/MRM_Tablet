@@ -11,10 +11,7 @@ public class LoadRawImage : MonoBehaviour
     void Start()
     {
 		rawImage = GetComponent<RawImage>();
-
 	}
-
-
 
 	IEnumerator LoadImage(string ImageUrl)
 	{
@@ -27,10 +24,8 @@ public class LoadRawImage : MonoBehaviour
 		else
 		{
 			yield return new WaitUntil(() => request.isDone);
-
 			rawImage.texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
 			//_Displayimage.rectTransform.sizeDelta = CardImageSizeToParent(_Displayimage);
-
 		}
 		request.Dispose();
 	}

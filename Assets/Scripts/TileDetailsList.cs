@@ -15,13 +15,13 @@ public class TileDetailsList : MonoBehaviour
         }
 
         noof_marble = storeMarbleDetails.WishListMarble.Count;
-
+        //Debug.Log("Details: " + noof_marble);
         for (int i = 0; i < noof_marble; i++)
         {
             var mrmDet = storeMarbleDetails.WishListMarble[i];
             GameObject marbleDetails = Instantiate(tilePrefab).gameObject;
             MRM_Details mRM_Details = marbleDetails.GetComponent<MRM_Details>();
-
+            
             if (mRM_Details != null)
             {
                 mRM_Details.transform.SetParent(parentObjectToSpawn);

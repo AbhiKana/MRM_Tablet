@@ -48,9 +48,9 @@ public class PlayInSequence : MonoBehaviour
             sequence.Join(inOut[i].GetComponent<RectTransform>().DOAnchorPos(FromPos[i], duration * (i + 1)).From(initialPos[i]));
         }
         sequence.Play();
-        sequence.OnComplete(() =>
+        /*sequence.OnComplete(() =>
         {
             animEvent?.Invoke();
-        });
+        });*/
     }
 }

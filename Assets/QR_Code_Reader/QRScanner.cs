@@ -77,20 +77,14 @@ public class QRScanner : MonoBehaviour
         }
        // webcamTexture.Stop();
     }
-        
 
     void Stop()
     {
-        //yield return new WaitForSeconds(1f);
         if (!String.IsNullOrEmpty(QrCode))
-        {
-            //OnQRDetect?.Invoke(QrCode);
             Debug.Log("Detected");
-        }
         else
-        {
             Debug.Log("Not Detected");
-        }
+       
         spinner.SetActive(false);
         Stopwebcam();
     }
