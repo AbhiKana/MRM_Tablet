@@ -42,6 +42,8 @@ public class StoreMarbleDetails : MonoBehaviour
     private void Start()
     {
         OnToggleClick();
+
+        //SelectionTileDetails.OnMarbleDeselected.AddListener(RemoveMarble);
         fetchQRData.OnDataLoaded.AddListener(() =>
         {
             ResetToggle();
@@ -129,7 +131,7 @@ public class StoreMarbleDetails : MonoBehaviour
     {
         list.Add(specificMarbleDetails);
     }
-    void RemoveSelectedMarble(string name)
+    public void RemoveSelectedMarble(string name)
     {
         foreach (SpecificMarbleDetails m in list)
         {
@@ -139,6 +141,11 @@ public class StoreMarbleDetails : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void RemoveMarble(int index)
+    {
+        list.Remove(list[index]);  
     }
     public void ResetToggle()
     {

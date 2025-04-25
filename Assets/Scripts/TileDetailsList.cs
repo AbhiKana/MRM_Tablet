@@ -3,8 +3,8 @@ using UnityEngine;
 public class TileDetailsList : MonoBehaviour
 {
     [SerializeField] StoreMarbleDetails storeMarbleDetails;
-    [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform parentObjectToSpawn;
+    [SerializeField] GameObject tilePrefab;
 
     [SerializeField] int noof_marble;
     public void SpawnMarbleDetailsList()

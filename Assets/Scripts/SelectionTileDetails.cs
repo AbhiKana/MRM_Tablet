@@ -1,41 +1,63 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections.Generic;
+using UnityEngine.Events;
 public class SelectionTileDetails : MonoBehaviour
 {
     [SerializeField] UI_Manager manager;
-    [SerializeField] GameObject TileDetailsList;
-
-    [SerializeField] TileDetailsList selectionPanelController;
-
+    
     [SerializeField] RawImage tileImage;
     [SerializeField] TextMeshProUGUI tileName;
 
     [SerializeField] Button viewButton;
     [SerializeField] Button DeleteButton;
 
+   public int pageNum;
+
     private void Awake()
     {
         manager = FindObjectOfType<UI_Manager>();
-        TileDetailsList = GameObject.Find("TileDetailsList");
-
-        selectionPanelController = TileDetailsList.GetComponent<TileDetailsList>();
     }
 
     private void Start()
     {
         viewButton.onClick.AddListener(() =>
         {
-            EnableMrMDetaqilsObject();
+            EnableMrMDetailsObject();
+        });
+
+        DeleteButton.onClick.AddListener(() =>
+        {
+            RemoveMarble();
         });
     }
 
-    private void EnableMrMDetaqilsObject()
+    private void EnableMrMDetailsObject()
     {
         manager.OpenPage(6);
-        //selectionPanelController.SpawnMarbleDetailsList();
+        
+        if(manager.scrollSnap != null)
+            manager.scrollSnap.ChangePage(pageNum);
     }
+
+    private void RemoveMarble()
+    {
+        RemoveObjectFromArray();
+        Destroy(this.gameObject);
+    }
+
+    private void RemoveObjectFromArray()
+    {
+        List<GameObject> gameObjectsList = new List<GameObject>(manager.scrollSnap.ChildObjects);
+        Destroy(gameObjectsList[pageNum]);
+        gameObjectsList.Remove(gameObjectsList[pageNum]);
+        manager.scrollSnap.ChildObjects = gameObjectsList.ToArray();
+
+
+        //return gameObjectsList[pageNum];
+    }
+
 
     public void SetTileDetails(Texture tileImg, string name)
     {

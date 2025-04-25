@@ -1,8 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 public class UI_Manager : MonoBehaviour
 {
+    public HorizontalScrollSnap scrollSnap;
+    public StoreMarbleDetails marbleDetails;
     public GameObject HeaderPage;
     public GameObject[] listOfObjects;
     [SerializeField] private List<GameObject> pageHistory = new List<GameObject>();
@@ -61,5 +64,11 @@ public class UI_Manager : MonoBehaviour
             GameObject previousPage = pageHistory[pageHistory.Count - 1];
             previousPage.SetActive(true);
         }
+    }
+
+    public void AddPageHistory(GameObject objToAdd)
+    {
+        objToAdd.SetActive(true);
+        pageHistory.Add(objToAdd);
     }
 }
