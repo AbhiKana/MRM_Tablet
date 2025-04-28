@@ -32,7 +32,7 @@ public class StoreMarbleDetails : MonoBehaviour
     [SerializeField] RawImage topMarbleData;
     
     [SerializeField] private SpecificMarbleDetails marbleDetails;
-    [SerializeField] List<SpecificMarbleDetails> list;
+    public List<SpecificMarbleDetails> list;
 
     public List<SpecificMarbleDetails> WishListMarble => list;
 

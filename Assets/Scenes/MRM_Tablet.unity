@@ -7630,6 +7630,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scrollSnap: {fileID: 96334723}
+  marbleDetails: {fileID: 1645236179}
   HeaderPage: {fileID: 1767203199}
   listOfObjects:
   - {fileID: 352541032}
