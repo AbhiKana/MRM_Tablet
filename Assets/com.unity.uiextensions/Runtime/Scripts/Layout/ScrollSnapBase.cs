@@ -237,6 +237,20 @@ namespace UnityEngine.UI.Extensions
             }
         }
 
+        public void AddChildObjectInArray()
+        {
+            int childCount = _screensContainer.childCount;
+            ChildObjects = new GameObject[childCount];
+            for (int i = 0; i < childCount; i++)
+            {
+                ChildObjects[i] = _screensContainer.transform.GetChild(i).gameObject;
+                if (MaskArea && ChildObjects[i].activeSelf)
+                {
+                    ChildObjects[i].SetActive(false);
+                }
+            }
+        }
+
         internal void InitialiseChildObjectsFromArray()
         {
             int childCount = ChildObjects.Length;

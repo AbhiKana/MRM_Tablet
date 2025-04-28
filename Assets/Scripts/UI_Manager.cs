@@ -71,4 +71,34 @@ public class UI_Manager : MonoBehaviour
         objToAdd.SetActive(true);
         pageHistory.Add(objToAdd);
     }
+
+    public void OnMarbleSelection()
+    {
+        ClearOldList();
+
+        int previousIndex = listOfObjects[6].transform.GetSiblingIndex();
+        listOfObjects[6].transform.SetSiblingIndex(0);
+        listOfObjects[6].SetActive(true);
+        listOfObjects[6].transform.SetSiblingIndex(previousIndex);
+        listOfObjects[6].SetActive(false);        
+    }
+
+    private void ClearOldList()
+    {
+        List<GameObject> gameObjectsList = new List<GameObject>(scrollSnap.ChildObjects);
+
+        foreach (GameObject obj in gameObjectsList)
+        {
+            if (obj != null)
+            {
+                Debug.Log("CLEAR child obj");
+                Destroy(obj);
+            }
+        }
+
+        // After destroying, clear the list properly
+        gameObjectsList.Clear();
+
+        scrollSnap.ChildObjects = gameObjectsList.ToArray();
+    }
 }

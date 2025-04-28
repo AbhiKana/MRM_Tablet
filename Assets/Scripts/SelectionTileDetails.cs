@@ -39,23 +39,44 @@ public class SelectionTileDetails : MonoBehaviour
         
         if(manager.scrollSnap != null)
             manager.scrollSnap.ChangePage(pageNum);
+    
+        //MRM_Details mRM_Details = manager.scrollSnap.
     }
 
     private void RemoveMarble()
     {
+        MarbleManager.RemoveMarbleFromWishlist(tileName.text);
         RemoveObjectFromArray();
         Destroy(this.gameObject);
     }
 
     private void RemoveObjectFromArray()
     {
-        List<GameObject> gameObjectsList = new List<GameObject>(manager.scrollSnap.ChildObjects);
-        Destroy(gameObjectsList[pageNum]);
-        gameObjectsList.Remove(gameObjectsList[pageNum]);
-        manager.scrollSnap.ChildObjects = gameObjectsList.ToArray();
+        if (manager.scrollSnap.ChildObjects.Length < 0)
+        {
+            Debug.Log("ADD child obj");
+            manager.scrollSnap.AddChildObjectInArray();
+        }
+        else
+        {
+            List<GameObject> gameObjectsList = new List<GameObject>(manager.scrollSnap.ChildObjects);
 
-
-        //return gameObjectsList[pageNum];
+            foreach (GameObject obj in gameObjectsList) 
+            {
+                MRM_Details mRM_Details = obj.GetComponent<MRM_Details>();
+                if(mRM_Details != null)
+                {
+                    Debug.Log("Remvoe child obje");
+                    Destroy(obj);
+                    gameObjectsList.Remove(obj);
+                    break;
+                }
+            }
+            //Destroy(gameObjectsList[pageNum]);
+            //gameObjectsList.Remove(gameObjectsList[pageNum]);
+            manager.scrollSnap.ChildObjects = gameObjectsList.ToArray();
+            //return gameObjectsList[pageNum];
+        }
     }
 
 
