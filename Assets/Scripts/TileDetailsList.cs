@@ -9,10 +9,10 @@ public class TileDetailsList : MonoBehaviour
     [SerializeField] int noof_marble;
     public void SpawnMarbleDetailsList()
     {
-        foreach (Transform child in parentObjectToSpawn)
+        /*foreach (Transform child in parentObjectToSpawn)
         {
             Destroy(child.gameObject);
-        }
+        }*/
 
         noof_marble = storeMarbleDetails.WishListMarble.Count;
         //Debug.Log("Details: " + noof_marble);

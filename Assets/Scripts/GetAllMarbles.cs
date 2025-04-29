@@ -6,12 +6,11 @@ using UnityEngine.UI;
 public class GetAllMarbles : MonoBehaviour
 {
     public AllMarbles allMarbles;
-    WWWRequestTC requestTC;
+    public WWWRequestTC requestTC;
 
     public UnityEvent OnAllMarbleDataLoaded;
     public UnityEvent OnDataLoaded;
 
-    bool IsAllImageDownloaded;
     private void Start()
     {
         requestTC = new WWWRequestTC();
@@ -25,13 +24,12 @@ public class GetAllMarbles : MonoBehaviour
         requestTC.Get(url, (Data, isSucess) =>
         {
             allMarbles = JsonUtility.FromJson<AllMarbles>(Data);
-            totalImageCount = allMarbles.marbleDetails.Count;
             Debug.Log("Data Fetched");
             OnAllMarbleDataLoaded?.Invoke();
         });
     }
 
-    public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
+    /*public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
     {
         if (!IsAllImageDownloaded)
         {
@@ -66,5 +64,5 @@ public class GetAllMarbles : MonoBehaviour
             else
                 Debug.Log("Couldn't fetch image data");
         });
-    }
+    }*/
 }

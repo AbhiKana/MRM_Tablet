@@ -24,4 +24,25 @@ public static class MarbleManager
             }
         }
     }
+
+    public static void RemoveMarbleFromSelectionMenu(string marbleName)
+    {
+        SelectionPanelController selectionPanelController = Object.FindObjectOfType<SelectionPanelController>();
+        if (selectionPanelController == null)
+        {
+            Debug.LogWarning("Selection Panel Controller not found.");
+            return;
+        }
+
+        List<SelectionTileDetails> selectionTileDetails = selectionPanelController.availableTile;
+        foreach (SelectionTileDetails details in selectionTileDetails)
+        {
+            if (details.tileNameStr == marbleName)
+            {
+                Debug.Log($"Removing marble object: {details.tileNameStr}");
+                selectionPanelController.availableTile.Remove(details);
+                break;
+            }
+        }
+    }
 }

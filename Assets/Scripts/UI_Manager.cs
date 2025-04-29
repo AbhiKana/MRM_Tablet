@@ -83,7 +83,7 @@ public class UI_Manager : MonoBehaviour
         listOfObjects[6].SetActive(false);        
     }
 
-    private void ClearOldList()
+    public void ClearOldList()
     {
         List<GameObject> gameObjectsList = new List<GameObject>(scrollSnap.ChildObjects);
 
@@ -96,9 +96,15 @@ public class UI_Manager : MonoBehaviour
             }
         }
 
+
+        /*
         // After destroying, clear the list properly
         gameObjectsList.Clear();
 
-        scrollSnap.ChildObjects = gameObjectsList.ToArray();
+        scrollSnap.ChildObjects = gameObjectsList.ToArray();*/
+        //scrollSnap.ChildObjects.Length = 0;
+    
+
+        //OnMarbleSelection();
     }
 }

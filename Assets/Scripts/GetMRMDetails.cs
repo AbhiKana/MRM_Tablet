@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class GetMRMDetails : MonoBehaviour
 {
-    [SerializeField] InfiniteScrollerAdjuster adjuster;
     [SerializeField] CircularScrollingList circularScrollingList;
     [SerializeField] FetchQRData fetchQRData;
     [SerializeField] Button viewMrmButton;
@@ -25,7 +24,8 @@ public class GetMRMDetails : MonoBehaviour
 
     public void GetCurrentSelectedMarble()
     {
-        currentSelectedMarble = circularScrollingList.transform.GetChild(circularScrollingList.transform.childCount - 1).gameObject.GetComponent<ShowMarbleDetails>();
+        var childObj = circularScrollingList.transform.GetChild(circularScrollingList.transform.childCount - 1).gameObject;
+        currentSelectedMarble = childObj.GetComponent<ShowMarbleDetails>();
     }
 
 

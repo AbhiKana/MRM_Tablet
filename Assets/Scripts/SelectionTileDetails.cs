@@ -13,6 +13,8 @@ public class SelectionTileDetails : MonoBehaviour
     [SerializeField] Button viewButton;
     [SerializeField] Button DeleteButton;
 
+    public string tileNameStr => tileName.text;
+
    public int pageNum;
 
     private void Awake()
@@ -39,13 +41,12 @@ public class SelectionTileDetails : MonoBehaviour
         
         if(manager.scrollSnap != null)
             manager.scrollSnap.ChangePage(pageNum);
-    
-        //MRM_Details mRM_Details = manager.scrollSnap.
     }
 
     private void RemoveMarble()
     {
         MarbleManager.RemoveMarbleFromWishlist(tileName.text);
+        MarbleManager.RemoveMarbleFromSelectionMenu(tileName.text);
         RemoveObjectFromArray();
         Destroy(this.gameObject);
     }
@@ -72,10 +73,7 @@ public class SelectionTileDetails : MonoBehaviour
                     break;
                 }
             }
-            //Destroy(gameObjectsList[pageNum]);
-            //gameObjectsList.Remove(gameObjectsList[pageNum]);
             manager.scrollSnap.ChildObjects = gameObjectsList.ToArray();
-            //return gameObjectsList[pageNum];
         }
     }
 

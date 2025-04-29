@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -10,12 +11,16 @@ public class SelectionPanelController : MonoBehaviour
     [SerializeField] int noof_marble;
 
     //Marble list
+    public List<SelectionTileDetails> availableTile;
+
     public void GetSelectedMarbleList()
     {
         foreach (Transform child in parentObjectToSpawn)
         {
             Destroy(child.gameObject);
         }
+        availableTile.Clear();
+
 
         noof_marble = storeMarbleDetails.WishListMarble.Count;
         for (int i = 0; i < noof_marble; i++)
@@ -25,6 +30,7 @@ public class SelectionPanelController : MonoBehaviour
 
             if (marble != null)
             {
+                availableTile.Add(marble);
                 marble.pageNum = i;
                 marble.transform.SetParent(parentObjectToSpawn);
                 marble.transform.localScale = Vector3.one;

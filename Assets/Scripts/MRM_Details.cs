@@ -19,8 +19,8 @@ public class MRM_Details : MonoBehaviour
         if (!val)
         {
             MarbleManager.RemoveMarbleFromWishlist(MarbleName.text);
+            MarbleManager.RemoveMarbleFromSelectionMenu(MarbleName.text);
             Destroy(this.gameObject);
-
             //RemoveFromEverywhere();
         }
     }
