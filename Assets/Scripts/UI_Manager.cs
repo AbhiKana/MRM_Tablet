@@ -27,15 +27,33 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenPage(int index)
     {
+        //if (pageHistory.Count > 0)
+        //{
+        //    GameObject currentPage = pageHistory[pageHistory.Count - 1];
+        //    currentPage.SetActive(false);
+        //}
+
+        //listOfObjects[index].SetActive(true);
+
+        //if(!pageHistory.Contains(listOfObjects[index]))
+        //{
+        //    pageHistory.Add(listOfObjects[index]);
+        //}
+
+
         if (pageHistory.Count > 0)
         {
             GameObject currentPage = pageHistory[pageHistory.Count - 1];
             currentPage.SetActive(false);
         }
 
-        listOfObjects[index].SetActive(true);
-        pageHistory.Add(listOfObjects[index]);
+        GameObject newPage = listOfObjects[index];
+        newPage.SetActive(true);
+
+        AddPageHistory(newPage); // use the improved dynamic version
     }
+
+
     public void OpenPage(GameObject newPage)
     {
         if (pageHistory.Count > 0)
@@ -70,6 +88,13 @@ public class UI_Manager : MonoBehaviour
     public void AddPageHistory(GameObject objToAdd)
     {
         objToAdd.SetActive(true);
+
+        if (pageHistory.Contains(objToAdd))
+        {
+            pageHistory.Remove(objToAdd);
+        }
+
+        // Add it at the end
         pageHistory.Add(objToAdd);
     }
 
