@@ -6811,8 +6811,8 @@ MonoBehaviour:
   OnAllMarbleDataLoaded:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1304641404}
-        m_TargetAssemblyTypeName: InfiniteScrollerAdjuster, Assembly-CSharp
+      - m_Target: {fileID: 1304641407}
+        m_TargetAssemblyTypeName: MarbleLoader, Assembly-CSharp
         m_MethodName: GetTotalImageCount
         m_Mode: 1
         m_Arguments:
@@ -6850,8 +6850,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1304641404}
-        m_TargetAssemblyTypeName: InfiniteScrollerAdjuster, Assembly-CSharp
+      - m_Target: {fileID: 1304641407}
+        m_TargetAssemblyTypeName: MarbleLoader, Assembly-CSharp
         m_MethodName: OnDataLoadedSucessfully
         m_Mode: 1
         m_Arguments:
@@ -9652,6 +9652,7 @@ GameObject:
   - component: {fileID: 1304641405}
   - component: {fileID: 1304641404}
   - component: {fileID: 1304641406}
+  - component: {fileID: 1304641407}
   m_Layer: 0
   m_Name: AutoScrollerAdjuster
   m_TagString: Untagged
@@ -9675,12 +9676,8 @@ MonoBehaviour:
   getAllMarbles: {fileID: 761588141}
   tilePrefab: {fileID: 5736913497556586559, guid: fa48c16381c87b848a4d6add6d2bceea,
     type: 3}
-  CategoryParent: {fileID: 1902695507}
-  categoryPrefab: {fileID: 3067882394731362731, guid: 213b33a6a14e1434aad9423696347f54,
-    type: 3}
   minSpacing: 130
   maxSpacing: 200
-  listOfAllMarbles: []
 --- !u!4 &1304641405
 Transform:
   m_ObjectHideFlags: 0
@@ -9711,6 +9708,24 @@ MonoBehaviour:
   circularScrollingList: {fileID: 2053831464}
   fetchQRData: {fileID: 2026449340}
   viewMrmButton: {fileID: 2125549033}
+--- !u!114 &1304641407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304641403}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 919884fb1accdce45a63676203fc6388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circularScrollingList: {fileID: 2053831464}
+  getAllMarbles: {fileID: 761588141}
+  CategoryParent: {fileID: 1902695507}
+  categoryPrefab: {fileID: 3067882394731362731, guid: 213b33a6a14e1434aad9423696347f54,
+    type: 3}
+  listOfAllMarbles: []
 --- !u!1 &1330362654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7658743980626892182, guid: 2a689dfac8e20aa4c8de719e8a210331,
@@ -10227,18 +10242,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 908578444}
-        m_TargetAssemblyTypeName: UI_Manager, Assembly-CSharp
-        m_MethodName: OnMarbleSelection
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
       - m_Target: {fileID: 389877698}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
@@ -10263,18 +10266,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 908578444}
-        m_TargetAssemblyTypeName: UI_Manager, Assembly-CSharp
-        m_MethodName: ResetchildObjLength
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 0
       - m_Target: {fileID: 663626833}
         m_TargetAssemblyTypeName: TileDetailsList, Assembly-CSharp
         m_MethodName: SpawnMarbleDetailsList
@@ -12876,8 +12867,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1304641404}
-        m_TargetAssemblyTypeName: InfiniteScrollerAdjuster, Assembly-CSharp
+      - m_Target: {fileID: 1304641407}
+        m_TargetAssemblyTypeName: MarbleLoader, Assembly-CSharp
         m_MethodName: GetAllAvailableMarbles
         m_Mode: 1
         m_Arguments:
@@ -13026,6 +13017,7 @@ GameObject:
   - component: {fileID: 1864470161}
   - component: {fileID: 1864470162}
   - component: {fileID: 1864470163}
+  - component: {fileID: 1864470164}
   m_Layer: 5
   m_Name: Inventory
   m_TagString: Untagged
@@ -13094,6 +13086,36 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1864470164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864470160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3343e7b77ec009148a3c83f0014e8f5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onEnableEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  onDisableEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1330362654}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1873458814
 GameObject:
   m_ObjectHideFlags: 0

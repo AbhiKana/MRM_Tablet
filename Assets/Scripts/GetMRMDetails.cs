@@ -27,6 +27,4 @@ public class GetMRMDetails : MonoBehaviour
         var childObj = circularScrollingList.transform.GetChild(circularScrollingList.transform.childCount - 1).gameObject;
         currentSelectedMarble = childObj.GetComponent<ShowMarbleDetails>();
     }
-
-
 }

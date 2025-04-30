@@ -64,14 +64,14 @@ public class ShowMarbleDetails : MonoBehaviour
 
     private static void CheckAllImageLoaded()
     {
-        var d_image = InfiniteScrollerAdjuster.downlaodedImageCount;
-        var t_image = InfiniteScrollerAdjuster.totalImageCount;
-        InfiniteScrollerAdjuster.downlaodedImageCount++;
+        var d_image = MarbleLoader.downlaodedImageCount;
+        var t_image = MarbleLoader.totalImageCount;
+        MarbleLoader.downlaodedImageCount++;
         //d_image += d_image;
         
-        if(InfiniteScrollerAdjuster.totalImageCount == InfiniteScrollerAdjuster.downlaodedImageCount)
+        if(MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
-            Debug.Log("DOWNLOAD IMAEGE " + d_image);
+            Debug.Log("DOWNLOAD IMAGE " + d_image);
             GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
             getAllMarbles.OnDataLoaded?.Invoke();
         }
