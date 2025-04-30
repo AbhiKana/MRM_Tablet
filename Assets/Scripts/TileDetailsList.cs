@@ -9,15 +9,11 @@ public class TileDetailsList : MonoBehaviour
     [SerializeField] int noof_marble;
     public void SpawnMarbleDetailsList()
     {
-        /*foreach (Transform child in parentObjectToSpawn)
-        {
-            Destroy(child.gameObject);
-        }*/
-
         noof_marble = storeMarbleDetails.WishListMarble.Count;
         //Debug.Log("Details: " + noof_marble);
         for (int i = 0; i < noof_marble; i++)
         {
+            Debug.Log("Spawn Marble");
             var mrmDet = storeMarbleDetails.WishListMarble[i];
             GameObject marbleDetails = Instantiate(tilePrefab).gameObject;
             MRM_Details mRM_Details = marbleDetails.GetComponent<MRM_Details>();

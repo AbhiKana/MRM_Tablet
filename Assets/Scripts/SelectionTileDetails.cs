@@ -56,7 +56,7 @@ public class SelectionTileDetails : MonoBehaviour
         if (manager.scrollSnap.ChildObjects.Length < 0)
         {
             Debug.Log("ADD child obj");
-            manager.scrollSnap.AddChildObjectInArray();
+            //manager.scrollSnap.AddChildObjectInArray();
         }
         else
         {

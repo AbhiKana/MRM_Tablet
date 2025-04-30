@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
@@ -75,36 +76,51 @@ public class UI_Manager : MonoBehaviour
     public void OnMarbleSelection()
     {
         ClearOldList();
+        RefreshList();
+    }
 
+    public void RefreshList()
+    {
+        
+        StartCoroutine("RefreshListData");
+    }
+
+    public IEnumerator RefreshListData()
+    {
+        if (scrollSnap.ChildObjects.Length > 0)
+        {
+            ClearOldList();
+        }
+
+        yield return new WaitForSeconds(1f);
+        Debug.Log("Child count after refresh: " + scrollSnap.ChildObjects.Length);
         int previousIndex = listOfObjects[6].transform.GetSiblingIndex();
         listOfObjects[6].transform.SetSiblingIndex(0);
         listOfObjects[6].SetActive(true);
         listOfObjects[6].transform.SetSiblingIndex(previousIndex);
-        listOfObjects[6].SetActive(false);        
+        listOfObjects[6].SetActive(false);
+        //StartCoroutine(RefreshOldData);
     }
-
     public void ClearOldList()
     {
         List<GameObject> gameObjectsList = new List<GameObject>(scrollSnap.ChildObjects);
-
-        foreach (GameObject obj in gameObjectsList)
+        foreach (GameObject obj in scrollSnap.ChildObjects)
         {
             if (obj != null)
             {
-                Debug.Log("CLEAR child obj");
+                Debug.Log("CLEAR child obj: " + obj.name);
                 Destroy(obj);
             }
         }
 
-
-        /*
-        // After destroying, clear the list properly
         gameObjectsList.Clear();
+        scrollSnap.ChildObjects = gameObjectsList.ToArray();
+        Debug.Log("Child count: " + scrollSnap.ChildObjects.Length);
+    }
 
-        scrollSnap.ChildObjects = gameObjectsList.ToArray();*/
-        //scrollSnap.ChildObjects.Length = 0;
-    
-
-        //OnMarbleSelection();
+    public void ResetchildObjLength()
+    {
+        //scrollSnap.ChildObjects = new GameObject[0];
+        scrollSnap.ChildObjects = null;
     }
 }
