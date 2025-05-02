@@ -15,7 +15,6 @@ public class GetAllMarbles : MonoBehaviour
     {
         requestTC = new WWWRequestTC();
         GetAllMarbleList();
-        //OnDataLoaded.AddListener()
     }
 
     public void GetAllMarbleList()

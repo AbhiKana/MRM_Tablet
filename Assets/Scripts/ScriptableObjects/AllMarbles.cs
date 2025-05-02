@@ -15,6 +15,7 @@ public class Marble
     public string marble_name;
     public int category_id;
     public string img;
+    public string price;
 }
 
 [Serializable]

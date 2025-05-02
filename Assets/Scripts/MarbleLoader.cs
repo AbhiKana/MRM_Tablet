@@ -40,10 +40,10 @@ public class MarbleLoader : MonoBehaviour
         SpawnCategoryList();
     }
 
-    bool isCategorySpawn = false;
+    bool IsCategorySpawn = false;
     public void SpawnCategoryList()
     {
-        if (!isCategorySpawn)
+        if (!IsCategorySpawn)
         {
             var category = getAllMarbles.allMarbles.category;
             for (int i = 0; i < category.Count; i++)
@@ -54,7 +54,7 @@ public class MarbleLoader : MonoBehaviour
 
                 g.GetComponentInChildren<TextMeshProUGUI>().text = category[i].category_name;
             }
-            isCategorySpawn = true;
+            IsCategorySpawn = true;
         }
     }
 

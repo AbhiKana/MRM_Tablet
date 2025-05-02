@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class ToggleSpriteChange : MonoBehaviour
 {
     public Toggle toggle;
-    public bool getImage;
     public Image image;
-    public Image GlowImage;
+    //public Image GlowImage;
     public Sprite Selectedsprite, UnselectedSprite;
     public GameObject TriggerScreen;
     public int myid;
     public string myname;
    
+    public bool getImage;
 
     // Start is called before the first frame update
     private void Awake()
@@ -41,10 +38,10 @@ public class ToggleSpriteChange : MonoBehaviour
 
         }
 
-        if (toggle.isOn)
+        /*if (toggle.isOn)
             GlowImage.gameObject.SetActive(true);
         else
-            GlowImage.gameObject.SetActive(false);
+            GlowImage.gameObject.SetActive(false);*/
     }
 
 }

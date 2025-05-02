@@ -1,16 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-
-[System.Serializable]
-class MarbleDetailsWithCategoryID
-{
-    public int id;
-    public string marble_name;
-    public int marbleCategory_id;
-    public Texture marble_img;
-}
-
 public class ShowMarbleDetails : MonoBehaviour
 {
     [HideInInspector]
@@ -20,6 +10,7 @@ public class ShowMarbleDetails : MonoBehaviour
     public RawImage image;
     
     public string tileName;
+    public string price;
 
     public int categoryID;
     public int tileID;
@@ -43,6 +34,7 @@ public class ShowMarbleDetails : MonoBehaviour
     {
         GetImage(marbleDetailsWithCategoryID.img, image/*, ref count*/);
         tileName = marbleDetailsWithCategoryID.marble_name;
+        price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
     }
