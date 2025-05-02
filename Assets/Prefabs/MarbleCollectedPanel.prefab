@@ -1684,7 +1684,7 @@ GameObject:
   - component: {fileID: 2782193369597269422}
   - component: {fileID: 5614031444319642985}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: WishList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,12 +9,16 @@ public class ShowMarbleDetails : MonoBehaviour
     public WWWRequestTC requestTC;
     
     public RawImage image;
-    
+
+    public Texture texture;
     public string tileName;
     public string price;
 
     public int categoryID;
     public int tileID;
+
+    [SerializeField] TextMeshProUGUI marbleNameText;
+    [SerializeField] TextMeshProUGUI priceText;
 
 
     private void Start()
@@ -32,11 +37,19 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
-        GetImage(marbleDetailsWithCategoryID.img, image/*, ref count*/);
+        GetImage(marbleDetailsWithCategoryID.img, image);
         tileName = marbleDetailsWithCategoryID.marble_name;
         price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
+    }
+
+    public void ShowData()
+    {
+        marbleNameText.text = tileName;
+        priceText.text = price;
+        //image.texture = texture; 
+        Debug.LogError("Add texture on: "+ gameObject.name);
     }
 
     void GetImage(string url, RawImage image)
@@ -59,7 +72,6 @@ public class ShowMarbleDetails : MonoBehaviour
         var d_image = MarbleLoader.downlaodedImageCount;
         var t_image = MarbleLoader.totalImageCount;
         MarbleLoader.downlaodedImageCount++;
-        //d_image += d_image;
         
         if(MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AirFishLab.ScrollingList;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class MarbleLoader : MonoBehaviour
 {
@@ -17,8 +18,8 @@ public class MarbleLoader : MonoBehaviour
 
     bool IsAllImageDownloaded;
 
-    [SerializeField] List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
-
+    public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
+    public static UnityEvent OnMarbleLoaded;
     public void GetAllAvailableMarbles()
     {
         StartCoroutine(StoreMarblesInList());
@@ -35,7 +36,6 @@ public class MarbleLoader : MonoBehaviour
                 listOfAllMarbles.Add(showDetails);
             }
         }
-        
         SetMarbleDetails(listOfAllMarbles);
         SpawnCategoryList();
     }

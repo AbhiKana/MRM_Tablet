@@ -10670,10 +10670,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0885d9b24a852784c880c509f4e82f2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  getMarbles: {fileID: 0}
-  tilePrefab: {fileID: 0}
-  parentObjectToSpawn: {fileID: 0}
-  noof_marble: 0
+  marbleLoader: {fileID: 1304641407}
+  getMarbles: {fileID: 761588141}
+  tilePrefab: {fileID: 2913698957292138109, guid: 0d0d5c0b4e9e62c468ecd0a6ffa5b936,
+    type: 3}
+  parentObjectToSpawn: {fileID: 2008128103}
   availableTile: []
 --- !u!1 &1506811198
 GameObject:
@@ -12449,6 +12450,7 @@ MonoBehaviour:
   Selectedsprite: {fileID: 21300000, guid: a75f34484582f5f45bfe87cab4971874, type: 3}
   UnselectedSprite: {fileID: 21300000, guid: 5507962e898dece4aafb1354ee2d711a, type: 3}
   TriggerScreen: {fileID: 647295775}
+  CurrentScreen: {fileID: 568119196}
   myid: 0
   myname: 
   getImage: 1
@@ -13854,8 +13856,8 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 557, y: 1045}
-  m_Spacing: {x: 0, y: 0}
+  m_CellSize: {x: 397, y: 1027}
+  m_Spacing: {x: 212, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &2026449339

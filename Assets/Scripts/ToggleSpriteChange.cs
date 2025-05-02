@@ -7,7 +7,7 @@ public class ToggleSpriteChange : MonoBehaviour
     public Image image;
     //public Image GlowImage;
     public Sprite Selectedsprite, UnselectedSprite;
-    public GameObject TriggerScreen;
+    public GameObject TriggerScreen, CurrentScreen;
     public int myid;
     public string myname;
    
@@ -32,10 +32,14 @@ public class ToggleSpriteChange : MonoBehaviour
         //Debug.Log("Check on clicks");
         if (image) image.sprite = toggle.isOn ? Selectedsprite : UnselectedSprite;
 
-        if (TriggerScreen)
+        if (TriggerScreen != null)
         {
             TriggerScreen.SetActive(toggle.isOn);
+        }
 
+        if (CurrentScreen != null)
+        {
+            CurrentScreen.SetActive(!toggle.isOn);
         }
 
         /*if (toggle.isOn)
