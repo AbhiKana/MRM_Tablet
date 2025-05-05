@@ -16,6 +16,9 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     float prefabWidth;
     float spacing;
 
+    [Header("Test Value")]
+    [SerializeField] int noofMarble;
+
     private void Start()
     {
         if(getAllMarbles != null) 
@@ -24,7 +27,7 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     private void SetCircularList()
     {
         rectTransform = circularScrollingList.GetComponent<RectTransform>();
-        numOfbox = getAllMarbles.allMarbles.marbleDetails.Count /*+7*/;
+        numOfbox = getAllMarbles.allMarbles.marbleDetails.Count + noofMarble;
         circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
 
         AdjustSpacing();

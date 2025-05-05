@@ -114,8 +114,8 @@ RectTransform:
   - {fileID: 8035618919008335466}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 397, y: 1027}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -146,6 +146,7 @@ MonoBehaviour:
     img: 
     price: 
   image: {fileID: 9100588394121873954}
+  texture: {fileID: 0}
   tileName: 
   price: 
   categoryID: 0
@@ -562,8 +563,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.7
-  m_fontSizeBase: 45.7
+  m_fontSize: 38
+  m_fontSizeBase: 38
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -658,7 +659,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6321709920095852119
 RectTransform:
   m_ObjectHideFlags: 0
@@ -792,7 +793,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3432867106775448014
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1086,7 +1087,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
+    m_PressedColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 0.83137256}
     m_SelectedColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -1103,7 +1104,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 999413166394780014}
+  m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1115,6 +1116,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7086846014383353906}
     m_Modifications:
+    - target: {fileID: 1614700084189877778, guid: 883b5bb5298fab0498f9576fac769543,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2998849120808169900, guid: 883b5bb5298fab0498f9576fac769543,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1224,7 +1230,7 @@ PrefabInstance:
     - target: {fileID: 4026425296058718625, guid: 883b5bb5298fab0498f9576fac769543,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 358
+      value: 397
       objectReference: {fileID: 0}
     - target: {fileID: 4643909537885364872, guid: 883b5bb5298fab0498f9576fac769543,
         type: 3}

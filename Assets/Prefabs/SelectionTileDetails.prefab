@@ -904,10 +904,10 @@ RectTransform:
   - {fileID: 18187982565358189}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 397, y: 1027}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4316536576282787661
 CanvasRenderer:
@@ -929,7 +929,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0b47307fbefee479c8f3d49a4624b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  manager: {fileID: 0}
   tileImage: {fileID: 2976387163145073239}
   tileName: {fileID: 4557836413858614723}
   viewButton: {fileID: 8466274805491734999}
   DeleteButton: {fileID: 6241460826619260043}
+  pageNum: 0

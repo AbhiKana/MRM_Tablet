@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Text.RegularExpressions;
@@ -7,9 +5,10 @@ using UnityEngine.Events;
 
 public class EmailValidation : MonoBehaviour
 {
+    public TMP_InputField NameinputField;
     public TMP_InputField EmailinputField;
     public UnityEvent EmailSuccess;
-
+    public bool isCredentialsEntered;
     public enum Textype{
         Name,
         Email
@@ -18,7 +17,6 @@ public class EmailValidation : MonoBehaviour
     Textype _textype;
     public void CheckEmailValidation()
     {
-       
         if (string.IsNullOrEmpty(EmailinputField.text) || string.IsNullOrWhiteSpace(EmailinputField.text))
         {
             EmailinputField.placeholder.GetComponent<TMP_Text>().text = "Enter Valid Email";
@@ -35,6 +33,7 @@ public class EmailValidation : MonoBehaviour
         {
             Debug.Log("valid Email Do next step");
             EmailSuccess?.Invoke();
+            isCredentialsEntered = true;
         }
 
     }
@@ -43,6 +42,11 @@ public class EmailValidation : MonoBehaviour
     {
         EmailinputField.text = string.Empty;
         EmailinputField.placeholder.GetComponent<TMP_Text>().color = Color.red;
-       
     }
+
+    public void EmailDone()
+    {
+        /*bool checkVal = true;
+        Debug.Log(checkVal);*/
+    }    
 }

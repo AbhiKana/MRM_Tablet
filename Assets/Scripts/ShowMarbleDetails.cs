@@ -47,9 +47,9 @@ public class ShowMarbleDetails : MonoBehaviour
     public void ShowData()
     {
         marbleNameText.text = tileName;
-        priceText.text = price;
+        priceText.text = price +" sq/ft";
         //image.texture = texture; 
-        Debug.LogError("Add texture on: "+ gameObject.name);
+        //Debug.LogError("Add texture on: "+ gameObject.name);
     }
 
     void GetImage(string url, RawImage image)

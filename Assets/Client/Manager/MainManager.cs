@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
-
 
 public class MainManager : MonoBehaviour
 {
@@ -80,6 +76,11 @@ public class MainManager : MonoBehaviour
             ClientController.AddComponent<ClientStatus_ClientSide>();
             ClientController.GetComponent<TCP_ClientController>()._Initialze(); 
         }
+    }
+
+    public void DestroyClientObject()
+    {
+        Destroy(ClientController);
     }
 
     public ClientStatus_ServerSide Get_ServerSide_ClientStatus()

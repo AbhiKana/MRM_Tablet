@@ -24,8 +24,8 @@ public class FetchQRData : MonoBehaviour
     public UnityEvent OnDataLoaded;
     public UnityEvent OnDataLoadError = new UnityEvent();
 
-    int totalImageCount = 0;
-    int downlaodedImageCount = 0;
+    [SerializeField] int totalImageCount = 0;
+    [SerializeField] int downlaodedImageCount = 0;
     private void Start()
     {
         requestTC = new WWWRequestTC();
@@ -50,7 +50,6 @@ public class FetchQRData : MonoBehaviour
 
                 if (_marbleQrDatascritable._marbleApiData.success)
                 {
-                    totalImageCount = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count + 1;
                     LoadMarbleTextData();
                     LoadMarbleImageData();
                 }
@@ -85,8 +84,12 @@ public class FetchQRData : MonoBehaviour
         var marbleDet = _marbleQrDatascritable._marbleApiData.marbleDetails;
         if (marbleDet.texture_img.Count > 0)
         {
+            GetImageTop(marbleDet.main_img, TopMarbleImage);
+
+            totalImageCount = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
+
             GetImage(marbleDet.texture_img[0], CircleImage);
-            GetImage(marbleDet.main_img, TopMarbleImage);
+
 
             var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
             for (int i = 1; i < count; i++)
@@ -104,6 +107,7 @@ public class FetchQRData : MonoBehaviour
         {
             if (isSucess)
             {
+                //Debug.LogError("URL: " + url);
                 image.texture = rawTex;
                 downlaodedImageCount++;
 
@@ -113,6 +117,20 @@ public class FetchQRData : MonoBehaviour
                     Debug.Log("All Image downloaded");
                     downlaodedImageCount = 0;
                 }
+            }
+            else
+                Debug.Log("Couldn't fetch image data");
+        });
+    }
+
+    void GetImageTop(string url, RawImage image)
+    {
+        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        {
+            if (isSucess)
+            {
+                //Debug.LogError("URL main: " + url + " " + image.name);
+                image.texture = rawTex;
             }
             else
                 Debug.Log("Couldn't fetch image data");

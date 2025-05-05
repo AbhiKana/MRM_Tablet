@@ -92,18 +92,20 @@ public class TCP_ClientController : MonoBehaviour
         {
             if (startAs != null)
             {
-                tcpClient = new TcpClient(startAs.ipKey, 8052); 
+                tcpClient = new TcpClient(startAs.ipKey, 8052);
+                Debug.Log("Attempting Connection via key");
             }
 
             if(connectViaInput != null)
             {
                 tcpClient = new TcpClient(connectViaInput.ipKey,  8052);
+                Debug.Log("Attempting Connection via input");
             }
 
             //Testing purpose
             //tcpClient = new TcpClient(/*ipAddressInputField.text*/ startAs.ipKey, 8052);  //Testing purpose
 
-            Debug.Log("Attempting Connection");
+            
 
             byte[] buffer = new byte[1024];
             isRunning = true;

@@ -24,6 +24,7 @@ public class ConnectViaInput : MonoBehaviour
     [SerializeField] GameObject InputPanel;
 
     public UnityEvent OnConnectToserver;
+    public UnityEvent OnServerNotFound;
 
     public void Awake()
     {
@@ -32,8 +33,8 @@ public class ConnectViaInput : MonoBehaviour
             InputPanel.GetComponentInChildren<Button>().onClick.AddListener(() =>
             {
                 Debug.Log("Auto Click");
-                clientServerSelector.GetSelectType();
                 SetIP(InputPanel.GetComponentInChildren<TMP_InputField>());
+                clientServerSelector.GetSelectType();
             });
         }
     }
@@ -55,6 +56,7 @@ public class ConnectViaInput : MonoBehaviour
             ipKey = inputText.text;
             PlayerPrefs.SetString(nameof(ipKey), ipKey);
             Debug.Log("Server not found");
+            OnServerNotFound?.Invoke();
         }
     }
     private void GetIPFrom_InputField()
