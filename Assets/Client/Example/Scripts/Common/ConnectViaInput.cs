@@ -1,5 +1,3 @@
-using System.IO;
-using System;
 using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
@@ -13,16 +11,29 @@ public class ConnectViaInput : MonoBehaviour
 
     public ClientServerSelector clientServerSelector;
 
-    starting starting;
-    public string ipKey;
-    public bool IsConnected = false;
-    public bool IsReconnecting = false;
+
+    
+    private bool isConnectedToServer;
+    public bool IsConnectedToServer
+    {
+        get { return isConnectedToServer; }
+        set
+        {
+            isConnectedToServer = value;
+            Debug.Log("Connection status changed: " + value);
+        }
+    }
 
     //Drop ClientInputCanvas panel into ClientManagerwithInput Prefab
     //Change your Canvas UI according to your story board 
     //Reference the IP connection Gamobject into the Input Panel varliable in this script through Unity Editor 
     [SerializeField] GameObject InputPanel;
 
+    starting starting;
+    public string ipKey;
+    public bool IsConnected = false;
+    public bool IsReconnecting = false;
+    
     public UnityEvent OnConnectToserver;
     public UnityEvent OnServerNotFound;
 
@@ -51,11 +62,13 @@ public class ConnectViaInput : MonoBehaviour
             inputText.text = "Enter Correct IP";
             return;
         }
+        
         if (!IsConnected)
         {
             ipKey = inputText.text;
             PlayerPrefs.SetString(nameof(ipKey), ipKey);
             Debug.Log("Server not found");
+            IsConnectedToServer = false;
             OnServerNotFound?.Invoke();
         }
     }
@@ -91,7 +104,6 @@ public class ConnectViaInput : MonoBehaviour
         InvokeRepeating("InitializeClient", 3f, 3f);
         IsConnected = false;
         IsReconnecting = true;
-
     }
     private void ConnectToServer()
     {
@@ -119,19 +131,18 @@ public class ConnectViaInput : MonoBehaviour
     public void ClientConnected()
     {
         IsConnected = true;
+        IsConnectedToServer = true;
     }
 
     protected virtual void Update()
     {
         if (IsConnected)
         {
-            //UI_Status(false);
             OnConnectToserver?.Invoke();
             IsConnected = false;
         
             if (IsReconnecting)
             {
-                //UI_Status(true);
                 Debug.LogError("Stop Invoke repeating");
                 CancelInvoke("InitializeClient");
                 IsReconnecting = false;
@@ -139,9 +150,14 @@ public class ConnectViaInput : MonoBehaviour
         }
     }
 
+    public void EnableInputField()
+    {
+        InputPanel.SetActive(true);
+    }
+
     public void OnClientDisconnect()
     {
-        //UI_Status(true, false);
+
     }
 
     public void QuitApp()
@@ -149,8 +165,7 @@ public class ConnectViaInput : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-                 Application.Quit();
+        Application.Quit();
 #endif
     }
-
 }

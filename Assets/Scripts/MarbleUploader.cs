@@ -12,6 +12,12 @@ class StoreUserData
     public string user_id;
 }
 
+class DataSendToConfig
+{
+    public string mail;
+    public string user_id;
+}
+
 public class MarbleUploader : MonoBehaviour
 {
     [SerializeField] EmailValidation emailValidation;
@@ -22,8 +28,12 @@ public class MarbleUploader : MonoBehaviour
 
     [SerializeField] Button configuratorButton;
 
-    StoreUserData storeUserData;
+    [SerializeField] StoreUserData storeUserData;
 
+    DataSendToConfig dataSendToConfig;
+    UI_Manager manager;
+    public string data;
+    //public StoreUserData data => storeUserData;
     public UnityEvent OnDataSave;
 
     WWWRequestTC requestTC;
@@ -33,8 +43,16 @@ public class MarbleUploader : MonoBehaviour
     private void Start()
     {
         requestTC = new WWWRequestTC();
+        manager = FindAnyObjectByType<UI_Manager>();
+
+        EventHandler();
+    }
+
+    private void EventHandler()
+    {
         configuratorButton.onClick.AddListener(
-            () => {
+            () =>
+            {
                 CheckLoginData();
             });
 
@@ -50,7 +68,9 @@ public class MarbleUploader : MonoBehaviour
     {
         if (!emailValidation.isCredentialsEntered)
         {
+            //manager.OpenPage(7);
             emailValidation2.gameObject.SetActive(true);
+            manager.AddPageHistory(emailValidation2.gameObject);
         }
         else
         {
@@ -62,6 +82,7 @@ public class MarbleUploader : MonoBehaviour
     private void ControlObjectActivtion()
     {
         thanksForSharingObj.SetActive(true);
+        manager.AddPageHistory(thanksForSharingObj);
         loginPanel.SetActive(false);
     }
 
@@ -73,16 +94,24 @@ public class MarbleUploader : MonoBehaviour
         form.AddField("name", email.NameinputField.text);
         form.AddField("email", email.EmailinputField.text);
 
-        Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
         form.AddField("marble_id", GetSelectedMarble_ID());
         form.AddField("tab_id", 1);
         requestTC.Post(form, url, (Data, isSucess) =>
         {
             if (isSucess) 
             {
+                Debug.Log("On Store: " + Data);
                 storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+                dataSendToConfig = new DataSendToConfig
+                {
+                    mail = email.EmailinputField.text,
+                    user_id = storeUserData.user_id
+                };
+                data = JsonUtility.ToJson(dataSendToConfig);
+
                 OnDataSave?.Invoke();
             }
+        Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
         });
     }
 

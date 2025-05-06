@@ -80,7 +80,10 @@ public class MainManager : MonoBehaviour
 
     public void DestroyClientObject()
     {
-        Destroy(ClientController);
+        if (ClientController != null)
+        {
+            Destroy(ClientController);
+        }
     }
 
     public ClientStatus_ServerSide Get_ServerSide_ClientStatus()

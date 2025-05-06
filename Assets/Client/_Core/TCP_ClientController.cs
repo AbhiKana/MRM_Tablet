@@ -1,15 +1,10 @@
 using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class TCP_ClientController : MonoBehaviour
 {
@@ -101,11 +96,6 @@ public class TCP_ClientController : MonoBehaviour
                 tcpClient = new TcpClient(connectViaInput.ipKey,  8052);
                 Debug.Log("Attempting Connection via input");
             }
-
-            //Testing purpose
-            //tcpClient = new TcpClient(/*ipAddressInputField.text*/ startAs.ipKey, 8052);  //Testing purpose
-
-            
 
             byte[] buffer = new byte[1024];
             isRunning = true;
@@ -217,6 +207,7 @@ public class TCP_ClientController : MonoBehaviour
         clientThread?.Abort();
         clientThread = null;
     }
+
     private void OnDisable()
     {
         StopClient();
