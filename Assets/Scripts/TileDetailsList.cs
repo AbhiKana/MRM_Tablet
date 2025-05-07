@@ -40,7 +40,7 @@ public class TileDetailsList : MonoBehaviour
 
             for (int j = 0; j < mRM_Details.BgImages.Length; j++)
             {
-                mRM_Details.BgImages[j].texture = mrmDet.texture_img[j];
+                mRM_Details.BgImages[j].texture = mrmDet.textures[j];
                 //Debug.Log("Texture name: "+mRM_Details.BgImages[j].texture.name);
             }
         }

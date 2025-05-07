@@ -15,7 +15,7 @@ public class SpecificMarbleDetails
     public string modify_at;
 
     public Texture mainTexture, circleImg;
-    public Texture[] texture_img;
+    public Texture[] textures;
 
     public int availability;
     public int category_id;
@@ -60,15 +60,15 @@ public class StoreMarbleDetails : MonoBehaviour
         marbleDetails.material = data.material;
         marbleDetails.finish = data.finish;
         marbleDetails.price = data.price;
-        marbleDetails.created_at = data.created_at;
-        marbleDetails.modify_at = data.modify_at;
+        /*marbleDetails.created_at = data.created_at;
+        marbleDetails.modify_at = data.modify_at;*/
 
         marbleDetails.availability = data.availability;
         marbleDetails.category_id = data.category_id;
 
         marbleDetails.mainTexture = fetchQRData.TopMarbleImage.texture;
         marbleDetails.circleImg = fetchQRData.CircleImage.texture;
-        marbleDetails.texture_img = fetchQRData.boxImageTexture;
+        marbleDetails.textures = fetchQRData.boxImageTexture;
 
         if (AlreadyExists(marbleDetails.marble_name))
         {
@@ -83,7 +83,6 @@ public class StoreMarbleDetails : MonoBehaviour
         {
             if(ignoreToggleEvent) return;
 
-
             string currentName = marbleDetails.marble_name;
             if (isOn == true && !AlreadyExists(currentName))
             {
@@ -92,7 +91,7 @@ public class StoreMarbleDetails : MonoBehaviour
                     marble_name = marbleDetails.marble_name,
                     mainTexture = marbleDetails.mainTexture,
                     circleImg = marbleDetails.circleImg,
-                    texture_img = marbleDetails.texture_img,
+                    textures = marbleDetails.textures,
 
                     dimension = marbleDetails.dimension,
                     material = marbleDetails.material,

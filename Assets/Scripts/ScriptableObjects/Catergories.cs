@@ -19,10 +19,10 @@ public class Marble
 }
 
 [Serializable]
-public class AllMarbles
+public class Catergories
 {
     public bool success;
     public List<Category> category;
-    public List<Marble> marbleDetails;
+    //public List<Marble> marbleDetails;
 }
 

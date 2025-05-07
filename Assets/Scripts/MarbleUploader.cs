@@ -24,6 +24,7 @@ public class MarbleUploader : MonoBehaviour
     [SerializeField] EmailValidation emailValidation2;
 
     [SerializeField] GameObject thanksForSharingObj;
+    //[SerializeField] 
     [SerializeField] GameObject loginPanel;
 
     [SerializeField] Button configuratorButton;
@@ -34,7 +35,7 @@ public class MarbleUploader : MonoBehaviour
     UI_Manager manager;
     public string data;
     //public StoreUserData data => storeUserData;
-    public UnityEvent OnDataSave;
+    public UnityEvent<string> OnDataSave;
 
     WWWRequestTC requestTC;
     SelectionPanelController SelectionPanelController;
@@ -79,8 +80,9 @@ public class MarbleUploader : MonoBehaviour
         }
     }
 
-    private void ControlObjectActivtion()
+    private void ControlObjectActivtion(string data)
     {
+        Debug.LogError("Data send 2");
         thanksForSharingObj.SetActive(true);
         manager.AddPageHistory(thanksForSharingObj);
         loginPanel.SetActive(false);
@@ -88,6 +90,7 @@ public class MarbleUploader : MonoBehaviour
 
     public void SaveUserData(EmailValidation email)
     {
+        Debug.Log("Send data");
         string url = Url.apiUrl + Url.saveUserData;
 
         WWWForm form = new WWWForm();
@@ -109,7 +112,7 @@ public class MarbleUploader : MonoBehaviour
                 };
                 data = JsonUtility.ToJson(dataSendToConfig);
 
-                OnDataSave?.Invoke();
+                OnDataSave?.Invoke("share");
             }
         Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
         });
@@ -123,7 +126,7 @@ public class MarbleUploader : MonoBehaviour
         if (getAllMarbles == null)
             getAllMarbles = FindObjectOfType<GetAllMarbles>();
 
-        var marbleList = getAllMarbles.allMarbles.marbleDetails;
+        var marbleList = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
         var selectedTile = SelectionPanelController.availableTile;
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < selectedTile.Count; i++)

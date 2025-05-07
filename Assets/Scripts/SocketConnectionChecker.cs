@@ -2,16 +2,10 @@ using UnityEngine;
 
 public class SocketConnectionChecker : MonoBehaviour
 {
-    MarbleUploader marbleUploader;
+    [SerializeField] GameObject marbleUploader;
     TCP_ClientController tcpClientController;
 
     [SerializeField] ConnectViaInput connectViaInput;
-
-    private void Start()
-    {
-        marbleUploader = GetComponent<MarbleUploader>();
-        
-    }
     public void CheckConnectionStatus()
     {
         if (connectViaInput.IsConnectedToServer)
@@ -30,12 +24,32 @@ public class SocketConnectionChecker : MonoBehaviour
     {
         if(tcpClientController == null)
             tcpClientController = FindObjectOfType<TCP_ClientController>();
+        
+        
         if (marbleUploader != null)
         {
-            string dataToSend = marbleUploader.data;
-            if (!string.IsNullOrEmpty(dataToSend))
+            Configurator c = marbleUploader.GetComponent<Configurator>();
+
+            if (c != null) 
             {
-                tcpClientController.SendMessage(dataToSend);
+                string dataToSend = c.data;
+                if (!string.IsNullOrEmpty(dataToSend))
+                {
+                    Debug.Log("Data to send " + dataToSend);
+                    tcpClientController.SendMessage(dataToSend);
+                }
+            }
+
+
+            MarbleUploader m = marbleUploader.GetComponent<MarbleUploader>();
+            if (m != null)
+            {
+                string dataToSend = m.data;
+                if (!string.IsNullOrEmpty(dataToSend))
+                {
+                    Debug.Log("Data to send "+dataToSend);
+                    tcpClientController.SendMessage(dataToSend);
+                }
             }
         }
     }

@@ -1,13 +1,16 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
 {
+    [SerializeField] List<Texture> m_Textures; 
+
     [HideInInspector]
-    public Marble marbleDetailsWithCategoryID;
-    public WWWRequestTC requestTC;
+    public MarbleDetail marbleDetailsWithCategoryID;
     
+    WWWRequestTC requestTC;
     public RawImage image;
 
     public Texture texture;
@@ -37,23 +40,24 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
-        GetImage(marbleDetailsWithCategoryID.img, image);
+        GetImage(marbleDetailsWithCategoryID.main_img, image);
         tileName = marbleDetailsWithCategoryID.marble_name;
         price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
+
+        //StoreRoomTextures();
     }
 
     public void ShowData()
     {
         marbleNameText.text = tileName;
         priceText.text = price +" sq/ft";
-        //image.texture = texture; 
-        //Debug.LogError("Add texture on: "+ gameObject.name);
     }
 
     void GetImage(string url, RawImage image)
     {
+        //Debug.Log("Download texture");
         requestTC.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
@@ -73,11 +77,34 @@ public class ShowMarbleDetails : MonoBehaviour
         var t_image = MarbleLoader.totalImageCount;
         MarbleLoader.downlaodedImageCount++;
         
+        //Debug.Log("Total Image: "+ t_image + " =====> " + d_image);
         if(MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
-            Debug.Log("DOWNLOAD IMAGE " + d_image);
+            //Debug.Log("DOWNLOAD IMAGE " + d_image + "   Total Image: " + t_image + " =====> " + d_image);
             GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
             getAllMarbles.OnDataLoaded?.Invoke();
         }
     }
+
+    /*void GetImageInBG(string url, Texture image)
+    {
+        Debug.Log("Download texture");
+        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        {
+            if (isSucess)
+            {
+                image = rawTex;
+            }
+            else
+                Debug.Log("Couldn't fetch image data");
+        });
+    }
+
+    public void StoreRoomTextures()
+    {
+        for (int i = 0; i < marbleDetailsWithCategoryID.texture_img.Count; i++)
+        {
+            GetImageInBG(marbleDetailsWithCategoryID.texture_img[i], m_Textures[i]);
+        }
+    }*/
 }

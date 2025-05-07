@@ -23,7 +23,7 @@ public class Configurator : MonoBehaviour
     [SerializeField] EmailValidation emailValidation;
     [SerializeField] EmailValidation emailValidation2;
 
-    [SerializeField] GameObject thanksForSharingObj;
+    [SerializeField] GameObject endSession;
     [SerializeField] GameObject loginPanel;
 
     [SerializeField] Button configuratorButton;
@@ -35,7 +35,7 @@ public class Configurator : MonoBehaviour
     UI_Manager manager;
     public string data;
     //public StoreUserData data => storeUserData;
-    public UnityEvent OnDataSave;
+    public UnityEvent<string> OnDataSave;
 
     WWWRequestTC requestTC;
     SelectionPanelController SelectionPanelController;
@@ -51,11 +51,10 @@ public class Configurator : MonoBehaviour
 
     private void EventHandler()
     {
-        configuratorButton.onClick.AddListener(
-            () =>
-            {
-                CheckLoginData();
-            });
+        configuratorButton.onClick.AddListener(() =>
+        {
+            CheckLoginData();
+        });
 
         emailValidation2.EmailSuccess.AddListener(() =>
         {
@@ -69,7 +68,7 @@ public class Configurator : MonoBehaviour
     {
         if (!connectViaInput.IsConnectedToServer)
         {
-            connectViaInput.EnableInputField();
+            connectViaInput.EnableInputField(true);
         }
         else
         {
@@ -83,19 +82,25 @@ public class Configurator : MonoBehaviour
             {
                 Debug.Log("Send config to CMS");
                 SaveUserData(emailValidation);
+                //OnDataSave?.Invoke();
             }
         }
     }
 
-    private void ControlObjectActivtion()
+    private void ControlObjectActivtion(string data)
     {
-        thanksForSharingObj.SetActive(true);
-        manager.AddPageHistory(thanksForSharingObj);
-        loginPanel.SetActive(false);
+        if (data == "config")
+        {
+            Debug.LogError("Data send");
+            endSession.SetActive(true);
+            manager.AddPageHistory(endSession);
+            loginPanel.SetActive(false);
+        }
     }
 
     public void SaveUserData(EmailValidation email)
     {
+        Debug.Log("Send data");
         string url = Url.apiUrl + Url.saveUserData;
 
         WWWForm form = new WWWForm();
@@ -117,7 +122,7 @@ public class Configurator : MonoBehaviour
                 };
                 data = JsonUtility.ToJson(dataSendToConfig);
 
-                OnDataSave?.Invoke();
+                OnDataSave?.Invoke("config");
             }
         Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
         });
@@ -131,7 +136,7 @@ public class Configurator : MonoBehaviour
         if (getAllMarbles == null)
             getAllMarbles = FindObjectOfType<GetAllMarbles>();
 
-        var marbleList = getAllMarbles.allMarbles.marbleDetails;
+        var marbleList = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
         var selectedTile = SelectionPanelController.availableTile;
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < selectedTile.Count; i++)

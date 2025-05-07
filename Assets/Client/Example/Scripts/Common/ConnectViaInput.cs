@@ -150,9 +150,9 @@ public class ConnectViaInput : MonoBehaviour
         }
     }
 
-    public void EnableInputField()
+    public void EnableInputField(bool val)
     {
-        InputPanel.SetActive(true);
+        InputPanel.SetActive(val);
     }
 
     public void OnClientDisconnect()

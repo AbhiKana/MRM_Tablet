@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 /*
     public class MarbleData : ScriptableObject
     {
@@ -35,6 +33,13 @@ public class MarbleApiData
 }
 
 [System.Serializable]
+public class GetMarblesList
+{
+    public bool success;
+    public List<MarbleDetail> marbleDetails;
+}
+
+[System.Serializable]
 public class Marbledetail
 {
     public int id;
@@ -48,7 +53,21 @@ public class Marbledetail
     public int category_id;
     public string main_img;
     public List<string> texture_img;
-    public string created_at;
-    public string modify_at;
+}
+
+[System.Serializable]
+public class MarbleDetail
+{
+    public int id;
+    public string marble_name;
+    public string description;
+    public string dimension;
+    public string material;
+    public string finish;
+    public string price;
+    public int availability;
+    public int category_id;
+    public string main_img;
+    public List<string> texture_img;
 }
 

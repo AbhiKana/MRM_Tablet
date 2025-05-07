@@ -20,6 +20,7 @@ public class MarbleLoader : MonoBehaviour
 
     public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
     public static UnityEvent OnMarbleLoaded;
+    
     public void GetAllAvailableMarbles()
     {
         StartCoroutine(StoreMarblesInList());
@@ -45,7 +46,7 @@ public class MarbleLoader : MonoBehaviour
     {
         if (!IsCategorySpawn)
         {
-            var category = getAllMarbles.allMarbles.category;
+            var category = getAllMarbles.categories.category;
             for (int i = 0; i < category.Count; i++)
             {
                 GameObject g = Instantiate(categoryPrefab, CategoryParent.transform.position, Quaternion.identity);
@@ -62,7 +63,7 @@ public class MarbleLoader : MonoBehaviour
     {
         if (!IsAllImageDownloaded)
         {
-            var mDetails = getAllMarbles.allMarbles.marbleDetails;
+            var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
             for (int i = 0; i < showMarbleDetails.Count; i++)
             {
                 showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
@@ -79,7 +80,7 @@ public class MarbleLoader : MonoBehaviour
 
     public void GetTotalImageCount()
     {
-        totalImageCount = getAllMarbles.allMarbles.marbleDetails.Count;
+        totalImageCount = getAllMarbles.allMarbles.getMarblesList.marbleDetails.Count;
         Debug.Log($"Total image count: {totalImageCount}");
     }
 }

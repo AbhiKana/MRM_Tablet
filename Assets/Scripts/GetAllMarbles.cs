@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class GetAllMarbles : MonoBehaviour
 {
-    public AllMarbles allMarbles;
+    public MarbleList allMarbles;
+    public Catergories categories;
     public WWWRequestTC requestTC;
 
     public UnityEvent OnAllMarbleDataLoaded;
@@ -14,18 +15,32 @@ public class GetAllMarbles : MonoBehaviour
     private void Start()
     {
         requestTC = new WWWRequestTC();
+        GetCategoryList();
         GetAllMarbleList();
+    }
+
+    public void GetCategoryList()
+    {
+        string url = Url.apiUrl + Url.marbleApi;
+        requestTC.Get(url, (Data, isSucess) =>
+        {
+            categories = JsonUtility.FromJson<Catergories>(Data);
+        });
     }
 
     public void GetAllMarbleList()
     {
-        //string url = Url.apiUrl + Url.marbleApi;
-        string url = Url.marbleDetails;
-        requestTC.Get(url, (Data, isSucess) =>
+        WWWForm form = new WWWForm();
+        string url = Url.apiUrl + Url.marbleDetails;
+        GetMarblesList marbles;
+        requestTC.Post(form, url, (Data, isSucess) =>
         {
-            allMarbles = JsonUtility.FromJson<AllMarbles>(Data);
-            Debug.Log("Data Fetched");
-            OnAllMarbleDataLoaded?.Invoke();
+            if (isSucess)
+            {
+                marbles = JsonUtility.FromJson<GetMarblesList>(Data);
+                allMarbles.getMarblesList = marbles;
+                OnAllMarbleDataLoaded?.Invoke();
+            }
         });
     }
 

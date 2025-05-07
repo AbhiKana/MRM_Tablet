@@ -27,7 +27,7 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     private void SetCircularList()
     {
         rectTransform = circularScrollingList.GetComponent<RectTransform>();
-        numOfbox = getAllMarbles.allMarbles.marbleDetails.Count + noofMarble;
+        numOfbox = getAllMarbles.allMarbles.getMarblesList.marbleDetails.Count + noofMarble;
         circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
 
         AdjustSpacing();
