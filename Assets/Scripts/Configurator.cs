@@ -35,7 +35,7 @@ public class Configurator : MonoBehaviour
     UI_Manager manager;
     public string data;
     //public StoreUserData data => storeUserData;
-    public UnityEvent<string> OnDataSave;
+    public UnityEvent OnDataSave;
 
     WWWRequestTC requestTC;
     SelectionPanelController SelectionPanelController;
@@ -77,25 +77,31 @@ public class Configurator : MonoBehaviour
                 //manager.OpenPage(7);
                 emailValidation2.gameObject.SetActive(true);
                 manager.AddPageHistory(emailValidation2.gameObject);
+
+                emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(() =>
+                {
+                    Debug.LogError("Send data to CMS");
+                    OnDataSave?.Invoke();
+                });
             }
             else
             {
                 Debug.Log("Send config to CMS");
                 SaveUserData(emailValidation);
-                //OnDataSave?.Invoke();
+                OnDataSave?.Invoke();
             }
         }
     }
 
-    private void ControlObjectActivtion(string data)
+    private void ControlObjectActivtion(/*string data*/)
     {
-        if (data == "config")
-        {
+        /*if (data == "config")
+        {*/
             Debug.LogError("Data send");
             endSession.SetActive(true);
             manager.AddPageHistory(endSession);
             loginPanel.SetActive(false);
-        }
+        //}
     }
 
     public void SaveUserData(EmailValidation email)
@@ -122,7 +128,7 @@ public class Configurator : MonoBehaviour
                 };
                 data = JsonUtility.ToJson(dataSendToConfig);
 
-                OnDataSave?.Invoke("config");
+                //OnDataSave?.Invoke("config");
             }
         Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
         });
