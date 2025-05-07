@@ -7628,8 +7628,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 621252334}
-  - component: {fileID: 621252335}
   - component: {fileID: 621252336}
+  - component: {fileID: 621252337}
   m_Layer: 0
   m_Name: Configurator
   m_TagString: Untagged
@@ -7652,7 +7652,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 482301943}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &621252335
+--- !u!114 &621252336
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7661,7 +7661,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 621252333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edc7cc8b9df765b44baac79376180571, type: 3}
+  m_Script: {fileID: 11500000, guid: 73dff2aea18e5e34db70ff9d996680f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectViaInput: {fileID: 972451989}
+--- !u!114 &621252337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 621252333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b6e9020ea8783441b8d386b48d1e2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   emailValidation: {fileID: 2086080254}
@@ -7669,6 +7682,7 @@ MonoBehaviour:
   thanksForSharingObj: {fileID: 469469355}
   loginPanel: {fileID: 1512039529}
   configuratorButton: {fileID: 1927762910}
+  connectViaInput: {fileID: 972451989}
   storeUserData:
     success: 0
     data: 
@@ -7689,19 +7703,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &621252336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 621252333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73dff2aea18e5e34db70ff9d996680f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  connectViaInput: {fileID: 972451989}
 --- !u!1 &627004034
 GameObject:
   m_ObjectHideFlags: 0
@@ -16581,6 +16582,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
       objectReference: {fileID: 0}
@@ -16611,6 +16617,11 @@ PrefabInstance:
       objectReference: {fileID: 414334646}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_Target
+      value: 
+      objectReference: {fileID: 62619039}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 62619039}
@@ -16637,6 +16648,11 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
@@ -16671,6 +16687,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetActive
       objectReference: {fileID: 0}
@@ -16698,6 +16719,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: MainManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -16741,6 +16767,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 0
       objectReference: {fileID: 0}
@@ -16772,6 +16803,11 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,

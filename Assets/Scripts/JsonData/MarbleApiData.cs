@@ -45,9 +45,9 @@ public class Marbledetail
     public string finish;
     public string price;
     public int availability;
+    public int category_id;
     public string main_img;
     public List<string> texture_img;
-    public int category_id;
     public string created_at;
     public string modify_at;
 }

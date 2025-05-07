@@ -60,7 +60,7 @@ public class ShowMarbleDetails : MonoBehaviour
             {
                 CheckAllImageLoaded();
                 image.texture = rawTex;
-                Debug.Log("All Image downloaded");
+                //Debug.Log("All Image downloaded");
             }
             else
                 Debug.Log("Couldn't fetch image data");

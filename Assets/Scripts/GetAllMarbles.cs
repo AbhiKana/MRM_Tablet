@@ -19,7 +19,8 @@ public class GetAllMarbles : MonoBehaviour
 
     public void GetAllMarbleList()
     {
-        string url = Url.apiUrl + Url.marbleApi;
+        //string url = Url.apiUrl + Url.marbleApi;
+        string url = Url.marbleDetails;
         requestTC.Get(url, (Data, isSucess) =>
         {
             allMarbles = JsonUtility.FromJson<AllMarbles>(Data);
