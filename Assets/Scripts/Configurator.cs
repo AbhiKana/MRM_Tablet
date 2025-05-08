@@ -72,7 +72,7 @@ public class Configurator : MonoBehaviour
         }
         else
         {
-            if (!emailValidation.isCredentialsEntered)
+            if (!emailValidation.isCredentialsEntered && !emailValidation2.isCredentialsEntered)
             {
                 //manager.OpenPage(7);
                 emailValidation2.gameObject.SetActive(true);

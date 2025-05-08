@@ -67,7 +67,7 @@ public class MarbleUploader : MonoBehaviour
 
     public void CheckLoginData()
     {
-        if (!emailValidation.isCredentialsEntered)
+        if (!emailValidation.isCredentialsEntered && !emailValidation2.isCredentialsEntered)
         {
             //manager.OpenPage(7);
             emailValidation2.gameObject.SetActive(true);
