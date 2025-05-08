@@ -12,7 +12,7 @@ public static class MarbleManager
             return;
         }
 
-        List<SpecificMarbleDetails> wishList = storeMarbleDetails.WishListMarble;
+        List<SpecificMarbleDetails> wishList = storeMarbleDetails.list;
 
         foreach (SpecificMarbleDetails details in wishList)
         {

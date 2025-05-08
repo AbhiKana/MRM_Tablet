@@ -254,6 +254,53 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 26008148}
   m_CullTransparentMesh: 1
+--- !u!1 &57708235
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 57708237}
+  - component: {fileID: 57708236}
+  m_Layer: 0
+  m_Name: LoadSelectedMarblesData
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &57708236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57708235}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44e1272d49ccc0b4b8db27472ec8b16a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneSwitchManager: {fileID: 0}
+  storeMarbleDetails: {fileID: 0}
+  roomsControl: {fileID: 814476975}
+--- !u!4 &57708237
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57708235}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &100250299
 GameObject:
   m_ObjectHideFlags: 0
@@ -3260,37 +3307,7 @@ MonoBehaviour:
   DragMarbleScroller: {fileID: 1457232913}
   MarbleDimensionOverlay: {fileID: 832853756}
   _isMarbleDimension: 0
-  dumyselectedMarbleList:
-  - id: 1
-    marble_name: Marble1
-    imgUrl: 
-    _Texture: {fileID: 2800000, guid: df4666ea1f1bef449a953ea367481d39, type: 3}
-    marbleDimension: 
-    PriceMarble: 500
-  - id: 2
-    marble_name: Marble2
-    imgUrl: 
-    _Texture: {fileID: 2800000, guid: a42b5a40a706a4945aaa6ce77a25836a, type: 3}
-    marbleDimension: 
-    PriceMarble: 600
-  - id: 3
-    marble_name: Marble3
-    imgUrl: 
-    _Texture: {fileID: 2800000, guid: ad7ce18619e7ee94888b84e871838675, type: 3}
-    marbleDimension: 
-    PriceMarble: 700
-  - id: 4
-    marble_name: Marble4
-    imgUrl: 
-    _Texture: {fileID: 2800000, guid: 85acc159e087edc4bbc1c459e9429f0c, type: 3}
-    marbleDimension: 
-    PriceMarble: 800
-  - id: 5
-    marble_name: Marble5
-    imgUrl: 
-    _Texture: {fileID: 2800000, guid: df4666ea1f1bef449a953ea367481d39, type: 3}
-    marbleDimension: 
-    PriceMarble: 900
+  dumyselectedMarbleList: []
   currentTabId: 0
 --- !u!1 &832853755
 GameObject:
@@ -4887,6 +4904,105 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077475015}
   m_CullTransparentMesh: 1
+--- !u!1 &1078844318
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1078844320}
+  - component: {fileID: 1078844319}
+  m_Layer: 5
+  m_Name: BigScreenManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1078844319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078844318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 483ec6aa7d7138e4484a647550bc629b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BigImage: {fileID: 724464047}
+  _roomScriptableB:
+  - {fileID: 11400000, guid: c4b0625eba1da0241864b84f1439e6c1, type: 2}
+  - {fileID: 11400000, guid: 2fdc3f0a29208684b8201c54733b3e76, type: 2}
+  - {fileID: 11400000, guid: 4e422b2f892d2d7418229cf80e998aa9, type: 2}
+  - {fileID: 11400000, guid: 45083d681b738b149b7b2d840b805ddc, type: 2}
+  _toggleButtonHolder: {fileID: 1463123524}
+  _buttonIntabmenu: {fileID: 684454504416475649}
+  _roomDropHolder: {fileID: 1757087440}
+  TabPreafabtoggle: {fileID: 8056682956781280908, guid: a3333f4132c21154b9eae3779feecc11,
+    type: 3}
+  _roomDrop: {fileID: 918249254760252439, guid: fb64bacad659df84fbb958ec7f18e679,
+    type: 3}
+  DragMarblesPanel: {fileID: 1804640837}
+  DragMarblePrefab: {fileID: 4995835659501155388, guid: 02be78460c1ddce41830bc8ad3095d59,
+    type: 3}
+  DragMarbleScroller: {fileID: 1457232913}
+  MarbleDimensionOverlay: {fileID: 832853756}
+  _isMarbleDimension: 0
+  dumyselectedMarbleList:
+  - id: 1
+    marble_name: Marble1
+    imgUrl: 
+    _Texture: {fileID: 2800000, guid: df4666ea1f1bef449a953ea367481d39, type: 3}
+    marbleDimension: 
+    PriceMarble: 500
+  - id: 2
+    marble_name: Marble2
+    imgUrl: 
+    _Texture: {fileID: 2800000, guid: a42b5a40a706a4945aaa6ce77a25836a, type: 3}
+    marbleDimension: 
+    PriceMarble: 600
+  - id: 3
+    marble_name: Marble3
+    imgUrl: 
+    _Texture: {fileID: 2800000, guid: ad7ce18619e7ee94888b84e871838675, type: 3}
+    marbleDimension: 
+    PriceMarble: 700
+  - id: 4
+    marble_name: Marble4
+    imgUrl: 
+    _Texture: {fileID: 2800000, guid: 85acc159e087edc4bbc1c459e9429f0c, type: 3}
+    marbleDimension: 
+    PriceMarble: 800
+  - id: 5
+    marble_name: Marble5
+    imgUrl: 
+    _Texture: {fileID: 2800000, guid: df4666ea1f1bef449a953ea367481d39, type: 3}
+    marbleDimension: 
+    PriceMarble: 900
+  currentTabId: 0
+--- !u!224 &1078844320
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078844318}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1280, y: 800}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1119767192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9309,5 +9425,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 814476974}
+  - {fileID: 1078844320}
   - {fileID: 439505267}
   - {fileID: 351695857}
+  - {fileID: 57708237}

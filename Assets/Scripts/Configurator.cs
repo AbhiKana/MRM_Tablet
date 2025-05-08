@@ -29,8 +29,8 @@ public class Configurator : MonoBehaviour
     [SerializeField] Button configuratorButton;
 
     [SerializeField] ConnectViaInput connectViaInput;
-    [SerializeField] StoreUserData storeUserData;
-
+    //[SerializeField] StoreUserData storeUserData;
+    [SerializeField] UserData userData;
     DataSendToConfig dataSendToConfig;
     UI_Manager manager;
     public string data;
@@ -80,14 +80,22 @@ public class Configurator : MonoBehaviour
 
                 emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    Debug.LogError("Send data to CMS");
+                    //Debug.LogError("Send data to CMS");
                     OnDataSave?.Invoke();
                 });
             }
             else
             {
-                Debug.Log("Send config to CMS");
-                SaveUserData(emailValidation);
+                if (emailValidation.isCredentialsEntered)
+                {
+                    Debug.Log("Send config to CMS");
+                    SaveUserData(emailValidation);
+                }
+                else
+                {
+                    Debug.Log("Send config to CMS using mail2");
+                    SaveUserData(emailValidation2);
+                }
                 OnDataSave?.Invoke();
             }
         }
@@ -97,7 +105,7 @@ public class Configurator : MonoBehaviour
     {
         /*if (data == "config")
         {*/
-            Debug.LogError("Data send");
+            //Debug.LogError("Data send");
             endSession.SetActive(true);
             manager.AddPageHistory(endSession);
             loginPanel.SetActive(false);
@@ -120,11 +128,11 @@ public class Configurator : MonoBehaviour
             if (isSucess) 
             {
                 Debug.Log("On Store: " + Data);
-                storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+                userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
                 dataSendToConfig = new DataSendToConfig
                 {
                     mail = email.EmailinputField.text,
-                    user_id = storeUserData.user_id
+                    user_id = userData.storeUserData.user_id
                 };
                 data = JsonUtility.ToJson(dataSendToConfig);
 

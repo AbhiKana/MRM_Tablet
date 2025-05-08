@@ -35,7 +35,7 @@ public class SocketConnectionChecker : MonoBehaviour
                 string dataToSend = c.data;
                 if (!string.IsNullOrEmpty(dataToSend))
                 {
-                    Debug.Log("Data to send " + dataToSend);
+                    Debug.LogError("Data to send " + dataToSend);
                     tcpClientController.SendMessage(dataToSend);
                 }
             }
@@ -47,7 +47,7 @@ public class SocketConnectionChecker : MonoBehaviour
                 string dataToSend = m.data;
                 if (!string.IsNullOrEmpty(dataToSend))
                 {
-                    Debug.Log("Data to send "+dataToSend);
+                    Debug.LogError("Data to send "+dataToSend);
                     tcpClientController.SendMessage(dataToSend);
                 }
             }

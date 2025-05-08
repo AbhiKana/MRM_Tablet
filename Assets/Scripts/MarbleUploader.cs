@@ -3,16 +3,16 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-
 [System.Serializable]
-class StoreUserData
+public class StoreUserData
 {
     public bool success;
     public string data;
     public string user_id;
 }
 
-class DataSendToConfig
+[System.Serializable]
+public class DataSendToConfig
 {
     public string mail;
     public string user_id;
@@ -29,8 +29,7 @@ public class MarbleUploader : MonoBehaviour
 
     [SerializeField] Button configuratorButton;
 
-    [SerializeField] StoreUserData storeUserData;
-
+    [SerializeField] UserData userData;
     DataSendToConfig dataSendToConfig;
     UI_Manager manager;
     public string data;
@@ -72,17 +71,31 @@ public class MarbleUploader : MonoBehaviour
             //manager.OpenPage(7);
             emailValidation2.gameObject.SetActive(true);
             manager.AddPageHistory(emailValidation2.gameObject);
+
+            emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(() =>
+            {
+                //Debug.LogError("Send data to CMS");
+                OnDataSave?.Invoke("share");
+            });
         }
         else
         {
-            Debug.Log("Send config to CMS");
-            SaveUserData(emailValidation);
+            if (emailValidation.isCredentialsEntered)
+            {
+                Debug.Log("Send config to CMS");
+                SaveUserData(emailValidation);
+            }
+            else
+            {
+                Debug.Log("Send config to CMS using mail 2");
+                SaveUserData(emailValidation2);
+            }
         }
     }
 
     private void ControlObjectActivtion(string data)
     {
-        Debug.LogError("Data send 2");
+        //Debug.LogError("Data send 2");
         thanksForSharingObj.SetActive(true);
         manager.AddPageHistory(thanksForSharingObj);
         loginPanel.SetActive(false);
@@ -104,15 +117,15 @@ public class MarbleUploader : MonoBehaviour
             if (isSucess) 
             {
                 Debug.Log("On Store: " + Data);
-                storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+                userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
                 dataSendToConfig = new DataSendToConfig
                 {
                     mail = email.EmailinputField.text,
-                    user_id = storeUserData.user_id
+                    user_id = userData.storeUserData.user_id
                 };
                 data = JsonUtility.ToJson(dataSendToConfig);
 
-                OnDataSave?.Invoke("share");
+                //OnDataSave?.Invoke("share");
             }
         Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
         });

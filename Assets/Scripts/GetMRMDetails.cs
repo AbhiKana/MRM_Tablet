@@ -1,10 +1,10 @@
-using System;
 using AirFishLab.ScrollingList;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GetMRMDetails : MonoBehaviour
 {
+    [SerializeField] StoreMarbleDetails storeMarbleDetails;
     [SerializeField] CircularScrollingList circularScrollingList;
     [SerializeField] FetchQRData fetchQRData;
     [SerializeField] Button viewMrmButton;
@@ -19,7 +19,28 @@ public class GetMRMDetails : MonoBehaviour
     private void ViewMarbleDetails()
     {
         string id = currentSelectedMarble.tileID.ToString();
-        fetchQRData.LoadData(id);
+
+        if (storeMarbleDetails.loadedMarbles.Count > 0)
+        {
+            foreach (var marble in storeMarbleDetails.loadedMarbles)
+            {
+                if (marble.id.ToString() == id)
+                {
+                    Debug.Log("Found in loaded marbles");
+                    storeMarbleDetails.ShowLoadedMarbleData(id);
+                }
+                else
+                {
+                    Debug.Log("Not Found in loaded marbles");
+                    fetchQRData.LoadData(id);
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("Not Found in loaded marbles");
+            fetchQRData.LoadData(id);
+        }
     }
 
     public void GetCurrentSelectedMarble()

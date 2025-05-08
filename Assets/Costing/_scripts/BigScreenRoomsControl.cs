@@ -64,7 +64,7 @@ public class BigScreenRoomsControl : MonoBehaviour
         _toggleGroupHolder = _toggleButtonHolder.GetComponent<ToggleGroup>();
 
         // create selected marble list in drag panel
-        AddSelectedMarblelistToScroll();
+        //AddSelectedMarblelistToScroll();
         MarbleDimensionOverlay.gameObject.SetActive(false);
     }
 
@@ -145,7 +145,17 @@ public class BigScreenRoomsControl : MonoBehaviour
     // create dumy selected marble list in footer scroll
     public void AddSelectedMarblelistToScroll()
     {
-        // this count will be cms data of selected marble list       
+        // if already added marble destroy them add again
+        if (DragMarbleScroller.childCount > 0)
+        {
+            for (int i = 0; i < DragMarbleScroller.childCount; i++)
+            {
+                Destroy(DragMarbleScroller.GetChild(i).gameObject);
+            }
+        }
+
+        // this count will be cms data of selected marble list
+
         // dumyselectedMarbleList will change to selected marble list from cms
         for (int i = 0; i < dumyselectedMarbleList.Count; i++)
         {

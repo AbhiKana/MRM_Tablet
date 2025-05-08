@@ -20,7 +20,7 @@ public class SelectionPanelController : MonoBehaviour
         availableTile.Clear();
 
 
-        noof_marble = storeMarbleDetails.WishListMarble.Count;
+        noof_marble = storeMarbleDetails.list.Count;
         for (int i = 0; i < noof_marble; i++)
         {
             GameObject marbleObj = Instantiate(tilePrefab).gameObject;
@@ -32,7 +32,7 @@ public class SelectionPanelController : MonoBehaviour
                 marble.pageNum = i;
                 marble.transform.SetParent(parentObjectToSpawn);
                 marble.transform.localScale = Vector3.one;
-                var tileDetail = storeMarbleDetails.WishListMarble[i];
+                var tileDetail = storeMarbleDetails.list[i];
                 marble.SetTileDetails(tileDetail.mainTexture, tileDetail.marble_name);                
             }
         }

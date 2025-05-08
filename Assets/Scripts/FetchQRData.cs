@@ -11,7 +11,6 @@ public class FetchQRData : MonoBehaviour
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
     public RawImage CircleImage, TopMarbleImage;
-    //[SerializeField] GameObject mrmDetails;
     [SerializeField] UI_Manager ui;
     
     [SerializeField] string fetchedData;
@@ -30,7 +29,11 @@ public class FetchQRData : MonoBehaviour
     {
         requestTC = new WWWRequestTC();
         QRScanner.OnQRDetect.AddListener(LoadData);
-        OnDataLoaded.AddListener(() => ui.OpenPage(3)); 
+        OnDataLoaded.AddListener(() =>
+        {
+            ui.OpenPage(3);
+            StoreTexture();
+        });
     }
 
     public void LoadData(string data)
@@ -70,7 +73,6 @@ public class FetchQRData : MonoBehaviour
     // load marble text data after QR scan From Scriptable object
     void LoadMarbleTextData()
     {
-        //print(_marbleQrDatascritable._marbleApiData.marbleDetails.marble_name);
         MarbleName.text = _marbleQrDatascritable._marbleApiData.marbleDetails.marble_name;
         MarbleDetails.text = _marbleQrDatascritable._marbleApiData.marbleDetails.description;
         MarbleDimension.text = _marbleQrDatascritable._marbleApiData.marbleDetails.dimension;
@@ -94,10 +96,17 @@ public class FetchQRData : MonoBehaviour
             var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
             for (int i = 1; i < count; i++)
             {
-
                 GetImage(marbleDet.texture_img[i], BgImages[i - 1]);
-                boxImageTexture[i - 1] = BgImages[i - 1].texture;
             }
+        }
+    }
+
+    void StoreTexture()
+    {
+        Debug.Log("Total Count: " + totalImageCount);
+        for (int i = 0; i < totalImageCount; i++)
+        {
+            boxImageTexture[i] = BgImages[i].texture;
         }
     }
 

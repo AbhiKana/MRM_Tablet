@@ -46,7 +46,7 @@ public class ShowMarbleDetails : MonoBehaviour
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
 
-        //StoreRoomTextures();
+        StoreRoomTextures();
     }
 
     public void ShowData()
@@ -86,25 +86,28 @@ public class ShowMarbleDetails : MonoBehaviour
         }
     }
 
-    /*void GetImageInBG(string url, Texture image)
+
+    void GetImageInBG(string url, Texture image)
     {
-        Debug.Log("Download texture");
         requestTC.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
+                /*Texture texture = rawTex;
+                image =texture;*/
+                Debug.Log("Download texture");
                 image = rawTex;
             }
             else
                 Debug.Log("Couldn't fetch image data");
         });
     }
-
     public void StoreRoomTextures()
     {
-        for (int i = 0; i < marbleDetailsWithCategoryID.texture_img.Count; i++)
-        {
-            GetImageInBG(marbleDetailsWithCategoryID.texture_img[i], m_Textures[i]);
-        }
-    }*/
+        GetImageInBG(marbleDetailsWithCategoryID.texture_img[0], m_Textures[0]);
+        GetImageInBG(marbleDetailsWithCategoryID.texture_img[1], m_Textures[1]);
+        GetImageInBG(marbleDetailsWithCategoryID.texture_img[2], m_Textures[2]);
+        GetImageInBG(marbleDetailsWithCategoryID.texture_img[3], m_Textures[3]);
+        GetImageInBG(marbleDetailsWithCategoryID.texture_img[4], m_Textures[4]);
+    }
 }

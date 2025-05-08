@@ -9,10 +9,10 @@ public class TileDetailsList : MonoBehaviour
     [SerializeField] int noof_marble;
     public void SpawnMarbleDetailsList()
     {
-        noof_marble = storeMarbleDetails.WishListMarble.Count;
+        noof_marble = storeMarbleDetails.list.Count;
         for (int i = 0; i < noof_marble; i++)
         {
-            var mrmDet = storeMarbleDetails.WishListMarble[i];
+            var mrmDet = storeMarbleDetails.list[i];
             AssignData_OnLoad(mrmDet);
         }
     }
