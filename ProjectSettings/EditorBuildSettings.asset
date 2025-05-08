@@ -8,4 +8,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MRM_Tablet.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/CostScene.unity
+    guid: 445304da616c79347b1910f00e3ec60a
   m_configObjects: {}
