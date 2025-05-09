@@ -14,7 +14,7 @@ public class ShowMarbleDetails : MonoBehaviour
     public RawImage image;
 
     public Texture texture;
-    public string tileName;
+    public string marbleName;
     public string price;
 
     public int categoryID;
@@ -40,8 +40,9 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
+        //Debug.Log("gameobject name: "+ this.gameObject.name);
         GetImage(marbleDetailsWithCategoryID.main_img, image);
-        tileName = marbleDetailsWithCategoryID.marble_name;
+        marbleName = marbleDetailsWithCategoryID.marble_name;
         price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
@@ -51,7 +52,7 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void ShowData()
     {
-        marbleNameText.text = tileName;
+        marbleNameText.text = marbleName;
         priceText.text = price +" sq/ft";
     }
 

@@ -5,7 +5,6 @@ public class ToggleSpriteChange : MonoBehaviour
 {
     public Toggle toggle;
     public Image image;
-    //public Image GlowImage;
     public Sprite Selectedsprite, UnselectedSprite;
     public GameObject TriggerScreen, CurrentScreen;
     public int myid;
@@ -20,11 +19,6 @@ public class ToggleSpriteChange : MonoBehaviour
 
         if (getImage)
             image = GetComponent<Image>();
-    }
-
-    void Start()
-    {
-       
     }
 
     public void OnToggleClicked()

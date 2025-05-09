@@ -4,6 +4,7 @@ using AirFishLab.ScrollingList;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class MarbleLoader : MonoBehaviour
 {
@@ -53,7 +54,15 @@ public class MarbleLoader : MonoBehaviour
                 g.transform.SetParent(CategoryParent.transform);
                 g.transform.localScale = Vector3.one;
 
-                g.GetComponentInChildren<TextMeshProUGUI>().text = category[i].category_name;
+                Toggle toggle = g.GetComponent<Toggle>();
+                toggle.group = CategoryParent.GetComponent<ToggleGroup>();
+                toggle.GetComponentInChildren<TextMeshProUGUI>().text = category[i].category_name;
+                
+                if (i == 0)
+                    toggle.isOn = true;
+                else 
+                    toggle.isOn = false;
+                toggle.GetComponent<ToggleSpriteChange>().OnToggleClicked();
             }
             IsCategorySpawn = true;
         }

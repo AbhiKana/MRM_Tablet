@@ -9,7 +9,7 @@ public class ListOfMarblesInventory : MonoBehaviour
     [SerializeField] Transform parentObjectToSpawn;
 
     //Marble list
-    public List<ShowMarbleDetails> availableTile;
+   // public List<ShowMarbleDetails> availableTile;
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     public void GetSelectedMarbleList()
     {
-        availableTile = marbleLoader.listOfAllMarbles;
+       // availableTile = marbleLoader.listOfAllMarbles;
         //MarbleLoader 
         var noof_Marbles = marbleLoader.listOfAllMarbles;
         //var noof_marble = getMarbles.allMarbles.marbleDetails;
@@ -28,9 +28,11 @@ public class ListOfMarblesInventory : MonoBehaviour
             marbleObj.transform.SetParent(parentObjectToSpawn);
             marbleObj.transform.localScale = Vector3.one;
             ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();
-            marble.image.texture = availableTile[i].image.texture;
-            marble.tileName = noof_Marbles[i].tileName;
+            marble.image.texture = noof_Marbles[i].image.texture;
+            marble.marbleName = noof_Marbles[i].marbleName;
             marble.price = noof_Marbles[i].price;
+            marble.tileID = noof_Marbles[i].tileID;
+            marble.categoryID = noof_Marbles[i].categoryID;
             marble.ShowData();
         }
     }

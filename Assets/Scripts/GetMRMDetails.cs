@@ -13,12 +13,16 @@ public class GetMRMDetails : MonoBehaviour
 
     private void Start()
     {
-        viewMrmButton.onClick.AddListener(ViewMarbleDetails);
+        viewMrmButton.onClick.AddListener( ()=>
+        {
+            string id = currentSelectedMarble.tileID.ToString();
+            ViewMarbleDetails(id);
+        });
     }
 
-    private void ViewMarbleDetails()
+    public void ViewMarbleDetails(string id)
     {
-        string id = currentSelectedMarble.tileID.ToString();
+        //string id = currentSelectedMarble.tileID.ToString();
 
         if (storeMarbleDetails.loadedMarbles.Count > 0)
         {

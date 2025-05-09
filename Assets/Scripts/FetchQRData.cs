@@ -90,8 +90,6 @@ public class FetchQRData : MonoBehaviour
         MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
     }
 
-
-
     void LoadedMarbleTextData()
     {
         MarbleName.text = _specificMarbleDetails.marble_name;

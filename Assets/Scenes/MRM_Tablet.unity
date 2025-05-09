@@ -9733,6 +9733,7 @@ MonoBehaviour:
   scrollSnap: {fileID: 96334723}
   marbleDetails: {fileID: 1645236179}
   HeaderPage: {fileID: 1767203199}
+  LoaderPage: {fileID: 1330362654}
   listOfObjects:
   - {fileID: 352541032}
   - {fileID: 2086080252}
@@ -14109,7 +14110,6 @@ MonoBehaviour:
   tilePrefab: {fileID: 2913698957292138109, guid: 0d0d5c0b4e9e62c468ecd0a6ffa5b936,
     type: 3}
   parentObjectToSpawn: {fileID: 2008128103}
-  availableTile: []
 --- !u!1 &1506811198
 GameObject:
   m_ObjectHideFlags: 0
@@ -17540,8 +17540,8 @@ RectTransform:
   m_Children:
   - {fileID: 568119197}
   - {fileID: 323477457}
-  - {fileID: 352944834}
   - {fileID: 647295776}
+  - {fileID: 352944834}
   m_Father: {fileID: 532383426}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
