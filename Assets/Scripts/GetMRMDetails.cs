@@ -9,7 +9,7 @@ public class GetMRMDetails : MonoBehaviour
     [SerializeField] FetchQRData fetchQRData;
     [SerializeField] Button viewMrmButton;
     
-    ShowMarbleDetails currentSelectedMarble;
+    [SerializeField] ShowMarbleDetails currentSelectedMarble;
 
     private void Start()
     {
@@ -24,21 +24,20 @@ public class GetMRMDetails : MonoBehaviour
         {
             foreach (var marble in storeMarbleDetails.loadedMarbles)
             {
+                //Debug.Log("Curr ID: " + id + " =>>>> " + marble.id.ToString());
                 if (marble.id.ToString() == id)
                 {
                     Debug.Log("Found in loaded marbles");
                     storeMarbleDetails.ShowLoadedMarbleData(id);
-                }
-                else
-                {
-                    Debug.Log("Not Found in loaded marbles");
-                    fetchQRData.LoadData(id);
+                    return;
                 }
             }
+            Debug.Log("Not Found in loaded marbles");
+            fetchQRData.LoadData(id);
         }
         else
         {
-            Debug.Log("Not Found in loaded marbles");
+            Debug.Log("Not Fount for the first time0");
             fetchQRData.LoadData(id);
         }
     }

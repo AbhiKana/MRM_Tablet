@@ -8,15 +8,15 @@ public class Category
     public string category_name;
 }
 
-[Serializable]
-public class Marble
+/*[Serializable]
+public class Marble_Unused
 {
     public int id;
     public string marble_name;
     public int category_id;
     public string img;
     public string price;
-}
+}*/
 
 [Serializable]
 public class Catergories

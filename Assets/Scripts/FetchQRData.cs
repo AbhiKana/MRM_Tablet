@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class FetchQRData : MonoBehaviour
 {
     public MarbleQRDATA _marbleQrDatascritable;
-
+    public SpecificMarbleDetails _specificMarbleDetails;
     // Text details info
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
@@ -70,6 +70,16 @@ public class FetchQRData : MonoBehaviour
         });
     }
 
+    public void LoadedData(string data) 
+    {
+        if(_specificMarbleDetails != null)
+        {
+            ui.OpenPage(3);
+            LoadedMarbleTextData();
+            LoadedMarbleImageData();
+        }
+    }
+    
     // load marble text data after QR scan From Scriptable object
     void LoadMarbleTextData()
     {
@@ -78,6 +88,29 @@ public class FetchQRData : MonoBehaviour
         MarbleDimension.text = _marbleQrDatascritable._marbleApiData.marbleDetails.dimension;
         MarbleMaterial.text = _marbleQrDatascritable._marbleApiData.marbleDetails.material;
         MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
+    }
+
+
+
+    void LoadedMarbleTextData()
+    {
+        MarbleName.text = _specificMarbleDetails.marble_name;
+        MarbleDetails.text = _specificMarbleDetails.description;
+        MarbleDimension.text = _specificMarbleDetails.dimension;
+        MarbleMaterial.text = _specificMarbleDetails.material;
+        MarbleFinish.text = _specificMarbleDetails.finish;
+    }
+
+    void LoadedMarbleImageData()
+    {
+        var marbleDet = _specificMarbleDetails;
+        TopMarbleImage.texture = _specificMarbleDetails.mainTexture;
+        CircleImage.texture = _specificMarbleDetails.circleImg;
+        for (int i = 1; i < marbleDet.textures.Length; i++)
+        {
+            BgImages[i].texture = _specificMarbleDetails.textures[i];
+            //GetImage(marbleDet.texture_img[i], BgImages[i - 1]);
+        }
     }
 
     // load marble Image data after QR scan From Scriptable object

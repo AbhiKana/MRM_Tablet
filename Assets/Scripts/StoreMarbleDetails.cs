@@ -33,8 +33,8 @@ public class StoreMarbleDetails : MonoBehaviour
     [SerializeField] RawImage topMarbleData;
     
     [SerializeField] private SpecificMarbleDetails marbleDetails;
-    public List<SpecificMarbleDetails> list;
     
+    public List<SpecificMarbleDetails> list;
     public List<SpecificMarbleDetails> loadedMarbles;
     [HideInInspector] public List<MarbleDetails> costCalculatorList;
 
@@ -72,51 +72,45 @@ public class StoreMarbleDetails : MonoBehaviour
         marbleDetails.circleImg = fetchQRData.CircleImage.texture;
         marbleDetails.textures = fetchQRData.boxImageTexture;
 
-        if (AlreadyExists(marbleDetails.marble_name))
+        if (AlreadyExists(marbleDetails.marble_name, list))
         {
             ignoreToggleEvent = true;
             toggle.isOn = true;
             ignoreToggleEvent = false;
         }
 
-        SpecificMarbleDetails newDetails = StoreInCache(marbleDetails);
-        if (!loadedMarbles.Contains(newDetails))
-        {            
+        SpecificMarbleDetails newDetails = StoreInCache(marbleDetails, toggle.isOn);
+        if (!AlreadyExists(newDetails.marble_name, loadedMarbles))
+        {
+            Debug.LogError("Add new marble into loaded list");
             loadedMarbles.Add(newDetails);
         }
     }
 
     public void ShowLoadedMarbleData(string id)
     {
-        fetchQRData.OnDataLoaded?.Invoke();
         foreach (var data in loadedMarbles)
         {
             if (data.id.ToString() == id)
             {
-                marbleDetails.marble_name = data.marble_name;
-                marbleDetails.description = data.description;
-                marbleDetails.dimension = data.dimension;
-                marbleDetails.material = data.material;
-                marbleDetails.finish = data.finish;
-                marbleDetails.price = data.price;
+                Debug.Log("Show loaded marbles");
+                fetchQRData._specificMarbleDetails = data;
+                fetchQRData.LoadedData(id);
 
-                marbleDetails.availability = data.availability;
-                marbleDetails.category_id = data.category_id;
-                marbleDetails.id = data.id;
-
-                marbleDetails.mainTexture = fetchQRData.TopMarbleImage.texture;
-                marbleDetails.circleImg = fetchQRData.CircleImage.texture;
-                marbleDetails.textures = fetchQRData.boxImageTexture;
-
-                if (AlreadyExists(marbleDetails.marble_name))
+                if (AlreadyExists(fetchQRData._specificMarbleDetails.marble_name, list))
                 {
                     ignoreToggleEvent = true;
                     toggle.isOn = true;
                     ignoreToggleEvent = false;
                 }
+                else
+                {
+                    ignoreToggleEvent = true;
+                    toggle.isOn = false;
+                    ignoreToggleEvent = false;
+                }
             }
-
-            Debug.Log("Present Details from loaded marbles");
+            //Debug.Log("Present Details from loaded marbles");
         }
     }
     public void OnToggleClick()
@@ -126,15 +120,15 @@ public class StoreMarbleDetails : MonoBehaviour
             if(ignoreToggleEvent) return;
 
             string currentName = marbleDetails.marble_name;
-            if (isOn == true && !AlreadyExists(currentName))
+            if (isOn == true && !AlreadyExists(currentName, list))
             {
-                SpecificMarbleDetails newDetail = StoreInCache(marbleDetails);
+                SpecificMarbleDetails newDetail = StoreInCache(marbleDetails, isOn);
                 StoreSelectedMarble(newDetail);
             }
             else
             {
                 Debug.Log("Remove from list");
-                if(AlreadyExists(currentName))
+                if(AlreadyExists(currentName, list))
                 {
                     RemoveSelectedMarble(currentName);
                 }
@@ -142,7 +136,7 @@ public class StoreMarbleDetails : MonoBehaviour
         });
     }
 
-    private SpecificMarbleDetails StoreInCache(SpecificMarbleDetails marbleDetails)
+    private SpecificMarbleDetails StoreInCache(SpecificMarbleDetails marbleDetails, bool val)
     {
         return new SpecificMarbleDetails
         {
@@ -161,11 +155,11 @@ public class StoreMarbleDetails : MonoBehaviour
             availability = marbleDetails.availability,
             category_id = marbleDetails.category_id,
             id = marbleDetails.id,
-            isSelected = true
+            isSelected = val
         };
     }
 
-    bool AlreadyExists(string name)
+    bool AlreadyExists(string name, List<SpecificMarbleDetails> list)
     {
         foreach (SpecificMarbleDetails m in list)
         {

@@ -8383,12 +8383,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 663626830}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 804910450}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &663626833
 MonoBehaviour:
@@ -9053,6 +9053,40 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &804910449
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 804910450}
+  m_Layer: 0
+  m_Name: SelectedMarbles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &804910450
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 804910449}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 663626832}
+  - {fileID: 1063417537}
+  - {fileID: 1407705484}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &818588039
 GameObject:
   m_ObjectHideFlags: 0
@@ -11085,12 +11119,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1063417535}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 804910450}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1069470805
 GameObject:
@@ -11599,7 +11633,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 804910450}
     m_Modifications:
     - target: {fileID: 969978470666060797, guid: d242125dcba8e1a46806a20fb6c94d51,
         type: 3}
@@ -11634,17 +11668,17 @@ PrefabInstance:
     - target: {fileID: 969978470666060798, guid: d242125dcba8e1a46806a20fb6c94d51,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 969978470666060798, guid: d242125dcba8e1a46806a20fb6c94d51,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 969978470666060798, guid: d242125dcba8e1a46806a20fb6c94d51,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 969978470666060798, guid: d242125dcba8e1a46806a20fb6c94d51,
         type: 3}
@@ -12958,6 +12992,7 @@ MonoBehaviour:
   circularScrollingList: {fileID: 2053831464}
   fetchQRData: {fileID: 2026449340}
   viewMrmButton: {fileID: 2125549033}
+  currentSelectedMarble: {fileID: 0}
 --- !u!114 &1304641407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13734,6 +13769,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396597289}
   m_CullTransparentMesh: 1
+--- !u!4 &1407705484 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 969978470666060798, guid: d242125dcba8e1a46806a20fb6c94d51,
+    type: 3}
+  m_PrefabInstance: {fileID: 1106121317}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1423869151
 GameObject:
   m_ObjectHideFlags: 0
@@ -18541,6 +18582,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _marbleQrDatascritable: {fileID: 11400000, guid: ebe0dc09e222c4943add2415c1082e6a,
     type: 2}
+  _specificMarbleDetails:
+    id: 0
+    marble_name: 
+    description: 
+    dimension: 
+    material: 
+    finish: 
+    price: 
+    created_at: 
+    modify_at: 
+    mainTexture: {fileID: 0}
+    circleImg: {fileID: 0}
+    textures:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    availability: 0
+    category_id: 0
+    isSelected: 0
   MarbleName: {fileID: 1118595395458170428}
   MarbleDetails: {fileID: 1891587546755367176}
   MarbleDimension: {fileID: 6569372529928164872}
@@ -23601,10 +23663,8 @@ SceneRoots:
   - {fileID: 602558705}
   - {fileID: 1243964545}
   - {fileID: 1506811201}
-  - {fileID: 1106121317}
   - {fileID: 908578445}
-  - {fileID: 663626832}
-  - {fileID: 1063417537}
+  - {fileID: 804910450}
   - {fileID: 1061590714}
   - {fileID: 1979176664}
   - {fileID: 482301943}

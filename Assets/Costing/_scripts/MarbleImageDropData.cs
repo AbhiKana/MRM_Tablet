@@ -47,7 +47,11 @@ public class MarbleImageDropData : MonoBehaviour
         {
             int indexToremove = AddedMarbleSequence.IndexOf(marbleid);
             print("indextoremove" + indexToremove);
-            Destroy(MarbleTextDataHolder.GetChild(indexToremove).gameObject);
+            if (indexToremove >= 0)
+            {
+                Destroy(MarbleTextDataHolder.GetChild(indexToremove).gameObject);
+            }
+            //Destroy(MarbleTextDataHolder.GetChild(indexToremove).gameObject);
             // remove from addedmarble sequence
             AddedMarbleSequence.Remove(marbleid);
         }
