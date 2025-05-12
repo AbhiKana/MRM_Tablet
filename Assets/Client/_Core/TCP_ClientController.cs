@@ -155,12 +155,11 @@ public class TCP_ClientController : MonoBehaviour
         {
             NetworkStream networkStream = tcpClient.GetStream();
             if (networkStream.CanWrite)
-            {                
+            {
                 //Debug.Log("CLIENT MSG " + clientMessage);
                 byte[] buffer = Encoding.ASCII.GetBytes(msg);
                 networkStream.Write(buffer, 0, buffer.Length);
-
-                Debug.Log("Client sent his message - should be received by Server: " + msg);               
+                Debug.Log("Client sent his message - should be received by Server: " + msg);
             }
         }
         catch (SocketException e)

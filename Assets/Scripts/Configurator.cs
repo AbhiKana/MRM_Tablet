@@ -31,8 +31,11 @@ public class Configurator : MonoBehaviour
     [SerializeField] ConnectViaInput connectViaInput;
     //[SerializeField] StoreUserData storeUserData;
     [SerializeField] UserData userData;
+    //[SerializeField] UserData checkData;
+    
     DataSendToConfig dataSendToConfig;
     UI_Manager manager;
+    
     public string data;
     //public StoreUserData data => storeUserData;
     public UnityEvent OnDataSave;
@@ -40,6 +43,8 @@ public class Configurator : MonoBehaviour
     WWWRequestTC requestTC;
     SelectionPanelController SelectionPanelController;
     GetAllMarbles getAllMarbles;
+
+    bool OnConfigButtonClick;
 
     private void Start()
     {
@@ -54,11 +59,13 @@ public class Configurator : MonoBehaviour
         configuratorButton.onClick.AddListener(() =>
         {
             CheckLoginData();
+            OnConfigButtonClick = true;
         });
 
         emailValidation2.EmailSuccess.AddListener(() =>
         {
-            SaveUserData(emailValidation2);
+            if(OnConfigButtonClick)
+                SaveUserData(emailValidation2);
         });
 
         OnDataSave.AddListener(ControlObjectActivtion);
@@ -112,34 +119,45 @@ public class Configurator : MonoBehaviour
         //}
     }
 
+
+
     public void SaveUserData(EmailValidation email)
     {
-        Debug.Log("Send data");
-        string url = Url.apiUrl + Url.saveUserData;
-
-        WWWForm form = new WWWForm();
-        form.AddField("name", email.NameinputField.text);
-        form.AddField("email", email.EmailinputField.text);
-
-        form.AddField("marble_id", GetSelectedMarble_ID());
-        form.AddField("tab_id", 1);
-        requestTC.Post(form, url, (Data, isSucess) =>
+        if (!userData.storeUserData.success)
         {
-            if (isSucess) 
-            {
-                Debug.Log("On Store: " + Data);
-                userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
-                dataSendToConfig = new DataSendToConfig
-                {
-                    mail = email.EmailinputField.text,
-                    user_id = userData.storeUserData.user_id
-                };
-                data = JsonUtility.ToJson(dataSendToConfig);
+            Debug.Log("Send data");
+            string url = Url.apiUrl + Url.saveUserData;
 
-                //OnDataSave?.Invoke("config");
-            }
-        Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
-        });
+            WWWForm form = new WWWForm();
+            form.AddField("name", email.NameinputField.text);
+            form.AddField("email", email.EmailinputField.text);
+
+            form.AddField("marble_id", GetSelectedMarble_ID());
+            form.AddField("tab_id", 1);
+            requestTC.Post(form, url, (Data, isSucess) =>
+            {
+                if (isSucess)
+                {
+                    Debug.Log("On Store: " + Data);
+                    userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+
+                    MessageFormat messageFormat = new MessageFormat();
+                    messageFormat.MessageKey = "user_id";
+                    messageFormat.MessageValue = userData.storeUserData.user_id;
+                    data = JsonUtility.ToJson(messageFormat);
+
+                    /*dataSendToConfig = new DataSendToConfig
+                    {
+                        mail = email.EmailinputField.text,
+                        user_id = userData.storeUserData.user_id
+                    };
+                    data = JsonUtility.ToJson(dataSendToConfig);*/
+
+                    //OnDataSave?.Invoke("config");
+                }
+                Debug.Log("Email: " + email.EmailinputField.text + " Name: " + email.NameinputField.text);
+            });
+        }
     }
 
     public string GetSelectedMarble_ID()
@@ -159,12 +177,11 @@ public class Configurator : MonoBehaviour
             {
                 if (marbleList[j].marble_name == selectedTile[i].tileNameStr)
                 {
-                    s.Append(marbleList[i].id + ",");
+                    s.Append(marbleList[j].id + ",");
                     break;
                 }
             }
         }
-
         return EditStringValye(s);
     }
 
@@ -176,6 +193,8 @@ public class Configurator : MonoBehaviour
             var idx = newString.LastIndexOf(",");
 
             newString = newString.Remove(idx, 1);
+
+            Debug.Log("ID to send: " + newString);
             return newString;
         }
         else

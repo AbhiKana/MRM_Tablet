@@ -130,7 +130,7 @@ public class StoreMarbleDetails : MonoBehaviour
                 Debug.Log("Remove from list");
                 if(AlreadyExists(currentName, list))
                 {
-                    RemoveSelectedMarble(currentName);
+                    //RemoveSelectedMarble(currentName);
                 }
             }
         });

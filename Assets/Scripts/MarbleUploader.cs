@@ -24,7 +24,6 @@ public class MarbleUploader : MonoBehaviour
     [SerializeField] EmailValidation emailValidation2;
 
     [SerializeField] GameObject thanksForSharingObj;
-    //[SerializeField] 
     [SerializeField] GameObject loginPanel;
 
     [SerializeField] Button configuratorButton;
@@ -40,6 +39,8 @@ public class MarbleUploader : MonoBehaviour
     SelectionPanelController SelectionPanelController;
     GetAllMarbles getAllMarbles;
 
+    bool OnShareButtonClicked;
+
     private void Start()
     {
         requestTC = new WWWRequestTC();
@@ -50,15 +51,16 @@ public class MarbleUploader : MonoBehaviour
 
     private void EventHandler()
     {
-        configuratorButton.onClick.AddListener(
-            () =>
-            {
-                CheckLoginData();
-            });
+        configuratorButton.onClick.AddListener(() =>
+        {
+            CheckLoginData();
+            OnShareButtonClicked = true;
+        });
 
         emailValidation2.EmailSuccess.AddListener(() =>
         {
-            SaveUserData(emailValidation2);
+            if(OnShareButtonClicked)
+                SaveUserData(emailValidation2);
         });
 
         OnDataSave.AddListener(ControlObjectActivtion);
@@ -84,6 +86,7 @@ public class MarbleUploader : MonoBehaviour
             {
                 Debug.Log("Send config to CMS");
                 SaveUserData(emailValidation);
+                ControlObjectActivtion("share");
             }
             else
             {
@@ -103,32 +106,42 @@ public class MarbleUploader : MonoBehaviour
 
     public void SaveUserData(EmailValidation email)
     {
-        Debug.Log("Send data");
-        string url = Url.apiUrl + Url.saveUserData;
-
-        WWWForm form = new WWWForm();
-        form.AddField("name", email.NameinputField.text);
-        form.AddField("email", email.EmailinputField.text);
-
-        form.AddField("marble_id", GetSelectedMarble_ID());
-        form.AddField("tab_id", 1);
-        requestTC.Post(form, url, (Data, isSucess) =>
+        if (!userData.storeUserData.success)
         {
-            if (isSucess) 
-            {
-                Debug.Log("On Store: " + Data);
-                userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
-                dataSendToConfig = new DataSendToConfig
-                {
-                    mail = email.EmailinputField.text,
-                    user_id = userData.storeUserData.user_id
-                };
-                data = JsonUtility.ToJson(dataSendToConfig);
+            Debug.Log("Send data");
+            string url = Url.apiUrl + Url.saveUserData;
 
-                //OnDataSave?.Invoke("share");
-            }
-        Debug.Log("Email: "+ email.EmailinputField.text + " Name: " + email.NameinputField.text);
-        });
+            WWWForm form = new WWWForm();
+            form.AddField("name", email.NameinputField.text);
+            form.AddField("email", email.EmailinputField.text);
+
+            form.AddField("marble_id", GetSelectedMarble_ID());
+            form.AddField("tab_id", 1);
+            requestTC.Post(form, url, (Data, isSucess) =>
+            {
+                if (isSucess)
+                {
+                    Debug.Log("On Store: " + Data);
+                    userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+
+                    MessageFormat messageFormat = new MessageFormat();
+                    messageFormat.MessageKey = "user_id";
+                    messageFormat.MessageValue = userData.storeUserData.user_id;
+                    data = JsonUtility.ToJson(messageFormat);
+
+                    /*dataSendToConfig = new DataSendToConfig
+                    {
+                        mail = email.EmailinputField.text,
+                        user_id = userData.storeUserData.user_id
+                    };
+                    data = JsonUtility.ToJson(dataSendToConfig);
+                    */
+
+                    //OnDataSave?.Invoke("share");
+                }
+                Debug.Log("Email: " + email.EmailinputField.text + " Name: " + email.NameinputField.text);
+            });
+        }
     }
 
     public string GetSelectedMarble_ID()
