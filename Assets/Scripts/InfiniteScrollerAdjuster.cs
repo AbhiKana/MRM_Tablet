@@ -32,7 +32,9 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
 
         AdjustSpacing();
         AdjustPositionAndSize();
-        circularScrollingList.GenerateBoxesAndArrange();
+
+        circularScrollingList.SetList();
+        //circularScrollingList.GenerateBoxesAndArrange();
 
         if (numOfbox == 1)
             circularScrollingList.enabled = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
 using UnityEngine.Events;
+using UnityEngine.Android;
 
 public class QRScanner : MonoBehaviour
 {

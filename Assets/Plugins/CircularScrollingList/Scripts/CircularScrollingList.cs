@@ -256,9 +256,17 @@ namespace AirFishLab.ScrollingList
 
         #region Box Setup Functions
 
+
+        public void SetList()
+        {
+            GetComponentReference();
+            SetListBoxes();
+        }
+
         /// <summary>
         /// Set the list boxes to be used by the list
         /// </summary>
+        /// 
         private void SetListBoxes()
         {
             var prefab = _boxSetting.BoxPrefab;
@@ -557,6 +565,7 @@ namespace AirFishLab.ScrollingList
         #endregion
 
         #region Editor Utility
+
 #if UNITY_EDITOR
 
         /// <summary>
@@ -575,8 +584,8 @@ namespace AirFishLab.ScrollingList
                 new List<IListBox>(_listBoxes), null);
             ListStateProcessorManager.PreviewBoxLayout(setupData);
         }
-
 #endif
+
         #endregion
     }
 }
