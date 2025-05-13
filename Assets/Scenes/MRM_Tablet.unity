@@ -15253,8 +15253,38 @@ MonoBehaviour:
     availability: 0
     category_id: 0
     isSelected: 0
-  list: []
-  loadedMarbles: []
+  list:
+  - id: 0
+    marble_name: 
+    description: 
+    dimension: 
+    material: 
+    finish: 
+    price: 
+    created_at: 
+    modify_at: 
+    mainTexture: {fileID: 0}
+    circleImg: {fileID: 0}
+    textures: []
+    availability: 0
+    category_id: 0
+    isSelected: 0
+  loadedMarbles:
+  - id: 0
+    marble_name: 
+    description: 
+    dimension: 
+    material: 
+    finish: 
+    price: 
+    created_at: 
+    modify_at: 
+    mainTexture: {fileID: 0}
+    circleImg: {fileID: 0}
+    textures: []
+    availability: 0
+    category_id: 0
+    isSelected: 0
   costCalculatorList: []
 --- !u!4 &1645236180
 Transform:

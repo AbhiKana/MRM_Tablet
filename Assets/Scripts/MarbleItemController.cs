@@ -45,6 +45,9 @@ public class MarbleItemController : MonoBehaviour
     private void AddToWishlist()
     {
         Debug.Log(showMarbleDetails.marbleName + " added to wishlist.");
+        MarbleWithTextDetails m = new MarbleWithTextDetails();
+        m.id = showMarbleDetails.tileID;
+        m.m_name = showMarbleDetails.marbleName;
         //WishlistManager.Instance.AddMarble(marbleName);
     }
 

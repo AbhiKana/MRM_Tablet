@@ -5,11 +5,10 @@ using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
 {
-    [SerializeField] List<Texture> m_Textures; 
-
-    [HideInInspector]
     public MarbleDetail marbleDetailsWithCategoryID;
+    [SerializeField] Texture[] m_Textures;
     
+    FetchQRData fetchQRData;
     WWWRequestTC requestTC;
     public RawImage image;
 
@@ -27,6 +26,16 @@ public class ShowMarbleDetails : MonoBehaviour
     private void Start()
     {
         requestTC = new WWWRequestTC();
+        fetchQRData = FindObjectOfType<FetchQRData>(true);
+
+        fetchQRData.OnDataLoaded.AddListener(() =>
+        {
+            if (fetchQRData._marbleQrDatascritable._marbleApiData.marbleDetails.id == marbleDetailsWithCategoryID.id)
+            {
+                texture = fetchQRData.TopMarbleImage.texture;
+                m_Textures = fetchQRData.boxImageTexture;
+            }
+        });
     }
     public void SetImage(Texture t)
     {
@@ -86,7 +95,6 @@ public class ShowMarbleDetails : MonoBehaviour
             getAllMarbles.OnDataLoaded?.Invoke();
         }
     }
-
 
     void GetImageInBG(string url, Texture image)
     {
