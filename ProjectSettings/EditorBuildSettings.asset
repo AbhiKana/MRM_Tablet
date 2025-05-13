@@ -11,4 +11,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CostScene.unity
     guid: 445304da616c79347b1910f00e3ec60a
-  m_configObjects: {}
+  m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 70da4c54b557bed43894814f90178130,
+      type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 736c5509c9604074081a3eaceedd76cd,
+      type: 2}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 7e643b4319f06b649a7d6f7aeaa5397d,
+      type: 2}
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: fa3659b300f71044198f49f5bd4a0af2,
+      type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8c78213ad93897c4c8d5c5038c9b5a5d,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 8e86a8a8f593dfa4a93e1147efdd0aa3,
+      type: 2}
