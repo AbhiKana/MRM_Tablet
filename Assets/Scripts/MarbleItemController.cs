@@ -8,11 +8,12 @@ public class MarbleItemController : MonoBehaviour
     [SerializeField] ShowMarbleDetails showMarbleDetails;
     [SerializeField] private Button detailsButton;
     [SerializeField] private Toggle wishlistToggle;
-
+    GetMRMDetails getMRMDetails;
     private void Start()
     {
         showMarbleDetails = GetComponent<ShowMarbleDetails>();
         manager = FindAnyObjectByType<UI_Manager>();
+        getMRMDetails = FindObjectOfType<GetMRMDetails>();
 
         detailsButton.onClick.AddListener(OnDetailsButtonClicked);
         wishlistToggle.onValueChanged.AddListener(OnWishlistToggled);
@@ -21,13 +22,10 @@ public class MarbleItemController : MonoBehaviour
     private void OnDetailsButtonClicked()
     {
         manager.HandleLoaderPage(true);
-        GetMRMDetails getMRMDetails = FindObjectOfType<GetMRMDetails>();
-
         string id = showMarbleDetails.tileID.ToString();
         getMRMDetails.ViewMarbleDetails(id);
         
         Debug.Log($"Marble Details - Name: {showMarbleDetails.marbleName}");
-        //MarbleDetailsUI.Instance.ShowDetails(marbleName, marbleDescription, marbleImage);
     }
 
     // Method to handle wishlist toggle

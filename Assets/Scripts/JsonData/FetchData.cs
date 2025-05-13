@@ -49,32 +49,6 @@ public class FetchData : MonoBehaviour
         }
     }
 
-    /*
-    // load marble text data after QR scan From Scriptable object
-    void LoadMarbleTextData()
-    {
-        print(_marbleQrDatascritable._marbleApiData.marbleDetails.marble_name);
-        MarbleName.text = _marbleQrDatascritable._marbleApiData.marbleDetails.marble_name;
-        MarbleDetails.text = _marbleQrDatascritable._marbleApiData.marbleDetails.description;
-        MarbleDimension.text = _marbleQrDatascritable._marbleApiData.marbleDetails.dimension;
-        MarbleMaterial.text = _marbleQrDatascritable._marbleApiData.marbleDetails.material;
-        MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
-    }
-
-    // load marble Image data after QR scan From Scriptable object
-    void LoadMarbleImageData()
-    {
-        StartCoroutine(LoadImage(_marbleQrDatascritable._marbleApiData.marbleDetails.texture_img[0], CircleImage));
-        StartCoroutine(LoadImage(_marbleQrDatascritable._marbleApiData.marbleDetails.main_img, TopMarbleImage));
-
-        var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
-        for (int i = 1; i < count; i++)
-        {
-            StartCoroutine(LoadImage(_marbleQrDatascritable._marbleApiData.marbleDetails.texture_img[i], BgImages[i-1]));
-        }
-    }
-    */
-
     IEnumerator LoadImage(string ImageUrl, RawImage rawImage)
     {
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(ImageUrl);

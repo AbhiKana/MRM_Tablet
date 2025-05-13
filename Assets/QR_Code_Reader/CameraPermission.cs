@@ -10,11 +10,34 @@ public class CameraPermission : MonoBehaviour
 
     private void GetCameraAccess()
     {
-        var callbacks = new PermissionCallbacks();
+        /*var callbacks = new PermissionCallbacks();
         callbacks.PermissionDenied += PermissionCallbacks_PermissionDenied;
         callbacks.PermissionGranted += PermissionCallbacks_PermissionGranted;
         callbacks.PermissionDeniedAndDontAskAgain += PermissionCallbacks_PermissionDeniedAndDontAskAgain;
-        Permission.RequestUserPermission(Permission.Camera, callbacks);
+        Permission.RequestUserPermission(Permission.Camera, callbacks);*/
+
+        if (Permission.HasUserAuthorizedPermission(Permission.Camera))
+        {
+            // The user authorized use of the microphone.
+        }
+        else
+        {
+            bool useCallbacks = false;
+            if (!useCallbacks)
+            {
+                // We do not have permission to use the microphone.
+                // Ask for permission or proceed without the functionality enabled.
+                Permission.RequestUserPermission(Permission.Camera);
+            }
+            else
+            {
+                var callbacks = new PermissionCallbacks();
+                callbacks.PermissionDenied += PermissionCallbacks_PermissionDenied;
+                callbacks.PermissionGranted += PermissionCallbacks_PermissionGranted;
+                callbacks.PermissionDeniedAndDontAskAgain += PermissionCallbacks_PermissionDeniedAndDontAskAgain;
+                Permission.RequestUserPermission(Permission.Camera, callbacks);
+            }
+        }
     }
 
     internal void PermissionCallbacks_PermissionDeniedAndDontAskAgain(string permissionName)

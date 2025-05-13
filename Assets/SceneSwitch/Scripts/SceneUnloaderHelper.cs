@@ -7,18 +7,19 @@ using UnityEngine.UI;
 public class SceneUnloaderHelper : MonoBehaviour
 {
     Button closeButton;
-    [SerializeField] SceneSwitchManager sceneSwitchManager;
+    //[SerializeField] SceneSwitchManager sceneSwitchManager;
     [SerializeField] SceneFieldRef sceneFieldRef;
     void Start()
     {
         closeButton = GetComponent<Button>();
-        sceneSwitchManager = FindAnyObjectByType<SceneSwitchManager>();
+        //sceneSwitchManager = FindAnyObjectByType<SceneSwitchManager>();
 
         if (closeButton != null)
         {
             closeButton.onClick.AddListener(() =>
             {
-                sceneSwitchManager.UnLoadScene(sceneFieldRef);
+                SceneSwitchManager.instance.UnLoadScene(sceneFieldRef);
+                //sceneSwitchManager.UnLoadScene(sceneFieldRef);
             });
         }
     }
