@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using AirFishLab.ScrollingList;
 using UnityEngine;
 
 public class ListOfMarblesInventory : MonoBehaviour
@@ -8,8 +9,7 @@ public class ListOfMarblesInventory : MonoBehaviour
     [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform parentObjectToSpawn;
 
-    //Marble list
-   // public List<ShowMarbleDetails> availableTile;
+    public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
 
     private void Start()
     {
@@ -18,15 +18,13 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     public void GetSelectedMarbleList()
     {
-       // availableTile = marbleLoader.listOfAllMarbles;
-        //MarbleLoader 
         var noof_Marbles = marbleLoader.listOfAllMarbles;
-        //var noof_marble = getMarbles.allMarbles.marbleDetails;
         for (int i = 0; i < noof_Marbles.Count; i++)
         {
             GameObject marbleObj = Instantiate(tilePrefab).gameObject;
             marbleObj.transform.SetParent(parentObjectToSpawn);
             marbleObj.transform.localScale = Vector3.one;
+            
             ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();
             marble.image.texture = noof_Marbles[i].image.texture;
             marble.marbleName = noof_Marbles[i].marbleName;
@@ -35,5 +33,28 @@ public class ListOfMarblesInventory : MonoBehaviour
             marble.categoryID = noof_Marbles[i].categoryID;
             marble.ShowData();
         }
+
+        SetMarbleDetails(listOfAllMarbles);
+    }
+
+    public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
+    {
+
+        foreach (Transform transform in parentObjectToSpawn.transform)
+        {
+            var showDetails = transform.GetComponent<ShowMarbleDetails>();
+            if (!listOfAllMarbles.Contains(showDetails))
+            {
+                listOfAllMarbles.Add(showDetails);
+            }
+        }
+
+        var mDetails = getMarbles.allMarbles.getMarblesList.marbleDetails;
+        for (int i = 0; i < showMarbleDetails.Count; i++)
+        {
+            showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
+            //showMarbleDetails[i].MarbleTextDetails();
+        }
+        
     }
 }

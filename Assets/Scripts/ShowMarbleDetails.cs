@@ -1,12 +1,13 @@
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
 {
+    StoreMarbleDetails storeMarbleDetails;
+
     public MarbleDetail marbleDetailsWithCategoryID;
-    [SerializeField] Texture[] m_Textures;
+    public Texture[] m_Textures;
     
     FetchQRData fetchQRData;
     WWWRequestTC requestTC;
@@ -19,19 +20,38 @@ public class ShowMarbleDetails : MonoBehaviour
     public int categoryID;
     public int tileID;
 
+    public bool IsWishlisted;
+
     [SerializeField] TextMeshProUGUI marbleNameText;
     [SerializeField] TextMeshProUGUI priceText;
 
 
+    void SetWishlist(bool val)
+    {
+        Debug.Log("Before Assign check name: " + marbleName);
+        IsWishlisted = val;
+    }    
     private void Start()
     {
         requestTC = new WWWRequestTC();
         fetchQRData = FindObjectOfType<FetchQRData>(true);
+        storeMarbleDetails = FindObjectOfType<StoreMarbleDetails>(true);
+
+        
+        storeMarbleDetails.OnToggleSet.AddListener((isOn) =>
+        {
+            var marble = storeMarbleDetails.marbleDetails;
+            if (marble.id == marbleDetailsWithCategoryID.id)
+                SetWishlist(isOn);
+        });
 
         fetchQRData.OnDataLoaded.AddListener(() =>
         {
-            if (fetchQRData._marbleQrDatascritable._marbleApiData.marbleDetails.id == marbleDetailsWithCategoryID.id)
+            var marble = fetchQRData._marbleQrDatascritable._marbleApiData.marbleDetails;
+            //Debug.LogError("Data loaded");
+            if (marble.id == marbleDetailsWithCategoryID.id)
             {
+                Debug.LogError("ID match: "+ gameObject.name);
                 texture = fetchQRData.TopMarbleImage.texture;
                 m_Textures = fetchQRData.boxImageTexture;
             }
@@ -49,14 +69,16 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
-        //Debug.Log("gameobject name: "+ this.gameObject.name);
         GetImage(marbleDetailsWithCategoryID.main_img, image);
+        MarbleTextDetails();
+    }
+
+    public void MarbleTextDetails()
+    {
         marbleName = marbleDetailsWithCategoryID.marble_name;
         price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
-
-        //StoreRoomTextures();
     }
 
     public void ShowData()
@@ -67,14 +89,12 @@ public class ShowMarbleDetails : MonoBehaviour
 
     void GetImage(string url, RawImage image)
     {
-        //Debug.Log("Download texture");
         requestTC.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
                 CheckAllImageLoaded();
                 image.texture = rawTex;
-                //Debug.Log("All Image downloaded");
             }
             else
                 Debug.Log("Couldn't fetch image data");
@@ -87,10 +107,8 @@ public class ShowMarbleDetails : MonoBehaviour
         var t_image = MarbleLoader.totalImageCount;
         MarbleLoader.downlaodedImageCount++;
         
-        //Debug.Log("Total Image: "+ t_image + " =====> " + d_image);
         if(MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
-            //Debug.Log("DOWNLOAD IMAGE " + d_image + "   Total Image: " + t_image + " =====> " + d_image);
             GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
             getAllMarbles.OnDataLoaded?.Invoke();
         }
@@ -113,10 +131,5 @@ public class ShowMarbleDetails : MonoBehaviour
     }
     public void StoreRoomTextures()
     {
-        /*GetImageInBG(marbleDetailsWithCategoryID.texture_img[0], m_Textures[0]);
-        GetImageInBG(marbleDetailsWithCategoryID.texture_img[1], m_Textures[1]);
-        GetImageInBG(marbleDetailsWithCategoryID.texture_img[2], m_Textures[2]);
-        GetImageInBG(marbleDetailsWithCategoryID.texture_img[3], m_Textures[3]);
-        GetImageInBG(marbleDetailsWithCategoryID.texture_img[4], m_Textures[4]);*/
     }
 }

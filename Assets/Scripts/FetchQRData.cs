@@ -71,13 +71,13 @@ public class FetchQRData : MonoBehaviour
     }
 
     public void LoadedData(string data) 
-    {
+    {/*
         if(_specificMarbleDetails != null)
         {
             ui.OpenPage(3);
             LoadedMarbleTextData();
             LoadedMarbleImageData();
-        }
+        }*/
     }
     
     // load marble text data after QR scan From Scriptable object
@@ -90,24 +90,23 @@ public class FetchQRData : MonoBehaviour
         MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
     }
 
-    void LoadedMarbleTextData()
+    public void LoadMarbleTextData(string marble_name, string description, string dimension, string material, string finish)
     {
-        MarbleName.text = _specificMarbleDetails.marble_name;
-        MarbleDetails.text = _specificMarbleDetails.description;
-        MarbleDimension.text = _specificMarbleDetails.dimension;
-        MarbleMaterial.text = _specificMarbleDetails.material;
-        MarbleFinish.text = _specificMarbleDetails.finish;
+        MarbleName.text = marble_name;
+        MarbleDetails.text = description;
+        MarbleDimension.text = dimension;
+        MarbleMaterial.text = material;
+        MarbleFinish.text = finish;
     }
 
-    void LoadedMarbleImageData()
+    public void LoadedMarbleImageData(Texture mainTexture, Texture circleImg, Texture[] textures)
     {
         var marbleDet = _specificMarbleDetails;
-        TopMarbleImage.texture = _specificMarbleDetails.mainTexture;
-        CircleImage.texture = _specificMarbleDetails.circleImg;
+        TopMarbleImage.texture = mainTexture;
+        CircleImage.texture = circleImg;
         for (int i = 1; i < marbleDet.textures.Length; i++)
         {
-            BgImages[i].texture = _specificMarbleDetails.textures[i];
-            //GetImage(marbleDet.texture_img[i], BgImages[i - 1]);
+            BgImages[i].texture = textures[i];
         }
     }
 
@@ -148,6 +147,7 @@ public class FetchQRData : MonoBehaviour
             if (isSucess)
             {
                 //Debug.LogError("URL: " + url);
+                TextureScale.Bilinear(rawTex, 200, 200);
                 image.texture = rawTex;
                 downlaodedImageCount++;
 

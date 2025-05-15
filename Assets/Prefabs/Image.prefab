@@ -227,6 +227,7 @@ GameObject:
   - component: {fileID: 9049197764870096290}
   - component: {fileID: 3159251565347073753}
   - component: {fileID: 3649418030422977453}
+  - component: {fileID: 6677539353257281673}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -360,7 +361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2db6d2164069f4d8a50a3d174c3218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Textures: []
   marbleDetailsWithCategoryID:
     id: 0
     marble_name: 
@@ -373,14 +373,30 @@ MonoBehaviour:
     category_id: 0
     main_img: 
     texture_img: []
+  m_Textures: []
   image: {fileID: 5744069140717230041}
   texture: {fileID: 0}
-  tileName: 
+  marbleName: 
   price: 
   categoryID: 0
   tileID: 0
+  IsWishlisted: 0
   marbleNameText: {fileID: 4771615322053828153}
   priceText: {fileID: 7572605660543052177}
+--- !u!114 &6677539353257281673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5736913497556586559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 833052a91072bd04ca4ee81741a2a4f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detailsButton: {fileID: 0}
+  wishlistToggle: {fileID: 0}
 --- !u!1 &8491608137931170807
 GameObject:
   m_ObjectHideFlags: 0

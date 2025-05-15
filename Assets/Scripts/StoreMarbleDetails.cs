@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -32,13 +33,15 @@ public class StoreMarbleDetails : MonoBehaviour
     [SerializeField] Toggle toggle;
     [SerializeField] RawImage topMarbleData;
 
-    [SerializeField] private SpecificMarbleDetails marbleDetails;
+    public SpecificMarbleDetails marbleDetails;
 
     public List<SpecificMarbleDetails> list;
     public List<SpecificMarbleDetails> loadedMarbles;
     [HideInInspector] public List<MarbleDetails> costCalculatorList;
 
     private bool ignoreToggleEvent = false;
+
+    public UnityEvent<bool> OnToggleSet;
 
     #endregion
     private void Start()
@@ -48,7 +51,7 @@ public class StoreMarbleDetails : MonoBehaviour
         //SelectionTileDetails.OnMarbleDeselected.AddListener(RemoveMarble);
         fetchQRData.OnDataLoaded.AddListener(() =>
         {
-            ResetToggle();
+            //ResetToggle();
             ShowMarbleData();
         });
     }
@@ -72,77 +75,21 @@ public class StoreMarbleDetails : MonoBehaviour
         marbleDetails.circleImg = fetchQRData.CircleImage.texture;
         marbleDetails.textures = fetchQRData.boxImageTexture;
 
-        if (!AlreadyExists(marbleDetails.id, loadedMarbles))
-        {
-            loadedMarbles.Add(StoreInCache(marbleDetails, false));
-        }
 
-        SpecificMarbleDetails loadedMarble = loadedMarbles.Find(m => m.marble_name == marbleDetails.marble_name);
-
-        if (loadedMarble != null)
-        {
-            ignoreToggleEvent = true;
-            toggle.isOn = loadedMarble.isSelected;
-            ignoreToggleEvent = false;
-        }
-
-       /* Debug.Log("Present Details");
-        var data = _marbleQrDatascritable._marbleApiData.marbleDetails;
-        marbleDetails.marble_name = data.marble_name;
-        marbleDetails.description = data.description;
-        marbleDetails.dimension = data.dimension;
-        marbleDetails.material = data.material;
-        marbleDetails.finish = data.finish;
-        marbleDetails.price = data.price;
-
-        marbleDetails.availability = data.availability;
-        marbleDetails.category_id = data.category_id;
-        marbleDetails.id = data.id;
-
-        marbleDetails.mainTexture = fetchQRData.TopMarbleImage.texture;
-        marbleDetails.circleImg = fetchQRData.CircleImage.texture;
-        marbleDetails.textures = fetchQRData.boxImageTexture;
-
-        if (AlreadyExists(marbleDetails.marble_name, list))
+        if (AlreadyExists(marbleDetails.id, list))
         {
             ignoreToggleEvent = true;
             toggle.isOn = true;
             ignoreToggleEvent = false;
         }
 
+        /*
         SpecificMarbleDetails newDetails = StoreInCache(marbleDetails, toggle.isOn);
         if (!AlreadyExists(newDetails.marble_name, loadedMarbles))
         {
             Debug.LogError("Add new marble into loaded list");
             loadedMarbles.Add(newDetails);
         }*/
-    }
-
-    public void ShowLoadedMarbleData(string id)
-    {
-        foreach (var data in loadedMarbles)
-        {
-            if (data.id.ToString() == id)
-            {
-                StoreDataInSriptable(data);
-                marbleDetails = data;
-                Debug.Log("Show loaded marbles");
-                fetchQRData._specificMarbleDetails = data;
-
-                fetchQRData.LoadedData(id);
-
-                if (AlreadyExists(fetchQRData._specificMarbleDetails.id, list))
-                {
-                    toggle.isOn = true;
-                }
-                else
-                {
-                    ignoreToggleEvent = true;
-                    toggle.isOn = false;
-                    ignoreToggleEvent = false;
-                }
-            }
-        }
     }
 
     public void StoreDataInSriptable(SpecificMarbleDetails s)
@@ -179,24 +126,24 @@ public class StoreMarbleDetails : MonoBehaviour
         toggle.onValueChanged.AddListener((isOn) =>
         {
             if (ignoreToggleEvent) return;
-            //StoreDataInSriptable()
-            int currentID = marbleDetails.id;
-            SpecificMarbleDetails loadedMarble = loadedMarbles.Find(m => m.id == currentID);
 
-            if (loadedMarble != null)
+            Debug.Log("Value chnage to: " + isOn);
+            OnToggleSet?.Invoke(isOn);
+            int currentID = marbleDetails.id;
+
+            Debug.Log("Marble Found: " + isOn);
+            marbleDetails.isSelected = isOn;
+
+            if (isOn && !AlreadyExists(currentID, list))
             {
-                Debug.Log("Marble Found");
-                loadedMarble.isSelected = isOn;
-                if (isOn && !AlreadyExists(currentID, list))
-                {
-                    Debug.Log("It should be addded");
-                    list.Add(loadedMarble);
-                }
-                else if (!isOn && AlreadyExists(currentID, list))
-                {
-                    Debug.Log("It should be removed");
-                    RemoveSelectedMarble(currentID);
-                }
+                Debug.Log("It should be addded");
+                SpecificMarbleDetails newDetail = StoreInCache(marbleDetails, isOn);
+                list.Add(newDetail);
+            }
+            else if (!isOn && AlreadyExists(currentID, list))
+            {
+                Debug.Log("It should be removed");
+                RemoveSelectedMarble(currentID);
             }
         });
 
@@ -224,7 +171,7 @@ public class StoreMarbleDetails : MonoBehaviour
         };
     }
 
-    bool AlreadyExists(int id, List<SpecificMarbleDetails> list)
+    public bool AlreadyExists(int id, List<SpecificMarbleDetails> list)
     {
         foreach (SpecificMarbleDetails m in list)
         {
@@ -233,14 +180,7 @@ public class StoreMarbleDetails : MonoBehaviour
         }
         return false;
     }
-    public void StoreSelectedMarble(SpecificMarbleDetails specificMarbleDetails)
-    {
-        if (!AlreadyExists(specificMarbleDetails.id, list))
-        {
-            list.Add(specificMarbleDetails);
-        }
-        //list.Add(specificMarbleDetails);
-    }
+
     public void RemoveSelectedMarble(string name)
     {
         /*foreach (SpecificMarbleDetails m in list)
@@ -267,12 +207,38 @@ public class StoreMarbleDetails : MonoBehaviour
     }
     public void RemoveMarble(int index)
     {
-        list.Remove(list[index]);  
+        //list.Remove(list[index]);  
     }
     public void ResetToggle()
     {
         ignoreToggleEvent = true;
         toggle.isOn = false;
         ignoreToggleEvent = false;
+    }
+
+    public void SetToggleValue(bool val)
+    {
+        Debug.Log("check toggle status: "+ val);
+        toggle.isOn = val;
+    }
+
+    public void OnShowMarbleDisable()
+    {
+        ignoreToggleEvent = true;
+        SetToggleValue(false);
+        marbleDetails.isSelected = false;
+        ignoreToggleEvent = false;
+    }
+
+    public void OnShowMarbleDisable(bool value)
+    {
+        ignoreToggleEvent = true;
+        SetToggleValue(value);
+        ignoreToggleEvent = false;
+    }
+
+    public void EmptyMarbleDetails()
+    {
+        marbleDetails = null;
     }
 }

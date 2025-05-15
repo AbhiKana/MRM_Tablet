@@ -113,7 +113,7 @@ public class WWWRequestTC
             }
             else
             {
-                _callback.Invoke(www.downloadHandler.text, ((DownloadHandlerTexture)www.downloadHandler).texture, true);
+                _callback.Invoke(www.downloadHandler.text, DownloadHandlerTexture.GetContent(www), true);
             }
         }
     }
