@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using AirFishLab.ScrollingList;
 using UnityEngine;
 
 public class ListOfMarblesInventory : MonoBehaviour
@@ -18,6 +17,7 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     public void GetSelectedMarbleList()
     {
+        Debug.Log("Instantiate Marbles");
         var noof_Marbles = marbleLoader.listOfAllMarbles;
         for (int i = 0; i < noof_Marbles.Count; i++)
         {

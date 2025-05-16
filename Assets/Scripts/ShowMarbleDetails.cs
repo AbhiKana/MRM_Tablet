@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
@@ -8,7 +9,7 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public MarbleDetail marbleDetailsWithCategoryID;
     public Texture[] m_Textures;
-    
+
     FetchQRData fetchQRData;
     WWWRequestTC requestTC;
     public RawImage image;
@@ -25,19 +26,20 @@ public class ShowMarbleDetails : MonoBehaviour
     [SerializeField] TextMeshProUGUI marbleNameText;
     [SerializeField] TextMeshProUGUI priceText;
 
+    public UnityEvent OnDataLoadOnce;
 
     void SetWishlist(bool val)
     {
         Debug.Log("Before Assign check name: " + marbleName);
         IsWishlisted = val;
-    }    
+    }
     private void Start()
     {
         requestTC = new WWWRequestTC();
         fetchQRData = FindObjectOfType<FetchQRData>(true);
         storeMarbleDetails = FindObjectOfType<StoreMarbleDetails>(true);
 
-        
+
         storeMarbleDetails.OnToggleSet.AddListener((isOn) =>
         {
             var marble = storeMarbleDetails.marbleDetails;
@@ -48,10 +50,8 @@ public class ShowMarbleDetails : MonoBehaviour
         fetchQRData.OnDataLoaded.AddListener(() =>
         {
             var marble = fetchQRData._marbleQrDatascritable._marbleApiData.marbleDetails;
-            //Debug.LogError("Data loaded");
             if (marble.id == marbleDetailsWithCategoryID.id)
             {
-                Debug.LogError("ID match: "+ gameObject.name);
                 texture = fetchQRData.TopMarbleImage.texture;
                 m_Textures = fetchQRData.boxImageTexture;
             }
@@ -69,6 +69,7 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
+        //Debug.Log("Set Image");
         GetImage(marbleDetailsWithCategoryID.main_img, image);
         MarbleTextDetails();
     }
@@ -84,7 +85,7 @@ public class ShowMarbleDetails : MonoBehaviour
     public void ShowData()
     {
         marbleNameText.text = marbleName;
-        priceText.text = price +" sq/ft";
+        priceText.text = price + " sq/ft";
     }
 
     void GetImage(string url, RawImage image)
@@ -106,30 +107,42 @@ public class ShowMarbleDetails : MonoBehaviour
         var d_image = MarbleLoader.downlaodedImageCount;
         var t_image = MarbleLoader.totalImageCount;
         MarbleLoader.downlaodedImageCount++;
-        
-        if(MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
+
+        if (MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
             GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
             getAllMarbles.OnDataLoaded?.Invoke();
+
+            ShowMarbleDetails instance = new ShowMarbleDetails();
+            instance.OnDataLoadOnce?.Invoke();
+            Debug.LogError("Loaded once");
         }
     }
 
-    void GetImageInBG(string url, Texture image)
+    public void StoreRoomTextures(SpecificMarbleDetails specificMarbleDetails)
     {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
-        {
-            if (isSucess)
-            {
-                /*Texture texture = rawTex;
-                image =texture;*/
-                Debug.Log("Download texture");
-                image = rawTex;
-            }
-            else
-                Debug.Log("Couldn't fetch image data");
-        });
+        Debug.Log("Current Object name: " + gameObject.name);
+        tileID = specificMarbleDetails.id;
+        marbleName = specificMarbleDetails.marble_name;
+        price = specificMarbleDetails.price;
+        categoryID = specificMarbleDetails.category_id;
+        texture = specificMarbleDetails.mainTexture;
+        m_Textures = specificMarbleDetails.textures;
+        IsWishlisted = specificMarbleDetails.isSelected;
     }
-    public void StoreRoomTextures()
+
+    public SpecificMarbleDetails DataToSend()
     {
+        Debug.Log("Data send to store " + gameObject.name);
+        return new SpecificMarbleDetails
+        {
+            id = tileID,
+            marble_name = marbleName,
+            price = price,
+            category_id = categoryID,
+            mainTexture = texture,
+            textures = m_Textures,
+            isSelected = IsWishlisted
+        };
     }
 }

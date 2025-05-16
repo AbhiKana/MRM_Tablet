@@ -33,7 +33,7 @@ public class TileDetailsList : MonoBehaviour
             mRM_Details.MarbleMaterial.text = mrmDet.material;
             mRM_Details.MarbleFinish.text = mrmDet.finish;
 
-            mRM_Details.CircleImage.texture = mrmDet.circleImg;
+            mRM_Details.CircleImage.texture = mrmDet.textures[0];
             mRM_Details.TopMarbleImage.texture = mrmDet.mainTexture;
 
             mRM_Details.isSelected.isOn = mrmDet.isSelected;

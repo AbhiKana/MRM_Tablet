@@ -52,10 +52,12 @@ public class MarbleItemController : MonoBehaviour
     {
         if (showMarbleDetails.IsWishlisted && wishlistToggle != null)
         {
+            Debug.Log("Wishlist value: "+ showMarbleDetails.IsWishlisted);
             wishlistToggle.isOn = true;
         }
         else
         {
+            Debug.Log("Wishlist value in else : " + showMarbleDetails.IsWishlisted);
             if (wishlistToggle != null)
                 wishlistToggle.isOn = false;
         }
@@ -74,7 +76,7 @@ public class MarbleItemController : MonoBehaviour
         {
             Debug.LogError("Load Second Time");
             MarbleDetail current_detail = AssignCurrentMarbleDetails();
-
+            Debug.LogError("Check marble name: "+ current_detail.marble_name);
             fetchQrData.LoadMarbleTextData(current_detail.marble_name, current_detail.description, current_detail.dimension, current_detail.material, current_detail.finish);
             fetchQrData.LoadedMarbleImageData(showMarbleDetails.texture, showMarbleDetails.m_Textures[0], showMarbleDetails.m_Textures);
             getMRMDetails.storeMarbleDetails.SetToggleValue(showMarbleDetails.IsWishlisted);
@@ -114,8 +116,8 @@ public class MarbleItemController : MonoBehaviour
             current_marbleDetails.price = current_detail.price;
             current_marbleDetails.mainTexture = showMarbleDetails.texture;
             current_marbleDetails.textures = showMarbleDetails.m_Textures;
-            Debug.Log("Before wishlist check: " + showMarbleDetails.marbleName);
             current_marbleDetails.isSelected = showMarbleDetails.IsWishlisted;
+            Debug.Log("Before wishlist check: " + showMarbleDetails.IsWishlisted);
             return current_detail;
         }
         return null;
@@ -143,6 +145,8 @@ public class MarbleItemController : MonoBehaviour
         var detailViewer = getMRMDetails.storeMarbleDetails;
 
         specificMarbleDetails.id = marble.id;
+        specificMarbleDetails.category_id= marble.category_id;
+        specificMarbleDetails.availability = marble.availability;
         specificMarbleDetails.marble_name = marble.marble_name;
         specificMarbleDetails.description = marble.description;
         specificMarbleDetails.dimension = marble.dimension;
@@ -150,7 +154,7 @@ public class MarbleItemController : MonoBehaviour
         specificMarbleDetails.finish = marble.finish;
         specificMarbleDetails.price = marble.price;
         specificMarbleDetails.mainTexture = showMarbleDetails.image.texture;
-
+        specificMarbleDetails.isSelected = showMarbleDetails.IsWishlisted;
 
         if (!detailViewer.AlreadyExists(marble.id, detailViewer.list))
         {
