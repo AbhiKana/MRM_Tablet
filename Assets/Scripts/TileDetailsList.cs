@@ -14,6 +14,11 @@ public class TileDetailsList : MonoBehaviour
         {
             var mrmDet = storeMarbleDetails.list[i];
             AssignData_OnLoad(mrmDet);
+            
+            //if(mrmDet.textures == null)
+            //{
+            //    mrmDet.
+            //}
         }
     }
 
@@ -32,16 +37,25 @@ public class TileDetailsList : MonoBehaviour
             mRM_Details.MarbleDimension.text = mrmDet.dimension;
             mRM_Details.MarbleMaterial.text = mrmDet.material;
             mRM_Details.MarbleFinish.text = mrmDet.finish;
-
-            mRM_Details.CircleImage.texture = mrmDet.textures[0];
-            mRM_Details.TopMarbleImage.texture = mrmDet.mainTexture;
-
             mRM_Details.isSelected.isOn = mrmDet.isSelected;
 
-            for (int j = 0; j < mRM_Details.BgImages.Length; j++)
+            if (mrmDet.mainTexture != null)
+                mRM_Details.TopMarbleImage.texture = mrmDet.mainTexture;
+
+            /*if(mrmDet.textures.Length < 0)
             {
-                mRM_Details.BgImages[j].texture = mrmDet.textures[j];
-                //Debug.Log("Texture name: "+mRM_Details.BgImages[j].texture.name);
+                mrmDet.textures = new Texture2D[5];
+            }*/
+            if (mrmDet.textures[0] != null)
+                mRM_Details.CircleImage.texture = mrmDet.textures[0];
+
+            if (mrmDet.textures != null)
+            {
+                for (int j = 0; j < mRM_Details.BgImages.Length; j++)
+                {
+                    mRM_Details.BgImages[j].texture = mrmDet.textures[j];
+                    //Debug.Log("Texture name: "+mRM_Details.BgImages[j].texture.name);
+                }
             }
         }
     }

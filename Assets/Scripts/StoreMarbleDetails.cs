@@ -58,11 +58,10 @@ public class StoreMarbleDetails : MonoBehaviour
     public void ShowMarbleData()
     {
         var data = _marbleQrDatascritable._marbleApiData.marbleDetails;
-        
-        Debug.Log("Present Details: "+ data.marble_name);
+
+        Debug.Log("Present Details: " + data.marble_name);
 
         marbleDetails.marble_name = data.marble_name;
-        Debug.Log("Current Details: "+ marbleDetails);
         marbleDetails.description = data.description;
         marbleDetails.dimension = data.dimension;
         marbleDetails.material = data.material;
@@ -80,12 +79,62 @@ public class StoreMarbleDetails : MonoBehaviour
 
         if (AlreadyExists(marbleDetails.id, list))
         {
-            ignoreToggleEvent = true;
-            toggle.isOn = true;
-            marbleDetails.isSelected = true;
-            ignoreToggleEvent = false;
+            SetWishList();
+            StoreTexturesInList(marbleDetails.id);
         }
     }
+
+    private void SetWishList()
+    {
+        ignoreToggleEvent = true;
+        toggle.isOn = true;
+        marbleDetails.isSelected = true;
+        ignoreToggleEvent = false;
+    }
+
+    public void StoreTexturesInList(int id)
+    {
+        foreach (var item in list)
+        {
+            if (item.id == id)
+            {
+                Debug.Log("Load Image");
+                item.textures = null;
+                
+                if (item.mainTexture == null)
+                    item.mainTexture = marbleDetails.mainTexture;
+
+                if (item.circleImg == null)
+                    item.circleImg = marbleDetails.circleImg;
+
+                if (item.textures == null)
+                    item.textures = marbleDetails.textures;
+            }
+        }
+        //if(list)
+    }
+
+    public void StoreTexturesInList(int id, ShowMarbleDetails showMarble)
+    {
+        foreach (var item in list)
+        {
+            if (item.id == id)
+            {
+                Debug.Log("Load Image");
+                item.textures = null;
+
+                if (item.mainTexture == null)
+                    item.mainTexture = showMarble.image.texture;
+
+                if (item.circleImg == null)
+                    item.circleImg = showMarble.m_Textures[0];
+
+                if (item.textures == null)
+                    item.textures = showMarble.m_Textures;
+            }
+        }
+    }
+
 
     public void StoreDataInSriptable(SpecificMarbleDetails s)
     {
@@ -98,26 +147,6 @@ public class StoreMarbleDetails : MonoBehaviour
     }
     public void OnToggleClick()
     {
-        /*toggle.onValueChanged.AddListener((isOn) => 
-        {
-            if(ignoreToggleEvent) return;
-
-            string currentName = marbleDetails.marble_name;
-            if (isOn == true && !AlreadyExists(currentName, list))
-            {
-                SpecificMarbleDetails newDetail = StoreInCache(marbleDetails, isOn);
-                StoreSelectedMarble(newDetail);
-            }
-            else
-            {
-                Debug.Log("Remove from list");
-                if (AlreadyExists(currentName, list))
-                {
-                    //RemoveSelectedMarble(currentName);
-                }
-            }
-        });*/
-
         toggle.onValueChanged.AddListener((isOn) =>
         {
             if (ignoreToggleEvent) return;
@@ -178,15 +207,7 @@ public class StoreMarbleDetails : MonoBehaviour
 
     public void RemoveSelectedMarble(string name)
     {
-        /*foreach (SpecificMarbleDetails m in list)
-        {
-            if (m.marble_name == name)
-            {
-                list.Remove(m);
-                break;
-            }
-        }*/
-        Debug.Log("Marble to be removed"); 
+        Debug.Log("Marble to be removed");
         list.RemoveAll(m => m.marble_name == name);
     }
     public void RemoveSelectedMarble(int id)
@@ -213,7 +234,7 @@ public class StoreMarbleDetails : MonoBehaviour
 
     public void SetToggleValue(bool val)
     {
-        Debug.Log("check toggle status: "+ val);
+        Debug.Log("check toggle status: " + val);
         toggle.isOn = val;
     }
 
@@ -246,19 +267,6 @@ public class StoreMarbleDetails : MonoBehaviour
 
         marbleDetails.mainTexture = null;
         marbleDetails.circleImg = null;
-
-        // Only reset the texture array content, not the array itself
-        /*if (marbleDetails.textures == null)
-        {
-            marbleDetails.textures = new Texture[4]; // Adjust size as needed
-        }
-        else
-        {
-            for (int i = 0; i < marbleDetails.textures.Length; i++)
-            {
-                marbleDetails.textures[i] = null;
-            }
-        }*/
 
         marbleDetails.availability = 0;
         marbleDetails.category_id = 0;

@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
 {
-    StoreMarbleDetails storeMarbleDetails;
+    public StoreMarbleDetails storeMarbleDetails;
+    [HideInInspector]public SyncMarbleDetails syncMarbleDetails;
 
     public MarbleDetail marbleDetailsWithCategoryID;
     public Texture[] m_Textures;
+
 
     FetchQRData fetchQRData;
     WWWRequestTC requestTC;
@@ -28,21 +30,19 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public UnityEvent OnDataLoadOnce;
 
-    void SetWishlist(bool val)
-    {
-        Debug.Log("Before Assign check name: " + marbleName);
-        IsWishlisted = val;
-    }
     private void Start()
     {
         requestTC = new WWWRequestTC();
         fetchQRData = FindObjectOfType<FetchQRData>(true);
         storeMarbleDetails = FindObjectOfType<StoreMarbleDetails>(true);
 
+        if (syncMarbleDetails == null)
+            syncMarbleDetails = FindObjectOfType<SyncMarbleDetails>();
 
         storeMarbleDetails.OnToggleSet.AddListener((isOn) =>
         {
             var marble = storeMarbleDetails.marbleDetails;
+            Debug.Log("OnToggle Click: "+ marble.id + " " + marbleDetailsWithCategoryID.id);
             if (marble.id == marbleDetailsWithCategoryID.id)
                 SetWishlist(isOn);
         });
@@ -56,6 +56,12 @@ public class ShowMarbleDetails : MonoBehaviour
                 m_Textures = fetchQRData.boxImageTexture;
             }
         });
+    }
+    void SetWishlist(bool val)
+    {
+        Debug.Log("Before Assign check name: " + gameObject.name);
+        IsWishlisted = val;
+        syncMarbleDetails.SyncMarbleData(this, syncMarbleDetails.gridMarbles);
     }
     public void SetImage(Texture t)
     {
@@ -80,6 +86,8 @@ public class ShowMarbleDetails : MonoBehaviour
         price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
+        
+        gameObject.name = marbleName + 1;
     }
 
     public void ShowData()
@@ -95,12 +103,39 @@ public class ShowMarbleDetails : MonoBehaviour
             if (isSucess)
             {
                 CheckAllImageLoaded();
+                TextureScale.Bilinear(rawTex, 200, 200);
                 image.texture = rawTex;
             }
             else
                 Debug.Log("Couldn't fetch image data");
         });
     }
+
+    /*public void DownloadImageInBG()
+    {
+        if (m_Textures == null)
+            m_Textures = new Texture[5];
+
+        for(int i=0; i< m_Textures.Length; i++)
+        {
+            GetDetailImage(marbleDetailsWithCategoryID.texture_img[i], m_Textures[i]);
+        }
+    }
+
+    void GetDetailImage(string url, Texture image)
+    {
+        Debug.Log("BG Image");
+        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        {
+            if (isSucess)
+            {
+                Debug.Log("BG Image 1");
+                image = rawTex;
+            }
+            else
+                Debug.Log("Couldn't fetch image data");
+        });
+    }*/
 
     private static void CheckAllImageLoaded()
     {
@@ -111,17 +146,16 @@ public class ShowMarbleDetails : MonoBehaviour
         if (MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
             GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
+
             getAllMarbles.OnDataLoaded?.Invoke();
 
             ShowMarbleDetails instance = new ShowMarbleDetails();
             instance.OnDataLoadOnce?.Invoke();
-            Debug.LogError("Loaded once");
         }
     }
 
     public void StoreRoomTextures(SpecificMarbleDetails specificMarbleDetails)
     {
-        Debug.Log("Current Object name: " + gameObject.name);
         tileID = specificMarbleDetails.id;
         marbleName = specificMarbleDetails.marble_name;
         price = specificMarbleDetails.price;
@@ -129,11 +163,12 @@ public class ShowMarbleDetails : MonoBehaviour
         texture = specificMarbleDetails.mainTexture;
         m_Textures = specificMarbleDetails.textures;
         IsWishlisted = specificMarbleDetails.isSelected;
+        //Debug.Log("Current Object name: " + gameObject.name + " " + IsWishlisted);
     }
 
     public SpecificMarbleDetails DataToSend()
     {
-        Debug.Log("Data send to store " + gameObject.name);
+        //Debug.Log("Data send to store " + gameObject.name);
         return new SpecificMarbleDetails
         {
             id = tileID,

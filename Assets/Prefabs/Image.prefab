@@ -228,6 +228,7 @@ GameObject:
   - component: {fileID: 3159251565347073753}
   - component: {fileID: 3649418030422977453}
   - component: {fileID: 6677539353257281673}
+  - component: {fileID: 6894443852549321143}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -361,6 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2db6d2164069f4d8a50a3d174c3218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMarbleDetails: {fileID: 0}
   marbleDetailsWithCategoryID:
     id: 0
     marble_name: 
@@ -383,6 +385,9 @@ MonoBehaviour:
   IsWishlisted: 0
   marbleNameText: {fileID: 4771615322053828153}
   priceText: {fileID: 7572605660543052177}
+  OnDataLoadOnce:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &6677539353257281673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,8 +400,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833052a91072bd04ca4ee81741a2a4f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detailsButton: {fileID: 0}
+  viewButton: {fileID: 0}
   wishlistToggle: {fileID: 0}
+--- !u!114 &6894443852549321143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5736913497556586559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94e3d0281f345d4aac06513201f10ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8491608137931170807
 GameObject:
   m_ObjectHideFlags: 0

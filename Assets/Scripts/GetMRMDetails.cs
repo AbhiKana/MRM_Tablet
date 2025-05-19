@@ -1,5 +1,6 @@
 using AirFishLab.ScrollingList;
 using TMPro;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,33 +32,11 @@ public class GetMRMDetails : MonoBehaviour
     public void ViewMarbleDetails(string id)
     {
         fetchQRData.LoadData(id);
+    }
 
-        //if (currentSelectedMarble.texture == null)
-        //{
-        //    //string id = currentSelectedMarble.tileID.ToString();
-        //    fetchQRData.LoadData(id);
-        //}
-        
-        /*if (storeMarbleDetails.loadedMarbles.Count > 0)
-        {
-            foreach (var marble in storeMarbleDetails.loadedMarbles)
-            {
-                //Debug.Log("Curr ID: " + id + " =>>>> " + marble.id.ToString());
-                if (marble.id.ToString() == id)
-                {
-                    Debug.Log("Found in loaded marbles");
-                    storeMarbleDetails.ShowLoadedMarbleData(id);
-                    return;
-                }
-            }
-            Debug.Log("Not Found in loaded marbles");
-            fetchQRData.LoadData(id);
-        }
-        else
-        {
-            Debug.Log("Not Fount for the first time0");
-            fetchQRData.LoadData(id);
-        }*/
+    public void LoadMarbleDetails(string id)
+    {
+        //LoadMarbleImageDataBG();
     }
 
     public void GetCurrentSelectedMarble()

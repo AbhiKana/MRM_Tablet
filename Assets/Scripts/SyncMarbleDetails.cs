@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SyncMarbleDetails : MonoBehaviour
@@ -6,8 +5,8 @@ public class SyncMarbleDetails : MonoBehaviour
     [SerializeField] GetAllMarbles getAllMarbles;
     [SerializeField] FetchQRData fetchQRData;
 
-    [SerializeField] private ShowMarbleDetails[] marqueeMarbles;
-    [SerializeField] private ShowMarbleDetails[] gridMarbles;
+    public ShowMarbleDetails[] marqueeMarbles;
+    public ShowMarbleDetails[] gridMarbles;
 
     [SerializeField] private GameObject gridMarblesParent;
     [SerializeField] private GameObject marqueeMarblesParent;
@@ -64,31 +63,15 @@ public class SyncMarbleDetails : MonoBehaviour
             }
         });
     }
-
-    /*private void SyncMarbleData(ShowMarbleDetails source, ShowMarbleDetails target)
+    public void SyncMarbleData(ShowMarbleDetails source, ShowMarbleDetails[] marbles)
     {
-        // If target is missing details, copy from source
-        if (target.texture == null)
-            target.texture = source.texture;
+        Debug.Log("Iswishlist to be on: "+ source.ToString());
 
-        if (target.m_Textures == null || target.m_Textures.Length == 0)
-            target.m_Textures = source.m_Textures;
-
-        if (string.IsNullOrEmpty(target.marbleName))
-            target.marbleName = source.marbleName;
-
-        if (string.IsNullOrEmpty(target.price))
-            target.price = source.price;
-
-        if (target.tileID == 0)
-            target.tileID = source.tileID;
-
-        if (target.categoryID == 0)
-            target.categoryID = source.categoryID;
-
-        if (!target.IsWishlisted)
-            target.IsWishlisted = source.IsWishlisted;
-
+        foreach (ShowMarbleDetails show in marbles)
+        {
+            if(show.tileID==  source.tileID)
+                show.IsWishlisted = source.IsWishlisted;
+        }
         Debug.Log($"Marble {source.marbleName} synced between Grid and Marquee");
-    }*/
+    }
 }

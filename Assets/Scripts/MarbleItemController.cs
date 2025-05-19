@@ -7,6 +7,8 @@ public class MarbleItemController : MonoBehaviour
     [SerializeField] private Toggle wishlistToggle;
     
     private ShowMarbleDetails showMarbleDetails;
+    LoadImageInBG loadImageInBG;
+
     UI_Manager manager;
     GetMRMDetails getMRMDetails;
     FetchQRData fetchQrData;
@@ -22,8 +24,13 @@ public class MarbleItemController : MonoBehaviour
             viewButton.onClick.AddListener(OnDetailsButtonClicked);
 
         if (wishlistToggle != null)
-            wishlistToggle.onValueChanged.AddListener(OnWishlistToggled);
-        
+        {
+            wishlistToggle.onValueChanged.AddListener((isOn) =>
+            {
+                OnWishlistToggled(isOn);
+                showMarbleDetails.syncMarbleDetails.SyncMarbleData(showMarbleDetails, showMarbleDetails.syncMarbleDetails.marqueeMarbles);
+            });
+        }
 
         fetchQrData.OnDataLoaded.AddListener(() =>
         {
@@ -31,7 +38,6 @@ public class MarbleItemController : MonoBehaviour
             {
                 getMRMDetails.storeMarbleDetails.OnShowMarbleDisable(showMarbleDetails.IsWishlisted);
             }
-            //getMRMDetails.storeMarbleDetails.StoreSelectedMarble();
         });
     }
     private void GetObjectComponent()
@@ -39,10 +45,13 @@ public class MarbleItemController : MonoBehaviour
         if(showMarbleDetails == null) 
             showMarbleDetails = GetComponent<ShowMarbleDetails>(); 
         
+        if(loadImageInBG == null)
+            loadImageInBG = GetComponent<LoadImageInBG>();
+        
         if (manager == null) 
             manager = FindAnyObjectByType<UI_Manager>();
 
-        if(getMRMDetails == null) 
+        if(getMRMDetails == null)
             getMRMDetails = FindObjectOfType<GetMRMDetails>();
 
         if(fetchQrData == null) 
@@ -99,7 +108,6 @@ public class MarbleItemController : MonoBehaviour
             RemoveFromWishlist();
         }
     }
-
     private MarbleDetail AssignCurrentMarbleDetails()
     {
         var current_detail = showMarbleDetails.marbleDetailsWithCategoryID;
@@ -122,13 +130,12 @@ public class MarbleItemController : MonoBehaviour
         }
         return null;
     }
-
-    // Add to wishlist logic
     private void AddToWishlist()
     {
         showMarbleDetails.IsWishlisted = true;
         if (showMarbleDetails.texture == null)
         {
+            loadImageInBG.LoadMarbleImageData();
             AddMarbleIntoList();
         }
         Debug.Log(showMarbleDetails.marbleName + " added to wishlist.");
@@ -137,14 +144,24 @@ public class MarbleItemController : MonoBehaviour
         m.id = showMarbleDetails.tileID;
         m.m_name = showMarbleDetails.marbleName;
     }
+    private void RemoveFromWishlist()
+    {
+        showMarbleDetails.IsWishlisted = false;
+        getMRMDetails.storeMarbleDetails.RemoveSelectedMarble(showMarbleDetails.tileID);
 
+        Debug.Log(showMarbleDetails.marbleName + " removed from wishlist.");
+       // WishlistManager.Instance.RemoveMarble(marbleName);
+    }
     private void AddMarbleIntoList()
     {
+        //LoadMarbleImageData();
         SpecificMarbleDetails specificMarbleDetails = new SpecificMarbleDetails();
         var marble = showMarbleDetails.marbleDetailsWithCategoryID;
         var detailViewer = getMRMDetails.storeMarbleDetails;
 
         specificMarbleDetails.id = marble.id;
+
+        //getMRMDetails.LoadMarbleDetails(marble.id.ToString());
         specificMarbleDetails.category_id= marble.category_id;
         specificMarbleDetails.availability = marble.availability;
         specificMarbleDetails.marble_name = marble.marble_name;
@@ -156,18 +173,43 @@ public class MarbleItemController : MonoBehaviour
         specificMarbleDetails.mainTexture = showMarbleDetails.image.texture;
         specificMarbleDetails.isSelected = showMarbleDetails.IsWishlisted;
 
+        if (specificMarbleDetails.textures == null)
+            specificMarbleDetails.textures = new Texture[5];
+
         if (!detailViewer.AlreadyExists(marble.id, detailViewer.list))
         {
             detailViewer.list.Add(specificMarbleDetails);
         }
     }
 
-    private void RemoveFromWishlist()
+    /*void LoadMarbleImageData()
     {
-        showMarbleDetails.IsWishlisted = false;
-        getMRMDetails.storeMarbleDetails.RemoveSelectedMarble(showMarbleDetails.tileID);
+        var marbleDet = showMarbleDetails.marbleDetailsWithCategoryID;
+        if (marbleDet.texture_img.Count > 0)
+        {
+            GetImage(marbleDet.texture_img[0], 0); // Using Texture instead of RawImage
 
-        Debug.Log(showMarbleDetails.marbleName + " removed from wishlist.");
-       // WishlistManager.Instance.RemoveMarble(marbleName);
+            for (int i = 0; i < marbleDet.texture_img.Count; i++)
+            {
+                GetImage(marbleDet.texture_img[i], i);
+            }
+        }
     }
+    WWWRequestTC requestTC;
+
+    void GetImage(string url, int textureIndex)
+    {
+        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        {
+            if (isSucess)
+            {
+                TextureScale.Bilinear(rawTex, 200, 200);
+                showMarbleDetails.m_Textures[textureIndex] = rawTex;
+            }
+            else
+            {
+                Debug.Log("<color=red>Couldn't fetch image data</color>");
+            }
+        });
+    }*/
 }

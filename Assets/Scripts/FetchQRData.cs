@@ -5,18 +5,21 @@ using UnityEngine.UI;
 
 public class FetchQRData : MonoBehaviour
 {
+    [SerializeField] UI_Manager ui;
     public MarbleQRDATA _marbleQrDatascritable;
     public SpecificMarbleDetails _specificMarbleDetails;
+    
     // Text details info
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
     public RawImage CircleImage, TopMarbleImage;
-    [SerializeField] UI_Manager ui;
     
     [SerializeField] string fetchedData;
     
     public RawImage[] BgImages;    
     public Texture[] boxImageTexture;
+
+    //public bool IsDetailView = false;
 
     WWWRequestTC requestTC;
 
@@ -31,6 +34,7 @@ public class FetchQRData : MonoBehaviour
         QRScanner.OnQRDetect.AddListener(LoadData);
         OnDataLoaded.AddListener(() =>
         {
+            //if (!IsDetailView)
             ui.OpenPage(3);
             StoreTexture();
         });
@@ -71,13 +75,7 @@ public class FetchQRData : MonoBehaviour
     }
 
     public void LoadedData(string data) 
-    {/*
-        if(_specificMarbleDetails != null)
-        {
-            ui.OpenPage(3);
-            LoadedMarbleTextData();
-            LoadedMarbleImageData();
-        }*/
+    {
     }
     
     // load marble text data after QR scan From Scriptable object
@@ -89,7 +87,6 @@ public class FetchQRData : MonoBehaviour
         MarbleMaterial.text = _marbleQrDatascritable._marbleApiData.marbleDetails.material;
         MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
     }
-
     public void LoadMarbleTextData(string marble_name, string description, string dimension, string material, string finish)
     {
         MarbleName.text = marble_name;
@@ -121,7 +118,6 @@ public class FetchQRData : MonoBehaviour
             totalImageCount = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
 
             GetImage(marbleDet.texture_img[0], CircleImage);
-
 
             var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
             for (int i = 1; i < count; i++)
@@ -162,6 +158,8 @@ public class FetchQRData : MonoBehaviour
                 Debug.Log("Couldn't fetch image data");
         });
     }
+
+    
 
     void GetImageTop(string url, RawImage image)
     {

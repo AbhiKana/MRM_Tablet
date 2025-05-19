@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 7173314703891484852}
   - component: {fileID: 6840583478786293021}
   - component: {fileID: 1254729699119882109}
+  - component: {fileID: 4724660465082213609}
   m_Layer: 5
   m_Name: MarbleOverview
   m_TagString: Untagged
@@ -140,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2db6d2164069f4d8a50a3d174c3218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMarbleDetails: {fileID: 0}
   marbleDetailsWithCategoryID:
     id: 0
     marble_name: 
@@ -210,6 +212,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   viewButton: {fileID: 8953521142554342371}
   wishlistToggle: {fileID: 356097932134909613}
+--- !u!114 &4724660465082213609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2913698957292138109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94e3d0281f345d4aac06513201f10ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3801490492335436234
 GameObject:
   m_ObjectHideFlags: 0

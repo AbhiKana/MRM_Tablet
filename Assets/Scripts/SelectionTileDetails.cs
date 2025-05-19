@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-using UnityEngine.Events;
+
 public class SelectionTileDetails : MonoBehaviour
 {
     [SerializeField] UI_Manager manager;
