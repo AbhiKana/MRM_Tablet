@@ -5,4 +5,6 @@ public class Url
     public static string marbleApi = "api/marbles_api";
     public static string saveUserData = "api/save_user_data";
     public static string updateUserData = "api/update_user_selection";
+    public static string pdf = "api/marble_selection_pdf";
+
 }

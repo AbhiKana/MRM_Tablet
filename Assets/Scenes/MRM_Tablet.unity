@@ -7950,6 +7950,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   marbleUploader: {fileID: 621252333}
   connectViaInput: {fileID: 972451989}
+  tabId: 0
 --- !u!114 &621252337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13042,6 +13043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   storeUserData:
     success: 0
+    already_register: 0
     data: 
     user_id: 
 --- !u!1 &1243964541
@@ -15930,6 +15932,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   marbleUploader: {fileID: 1688295327}
   connectViaInput: {fileID: 972451989}
+  tabId: 0
 --- !u!1 &1693450365
 GameObject:
   m_ObjectHideFlags: 0
@@ -17429,7 +17432,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -17470,12 +17473,12 @@ PrefabInstance:
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 621252336}
+      objectReference: {fileID: 1688295330}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 1688295330}
+      objectReference: {fileID: 621252336}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_Target
@@ -17549,12 +17552,12 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: SendTabID
+      value: SendDataToConfig
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: SendDataToConfig
+      value: SendTabID
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -17614,7 +17617,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}

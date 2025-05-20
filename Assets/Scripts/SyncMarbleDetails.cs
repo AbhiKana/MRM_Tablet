@@ -74,4 +74,9 @@ public class SyncMarbleDetails : MonoBehaviour
         }
         Debug.Log($"Marble {source.marbleName} synced between Grid and Marquee");
     }
+
+    public void SetWishlistValue(ShowMarbleDetails showMarbleDetails, bool val)
+    {
+        showMarbleDetails.IsWishlisted = val;
+    }
 }

@@ -1,4 +1,3 @@
-using System.Globalization;
 using UnityEngine;
 
 [System.Serializable]
@@ -14,6 +13,14 @@ public class SocketConnectionChecker : MonoBehaviour
     TCP_ClientController tcpClientController;
 
     [SerializeField] ConnectViaInput connectViaInput;
+
+
+    [Header("Tab ID")]
+    private const int tabId = 1;
+    public int GetID()
+    {
+        return tabId;
+    }
     public void CheckConnectionStatus()
     {
         if (connectViaInput.IsConnectedToServer)
@@ -35,7 +42,6 @@ public class SocketConnectionChecker : MonoBehaviour
 
         if (marbleUploader != null)
         {
-
             Debug.Log("Check data is filled or empty");
 
             Configurator c = marbleUploader.GetComponent<Configurator>();
@@ -89,12 +95,11 @@ public class SocketConnectionChecker : MonoBehaviour
         }
     }
 
-    public void SendTabID(int id)
+    public void SendTabID(/*int id*/)
     {
         MessageFormat m = new MessageFormat();
         m.MessageKey = "tab_id";
-        m.MessageValue = id.ToString();
-        
+        m.MessageValue = tabId.ToString();
 
         string data = JsonUtility.ToJson(m);
         //string tabInfo = "tab_id:"+ id;

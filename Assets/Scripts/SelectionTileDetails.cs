@@ -47,16 +47,15 @@ public class SelectionTileDetails : MonoBehaviour
     {
         MarbleManager.RemoveMarbleFromWishlist(tileName.text);
         MarbleManager.RemoveMarbleFromSelectionMenu(tileName.text);
-        RemoveObjectFromArray();
+        RemoveObjectFromArray(tileName.text);
         Destroy(this.gameObject);
     }
 
-    private void RemoveObjectFromArray()
+    private void RemoveObjectFromArray(string name)
     {
         if (manager.scrollSnap.ChildObjects.Length < 0)
         {
             Debug.Log("ADD child obj");
-            //manager.scrollSnap.AddChildObjectInArray();
         }
         else
         {
@@ -65,9 +64,9 @@ public class SelectionTileDetails : MonoBehaviour
             foreach (GameObject obj in gameObjectsList) 
             {
                 MRM_Details mRM_Details = obj.GetComponent<MRM_Details>();
-                if(mRM_Details != null)
+                if(mRM_Details != null && mRM_Details.MarbleName.text == name)
                 {
-                    Debug.Log("Remvoe child obje");
+                    Debug.Log("Remvoe child object: " + mRM_Details.MarbleName.text);
                     Destroy(obj);
                     gameObjectsList.Remove(obj);
                     break;

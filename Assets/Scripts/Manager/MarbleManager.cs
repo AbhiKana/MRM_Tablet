@@ -44,5 +44,22 @@ public static class MarbleManager
                 break;
             }
         }
+
+        UpdateToggleValue(marbleName);
+    }
+
+    public static void UpdateToggleValue(string marbleName)
+    {
+        SyncMarbleDetails syncMarbleDetails = Object.FindObjectOfType<SyncMarbleDetails>();
+        for (int i = 0; i < syncMarbleDetails.gridMarbles.Length; i++)
+        {
+
+            if (syncMarbleDetails.gridMarbles[i].marbleName == marbleName)
+            {
+                syncMarbleDetails.SetWishlistValue(syncMarbleDetails.gridMarbles[i],false);
+                syncMarbleDetails.SetWishlistValue(syncMarbleDetails.marqueeMarbles[i], false);
+            }
+        }
+        //syncMarbleDetails.SyncMarbleData();
     }
 }

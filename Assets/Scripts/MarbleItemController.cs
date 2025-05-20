@@ -136,8 +136,8 @@ public class MarbleItemController : MonoBehaviour
         if (showMarbleDetails.texture == null)
         {
             loadImageInBG.LoadMarbleImageData();
-            AddMarbleIntoList();
         }
+        AddMarbleIntoList();
         Debug.Log(showMarbleDetails.marbleName + " added to wishlist.");
         
         MarbleWithTextDetails m = new MarbleWithTextDetails();

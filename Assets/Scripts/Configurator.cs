@@ -41,8 +41,9 @@ public class Configurator : MonoBehaviour
     public UnityEvent OnDataSave;
 
     WWWRequestTC requestTC;
-    SelectionPanelController SelectionPanelController;
     GetAllMarbles getAllMarbles;
+    SelectionPanelController SelectionPanelController;
+    SocketConnectionChecker socketConnectionChecker;
 
     bool OnConfigButtonClick;
 
@@ -50,7 +51,7 @@ public class Configurator : MonoBehaviour
     {
         requestTC = new WWWRequestTC();
         manager = FindAnyObjectByType<UI_Manager>();
-
+        socketConnectionChecker = GetComponent<SocketConnectionChecker>();
         EventHandler();
     }
 
@@ -133,7 +134,7 @@ public class Configurator : MonoBehaviour
             form.AddField("email", email.EmailinputField.text);
 
             form.AddField("marble_id", GetSelectedMarble_ID());
-            form.AddField("tab_id", 1);
+            form.AddField("tab_id", socketConnectionChecker.GetID());
             requestTC.Post(form, url, (Data, isSucess) =>
             {
                 if (isSucess)
@@ -144,20 +145,48 @@ public class Configurator : MonoBehaviour
                     MessageFormat messageFormat = new MessageFormat();
                     messageFormat.MessageKey = "user_id";
                     messageFormat.MessageValue = userData.storeUserData.user_id;
-                    data = JsonUtility.ToJson(messageFormat);
 
-                    /*dataSendToConfig = new DataSendToConfig
+                    if (userData.storeUserData.already_register)
                     {
-                        mail = email.EmailinputField.text,
-                        user_id = userData.storeUserData.user_id
-                    };
-                    data = JsonUtility.ToJson(dataSendToConfig);*/
+                        Debug.Log("<color=green> Call Update API</color>");
+                        UpdateUser(messageFormat);
 
-                    //OnDataSave?.Invoke("config");
+                    }
+                    else
+                    {                        
+                        data = JsonUtility.ToJson(messageFormat);
+                    }
                 }
                 Debug.Log("Email: " + email.EmailinputField.text + " Name: " + email.NameinputField.text);
             });
         }
+        else
+        {
+            Debug.Log("<color=green> Update API should be call</color>");
+            MessageFormat messageFormat = new MessageFormat();
+            messageFormat.MessageKey = "user_id";
+            messageFormat.MessageValue = userData.storeUserData.user_id;
+
+            UpdateUser(messageFormat);
+        }
+    }
+
+    private void UpdateUser(MessageFormat m)
+    {
+        string updateUrl = Url.apiUrl + Url.updateUserData;
+
+        WWWForm updateForm = new WWWForm();
+        updateForm.AddField("user_id", userData.storeUserData.user_id);
+        updateForm.AddField("marble_id", GetSelectedMarble_ID());
+
+        requestTC.Post(updateForm, updateUrl, (UpdateData, isSucess) =>
+        {
+            if (isSucess)
+            {
+                Debug.Log("User updated with marble ID");
+                data = JsonUtility.ToJson(m);
+            }
+        });
     }
 
     public string GetSelectedMarble_ID()
@@ -194,7 +223,7 @@ public class Configurator : MonoBehaviour
 
             newString = newString.Remove(idx, 1);
 
-            Debug.Log("ID to send: " + newString);
+            Debug.Log("ID to send using Config: " + newString);
             return newString;
         }
         else
