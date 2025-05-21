@@ -18,7 +18,8 @@ public class LoadImageInBG : MonoBehaviour
         OnBGImageDownload.AddListener(()=>
         {
             var dataSync = showMarbleDetails.syncMarbleDetails;
-            dataSync.SyncMarbleData(showMarbleDetails, dataSync.gridMarbles);
+            dataSync.SyncMarbleArrayTexture(showMarbleDetails, dataSync.marqueeMarbles);
+
             showMarbleDetails.storeMarbleDetails.StoreTexturesInList(showMarbleDetails.tileID, showMarbleDetails);
         });
     }
@@ -28,7 +29,9 @@ public class LoadImageInBG : MonoBehaviour
         var marbleDet = showMarbleDetails.marbleDetailsWithCategoryID;
         if (marbleDet.texture_img.Count > 0)
         {
-            //GetImage(showMarbleDetails.texture, )
+            if (showMarbleDetails.m_Textures.Length < 1)
+                showMarbleDetails.m_Textures = new Texture[5];
+
             totalImageCount = marbleDet.texture_img.Count;
             for (int i = 0; i < marbleDet.texture_img.Count; i++)
             {

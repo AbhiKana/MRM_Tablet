@@ -7950,7 +7950,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   marbleUploader: {fileID: 621252333}
   connectViaInput: {fileID: 972451989}
-  tabId: 0
 --- !u!114 &621252337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15932,7 +15931,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   marbleUploader: {fileID: 1688295327}
   connectViaInput: {fileID: 972451989}
-  tabId: 0
 --- !u!1 &1693450365
 GameObject:
   m_ObjectHideFlags: 0

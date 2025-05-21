@@ -101,7 +101,7 @@ public class FetchQRData : MonoBehaviour
         var marbleDet = _specificMarbleDetails;
         TopMarbleImage.texture = mainTexture;
         CircleImage.texture = circleImg;
-        for (int i = 1; i < marbleDet.textures.Length; i++)
+        for (int i = 0; i < marbleDet.textures.Length; i++)
         {
             BgImages[i].texture = textures[i];
         }

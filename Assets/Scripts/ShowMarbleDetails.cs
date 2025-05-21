@@ -42,7 +42,7 @@ public class ShowMarbleDetails : MonoBehaviour
         storeMarbleDetails.OnToggleSet.AddListener((isOn) =>
         {
             var marble = storeMarbleDetails.marbleDetails;
-            Debug.Log("OnToggle Click: "+ marble.id + " " + marbleDetailsWithCategoryID.id);
+            //Debug.Log("OnToggle Click: "+ marble.id + " " + marbleDetailsWithCategoryID.id);
             if (marble.id == marbleDetailsWithCategoryID.id)
                 SetWishlist(isOn);
         });
@@ -61,7 +61,7 @@ public class ShowMarbleDetails : MonoBehaviour
     {
         Debug.Log("Before Assign check name: " + gameObject.name);
         IsWishlisted = val;
-        syncMarbleDetails.SyncMarbleData(this, syncMarbleDetails.gridMarbles);
+        syncMarbleDetails.SyncMarbleWishlistedValue(this, syncMarbleDetails.gridMarbles);
     }
     public void SetImage(Texture t)
     {
@@ -105,6 +105,7 @@ public class ShowMarbleDetails : MonoBehaviour
                 CheckAllImageLoaded();
                 TextureScale.Bilinear(rawTex, 200, 200);
                 image.texture = rawTex;
+                texture = rawTex;
             }
             else
                 Debug.Log("Couldn't fetch image data");

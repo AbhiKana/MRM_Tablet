@@ -24,10 +24,13 @@ public class ListOfMarblesInventory : MonoBehaviour
             GameObject marbleObj = Instantiate(tilePrefab).gameObject;
             marbleObj.transform.SetParent(parentObjectToSpawn);
             marbleObj.transform.localScale = Vector3.one;
+
             ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();
             marbleLoader.gameObject.name = marble.name;
             marble.image.texture = noof_Marbles[i].image.texture;
+            marble.texture = noof_Marbles[i].image.texture;
             marble.marbleName = noof_Marbles[i].marbleName;
+            Debug.Log("<color=yellow> Assign Image </color>");
             marble.price = noof_Marbles[i].price;
             marble.tileID = noof_Marbles[i].tileID;
             marble.categoryID = noof_Marbles[i].categoryID;

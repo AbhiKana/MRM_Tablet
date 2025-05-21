@@ -141,6 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef2db6d2164069f4d8a50a3d174c3218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storeMarbleDetails: {fileID: 0}
   syncMarbleDetails: {fileID: 0}
   marbleDetailsWithCategoryID:
     id: 0
@@ -154,12 +155,7 @@ MonoBehaviour:
     category_id: 0
     main_img: 
     texture_img: []
-  m_Textures:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  m_Textures: []
   image: {fileID: 9100588394121873954}
   texture: {fileID: 0}
   marbleName: 
