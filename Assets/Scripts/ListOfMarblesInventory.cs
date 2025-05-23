@@ -30,7 +30,7 @@ public class ListOfMarblesInventory : MonoBehaviour
             marble.image.texture = noof_Marbles[i].image.texture;
             marble.texture = noof_Marbles[i].image.texture;
             marble.marbleName = noof_Marbles[i].marbleName;
-            Debug.Log("<color=yellow> Assign Image </color>");
+            //Debug.Log("<color=yellow> Assign Image </color>");
             marble.price = noof_Marbles[i].price;
             marble.tileID = noof_Marbles[i].tileID;
             marble.categoryID = noof_Marbles[i].categoryID;

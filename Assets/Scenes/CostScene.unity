@@ -1886,6 +1886,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CostcmsUrl: 192.168.1.151/mrm_showroom/api/marble_quotation
   MarbleInvoiceData:
+    user_id: 0
     rooms: []
     price_summary:
       subtotal: 0
@@ -3841,7 +3842,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
 --- !u!114 &819033545
 MonoBehaviour:
   m_ObjectHideFlags: 0

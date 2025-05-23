@@ -126,6 +126,8 @@ public class CostCalculate : MonoBehaviour
             InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.tax = GstPercent;
             InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.total = finalamt;
 
+            //add userid
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.user_id = 1;
         }
 
         // print json raw data for cms

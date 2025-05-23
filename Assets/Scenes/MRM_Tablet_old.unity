@@ -7962,13 +7962,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b6e9020ea8783441b8d386b48d1e2e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userData: {fileID: 1240531875}
   emailValidation: {fileID: 2086080254}
   emailValidation2: {fileID: 2136699845}
+  endSession: {fileID: 469469355}
   loginPanel: {fileID: 2136699843}
-  DataSenderButton: {fileID: 1927762910}
+  configuratorButton: {fileID: 1927762910}
+  connectViaInput: {fileID: 972451989}
+  userData: {fileID: 1240531875}
   data: 
-  OnConfigButtonClick: 0
   OnDataSave:
     m_PersistentCalls:
       m_Calls:
@@ -7984,8 +7985,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  connectViaInput: {fileID: 972451989}
-  endSession: {fileID: 469469355}
 --- !u!1 &627004034
 GameObject:
   m_ObjectHideFlags: 0
@@ -15455,7 +15454,6 @@ MonoBehaviour:
     price: 
     created_at: 
     modify_at: 
-    url: 
     mainTexture: {fileID: 0}
     circleImg: {fileID: 0}
     textures:
@@ -15897,13 +15895,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc7cc8b9df765b44baac79376180571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  userData: {fileID: 1240531875}
   emailValidation: {fileID: 2086080254}
   emailValidation2: {fileID: 2136699845}
+  thanksForSharingObj: {fileID: 1206790814}
   loginPanel: {fileID: 2136699843}
-  DataSenderButton: {fileID: 186018977}
+  configuratorButton: {fileID: 186018977}
+  userData: {fileID: 1240531875}
   data: 
-  OnConfigButtonClick: 0
   OnDataSave:
     m_PersistentCalls:
       m_Calls:
@@ -15919,7 +15917,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  thanksForSharingObj: {fileID: 1206790814}
 --- !u!114 &1688295330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17408,7 +17405,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -19149,7 +19146,6 @@ MonoBehaviour:
     price: 
     created_at: 
     modify_at: 
-    url: 
     mainTexture: {fileID: 0}
     circleImg: {fileID: 0}
     textures:

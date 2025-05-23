@@ -60,12 +60,12 @@ public class MarbleItemController : MonoBehaviour
     {
         if (showMarbleDetails.IsWishlisted && wishlistToggle != null)
         {
-            Debug.Log("Wishlist value: "+ showMarbleDetails.IsWishlisted);
+            //Debug.Log("Wishlist value: "+ showMarbleDetails.IsWishlisted);
             wishlistToggle.isOn = true;
         }
         else
         {
-            Debug.Log("Wishlist value in else : " + showMarbleDetails.IsWishlisted);
+            //Debug.Log("Wishlist value in else : " + showMarbleDetails.IsWishlisted);
             if (wishlistToggle != null)
                 wishlistToggle.isOn = false;
         }

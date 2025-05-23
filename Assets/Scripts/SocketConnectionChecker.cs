@@ -26,12 +26,11 @@ public class SocketConnectionChecker : MonoBehaviour
         if (connectViaInput.IsConnectedToServer)
         {
             Debug.Log("Go to next page");
-            Invoke(nameof(SendDataToConfig), 0.5f);
+            Invoke(nameof(SendDataToConfig), 1f);
         }
         else
         {
             Debug.Log("Connect to server first");
-            //connectViaInput.EnableInputField();
         }
     }
 
@@ -53,13 +52,12 @@ public class SocketConnectionChecker : MonoBehaviour
                 if (!string.IsNullOrEmpty(dataToSend))
                 {
                     Debug.LogError("Data to send " + dataToSend);
-                    //SendTabID();
+                    SendTabID();
                     tcpClientController.SendMessage(dataToSend);
                 }
                 else
                 {
                     Debug.Log("Configurator uploader is empty");
-                    SendTabID();
                     SendUserData();
                 }
             }
@@ -72,14 +70,13 @@ public class SocketConnectionChecker : MonoBehaviour
                 string dataToSend = m.data;
                 if (!string.IsNullOrEmpty(dataToSend))
                 {
-                    
+                    SendTabID();
                     Debug.LogError("Data to send "+dataToSend);
                     tcpClientController.SendMessage(dataToSend);
                 }
                 else
                 {
                     Debug.Log("Message uploader is empty");
-                    SendTabID();
                     SendUserData();
                 }
             }
@@ -100,18 +97,18 @@ public class SocketConnectionChecker : MonoBehaviour
         }
     }
 
-    public void SendTabID(/*int id*/)
+    public void SendTabID()
     {
         MessageFormat m = new MessageFormat();
         m.MessageKey = "tab_id";
         m.MessageValue = tabId.ToString();
 
         string data = JsonUtility.ToJson(m);
-        //string tabInfo = "tab_id:"+ id;
-
+        
         if(tcpClientController == null)
             tcpClientController= FindObjectOfType<TCP_ClientController>();
 
+        Debug.Log("Tab ID to be sent");
         tcpClientController.SendMessage(data);
     }
 }
