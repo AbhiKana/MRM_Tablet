@@ -19,7 +19,7 @@ public class DragMarble : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
     public GameObject ThisDragObject;
     //  public GameObject DragImageHolder;
     public GameObject parentPanel;
-    private CanvasGroup Dragcanvasgroup;
+    public CanvasGroup Dragcanvasgroup;
     void Awake()
     {
         thisRect = GetComponent<RectTransform>();
@@ -42,6 +42,10 @@ public class DragMarble : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
             go.transform.SetParent(parentPanel.transform, false);
             eventData.pointerDrag = go; //assign instantiated element  
         }
+        else
+        {
+            eventData.pointerDrag = null;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -53,18 +57,16 @@ public class DragMarble : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
             RectTransformUtility.ScreenPointToLocalPointInRectangle((RectTransform)canvas.transform, eventData.position, canvas.worldCamera, out position);
             eventData.pointerDrag.transform.position = canvas.transform.TransformPoint(position);
         }
-
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Dragcanvasgroup.blocksRaycasts = true;      
+        Dragcanvasgroup.blocksRaycasts = true;
         // eventData.pointerDrag.GetComponent<Image>().raycastTarget = true;
         if (!isDroptarget)
         {           
             Destroy(this.gameObject);
         }
-
     }
 
 

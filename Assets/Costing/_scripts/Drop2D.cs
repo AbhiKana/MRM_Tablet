@@ -28,22 +28,29 @@ public class Drop2D : MonoBehaviour, IDropHandler
     public Vector2 positionOffset = Vector2.zero;
     void Start()
     {
+        AddDropListner();
+    }
+
+    public void AddDropListner()
+    {
         DropButton.onClick.AddListener(() => { BigScreenRoomsControl.Bigroom.ClickonAddMarble(); });
     }
+
     public void OnDrop(PointerEventData eventData)
     {
         GameObject droppedObject = eventData.pointerDrag;
-        print(">> " + eventData.pointerDrag.name);
-        // if drop once is false then drop only once
-        if (!OnDropOnce)
-        {
-            if (droppedObject != null)
+
+        if (droppedObject != null && droppedObject.name != "Scroll View Horizontal")
+        { // if drop once is false then drop only once
+            if (!OnDropOnce)
             {
+                print(OnDropOnce + " >> " + eventData.pointerDrag.name);
                 int marbleid = droppedObject.GetComponent<DragMarble>().DragMarbleid;
                 // check if marble id already added in one room or no
                 if (!BigScreenRoomsControl.Bigroom.CheckMarbleExistsInRoom(marbleid))
-                {   // eventData.pointerDrag.GetComponent<RectTransform>().transform.position = transform.position;
+                {   //eventData.pointerDrag.GetComponent<RectTransform>().transform.position = transform.position;
                     droppedObject.GetComponent<DragMarble>().isDroptarget = true;
+                    //droppedObject.GetComponent<CanvasGroup>().enabled = false;
                     OnDropOnce = true;
 
                     droppedObject.transform.SetParent(transform);
@@ -64,7 +71,7 @@ public class Drop2D : MonoBehaviour, IDropHandler
                 }
             }
         }
-        Debug.Log("drop " + eventData.pointerDrag.name);
+        // Debug.Log("drop " + eventData.pointerDrag.name);
     }
 
     private void ApplyAnchorPreset(RectTransform rt)

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text.RegularExpressions;
+using System;
 
 public class CostCalculate : MonoBehaviour
 {
@@ -18,6 +20,7 @@ public class CostCalculate : MonoBehaviour
     public GameObject TotalInvoicePrefab;
     public GameObject CostMarbleInfoPrefab;
     private int TotalAmount = 0;
+    public ScrollRect Costscrollrect;
 
     private void Start()
     {
@@ -44,20 +47,27 @@ public class CostCalculate : MonoBehaviour
     // check per room if marbles added then only create it in that room
     public void CreateCostingPerRoom()
     {
+        Costscrollrect.verticalNormalizedPosition = 1;
         RemoveInvoiceObjects();
+        InvoiceManager._invoiceMananger.MarbleInvoiceData = new MarbleInvoice();
         //============================================
         for (int i = 0; i < RoomsManager.RoomInstance.RoomsAddedSequence.Count; i++)
         {
-            TotalAmount = 0;
             int index = RoomsManager.RoomInstance.RoomsAddedSequence[i];
-           // print("at index " + i);
+            // print("at index " + i);
             if (_roomScriptableData[index].DropSelectedMarbles.Count > 0)
             {
                 // create room costing prefab
                 GameObject _RoomsWithMarbleObject = Instantiate(CostingRoomPrefab, CostingScroller);
                 int count = _roomScriptableData[index].DropSelectedMarbles.Count;
                 _RoomsWithMarbleObject.GetComponent<RoomInvoice>().RoomnameIn.text = _roomScriptableData[index].RoomName;
-               // print(" marble count " + count);
+                //======== add room data to json==========================
+                Room room1 = new Room();
+                room1.id = _roomScriptableData[index].RoomId;
+                room1.name = _roomScriptableData[index].RoomName;
+                room1.dimension = _roomScriptableData[index].Roomdimension;
+                
+                // print(" marble count " + count);
                 for (int j = 0; j < count; j++)
                 {
                     GameObject _marbleCostInfo = Instantiate(CostMarbleInfoPrefab, _RoomsWithMarbleObject.transform);
@@ -71,7 +81,21 @@ public class CostCalculate : MonoBehaviour
                     _marbleCostInfo.GetComponent<MarbleInformation>().MarbleAmountInfo.text = "Rs." + dprice;
                     // add total amount marbles
                     TotalAmount += dprice;
+                    // Add Marbles data to each room =============================
+
+                    room1.marbles.Add(new Marble()
+                    {
+                        id = _roomScriptableData[index].DropSelectedMarbles[j].id,
+                        marble_name = _roomScriptableData[index].DropSelectedMarbles[j].marble_name,
+                        dimension = _roomScriptableData[index].DropSelectedMarbles[j].marbleDimension,
+                        price = priceFloat,
+                        imgurl = _roomScriptableData[index].DropSelectedMarbles[j].imgUrl,
+                        amount = dprice
+                    }); ;
                 }
+              
+                //add room to marble invoce data
+                InvoiceManager._invoiceMananger.MarbleInvoiceData.rooms.Add(room1);
             }
         }
 
@@ -93,7 +117,20 @@ public class CostCalculate : MonoBehaviour
             int finalamt = TotalAmount + (int)(tenPercent + twoPercent + fivePercent + GstPercent);
 
             _Invoicetotal.GetComponent<TotalCalculation>().FinalAmount.text = finalamt + "";
+
+            // add price data to json marble invoice class to send data to CMS
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.subtotal = TotalAmount;
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.wastage_fee = tenPercent;
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.installation = twoPercent;
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.transport = fivePercent;
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.tax = GstPercent;
+            InvoiceManager._invoiceMananger.MarbleInvoiceData.price_summary.total = finalamt;
+
         }
+
+        // print json raw data for cms
+        string jsonPayload = JsonUtility.ToJson(InvoiceManager._invoiceMananger.MarbleInvoiceData, prettyPrint: true);
+        Debug.Log(jsonPayload);
     }
 
     // to clear scriptable marbles list data
@@ -106,11 +143,12 @@ public class CostCalculate : MonoBehaviour
     }
 
     public void RemoveInvoiceObjects()
-    {
+    {        
+           TotalAmount = 0;
         // remove instantiated invoice prefab if already created 
         // and create new everytime
         int tcount = CostingScroller.childCount;
-       // print("tcount " + tcount);
+        // print("tcount " + tcount);
         if (tcount > 0)
         {
             for (int i = 0; i < tcount; i++)
@@ -125,34 +163,46 @@ public class CostCalculate : MonoBehaviour
     {
         try
         {
-            // Remove "ft" if present and trim whitespace
-            string cleanedStr = dimensionStr.Replace("ft", "").Trim();
-
-            // Split by 'x' character
-            string[] dimensions = cleanedStr.Split('x');
-
-            if (dimensions.Length != 2)
+            if (string.IsNullOrWhiteSpace(dimensionStr))
             {
-                Debug.LogError("Invalid dimension format. Use format like '10x15 ft'");
+                Debug.LogError("Dimension string is empty");
                 return 0;
             }
 
-            // Parse dimensions to floats
-            if (!float.TryParse(dimensions[0].Trim(), out float length) ||
-                !float.TryParse(dimensions[1].Trim(), out float width))
+            // Remove whitespace and "ft" (optional)
+            string cleanedStr = Regex.Replace(dimensionStr, @"[\sftFT]", "");
+
+            // Split by 'x' (case-insensitive)
+            string[] parts = cleanedStr.Split(new[] { 'x', 'X' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (parts.Length != 2)
             {
-                Debug.LogError("Could not parse dimension values");
+                Debug.LogError($"Invalid format: '{dimensionStr}'. Expected format like '1x1' or '12.5x10'");
                 return 0;
             }
 
-            // Calculate area and total price
+            // SIMPLE PARSING (no CultureInfo or NumberStyles)
+            if (!float.TryParse(parts[0], out float length) ||
+                !float.TryParse(parts[1], out float width))
+            {
+                Debug.LogError($"Could not parse numbers in: '{dimensionStr}'");
+                return 0;
+            }
+
+            // Validate positive dimensions
+            if (length <= 0 || width <= 0)
+            {
+                Debug.LogError("Dimensions must be positive numbers");
+                return 0;
+            }
+
+            // Calculate price
             float area = length * width;
             float totalPrice = area * pricePerSqft;
 
-            // Round to nearest integer
             return Mathf.RoundToInt(totalPrice);
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             Debug.LogError($"Error calculating price: {e.Message}");
             return 0;

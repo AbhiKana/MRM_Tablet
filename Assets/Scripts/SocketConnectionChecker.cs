@@ -53,11 +53,13 @@ public class SocketConnectionChecker : MonoBehaviour
                 if (!string.IsNullOrEmpty(dataToSend))
                 {
                     Debug.LogError("Data to send " + dataToSend);
+                    //SendTabID();
                     tcpClientController.SendMessage(dataToSend);
                 }
                 else
                 {
                     Debug.Log("Configurator uploader is empty");
+                    SendTabID();
                     SendUserData();
                 }
             }
@@ -70,12 +72,14 @@ public class SocketConnectionChecker : MonoBehaviour
                 string dataToSend = m.data;
                 if (!string.IsNullOrEmpty(dataToSend))
                 {
+                    
                     Debug.LogError("Data to send "+dataToSend);
                     tcpClientController.SendMessage(dataToSend);
                 }
                 else
                 {
                     Debug.Log("Message uploader is empty");
+                    SendTabID();
                     SendUserData();
                 }
             }
@@ -87,6 +91,7 @@ public class SocketConnectionChecker : MonoBehaviour
         UserData userData = FindObjectOfType<UserData>();
         if (userData.storeUserData.success)
         {
+            Debug.Log("Sending Info to Multitaction");
             MessageFormat messageFormat = new MessageFormat();
             messageFormat.MessageKey = "user_id";
             messageFormat.MessageValue = userData.storeUserData.user_id;

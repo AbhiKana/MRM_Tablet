@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RoomId: 3
   RoomName: Bedroom
-  DimensionObject: {fileID: 0}
   Roomdimension: 
   BigRoomSprite: {fileID: 21300000, guid: 9cc5c24454a86864c89c2c1dbf065eed, type: 3}
-  SelectedMarbles: []
+  DropSelectedMarbles: []

@@ -21,4 +21,17 @@ public class MarbleDetails{
     public Texture _Texture;
     public string marbleDimension;
     public string PriceMarble;
+
+    public MarbleDetails DeepClone()
+    {
+        return new MarbleDetails
+        {
+            id = this.id,
+            marble_name = this.marble_name,
+            imgUrl = this.imgUrl,
+            _Texture = this._Texture, // Textures are reference types - consider copying if needed
+            marbleDimension = this.marbleDimension,
+            PriceMarble = this.PriceMarble
+        };
+    }
 }

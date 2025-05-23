@@ -3,21 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-
-/*[System.Serializable]
-class StoreUserData
-{
-    public bool success;
-    public string data;
-    public string user_id;
-}
-
-class DataSendToConfig
-{
-    public string mail;
-    public string user_id;
-}
-*/
 public class Configurator : MonoBehaviour
 {
     [SerializeField] EmailValidation emailValidation;
@@ -29,7 +14,6 @@ public class Configurator : MonoBehaviour
     [SerializeField] Button configuratorButton;
 
     [SerializeField] ConnectViaInput connectViaInput;
-    //[SerializeField] StoreUserData storeUserData;
     [SerializeField] UserData userData;
     //[SerializeField] UserData checkData;
     

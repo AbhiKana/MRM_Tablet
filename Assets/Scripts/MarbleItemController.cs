@@ -175,6 +175,7 @@ public class MarbleItemController : MonoBehaviour
         specificMarbleDetails.price = marble.price;
         specificMarbleDetails.mainTexture = showMarbleDetails.image.texture;
         specificMarbleDetails.isSelected = showMarbleDetails.IsWishlisted;
+        specificMarbleDetails.url = marble.main_img;
 
         if (specificMarbleDetails.textures == null)
             specificMarbleDetails.textures = new Texture[5];

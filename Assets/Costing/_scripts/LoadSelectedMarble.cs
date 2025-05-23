@@ -29,7 +29,7 @@ public class LoadSelectedMarble : MonoBehaviour
             marbleDetails.marble_name = s.marble_name;
             marbleDetails._Texture = s.mainTexture;
             marbleDetails.PriceMarble = s.price;
-            //marbleDetails.imgUrl = s.url
+            marbleDetails.imgUrl = s.url;
             BigScreenRoomsControl.Bigroom.dumyselectedMarbleList.Add(marbleDetails);
         }
     }

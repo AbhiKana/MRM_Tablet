@@ -6,6 +6,7 @@ using UnityEngine;
 [Serializable]
 public class MarbleInvoice
 {
+    public int user_id;
     public List<Room> rooms = new();
     public PriceSummary price_summary = new();
 }
@@ -14,7 +15,7 @@ public class MarbleInvoice
 public class Marble
 {
     public int id;
-    public string name;
+    public string marble_name;
     public string dimension;
     public float price;
     public int amount;

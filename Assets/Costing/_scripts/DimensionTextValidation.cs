@@ -39,7 +39,7 @@ public class DimensionTextValidation : MonoBehaviour
             if (IsPartialInputValid(formattedText))
             {
                 _inputDimension.text = formattedText;
-                //_previousValidText = formattedText;
+                //_previousValidText = formattedText;              
                 CheckdimensionsEntry();
             }
             else
@@ -47,7 +47,6 @@ public class DimensionTextValidation : MonoBehaviour
                 _inputDimension.text = _previousValidText;
             }
         }
-
         _isFormatting = false;
     }
     private bool IsUserDeleting(string currentText)
@@ -112,7 +111,7 @@ public class DimensionTextValidation : MonoBehaviour
                     RoomsManager.RoomInstance.CurrentDimension = _inputDimension.text + "ft";
                 }
                 DimensionSuccess?.Invoke();
-               
+
             }
             else
             {
@@ -146,11 +145,11 @@ public class DimensionTextValidation : MonoBehaviour
     {
         //destroy added marble and off the marble overlay panel
         _droppedMarble.transform.parent.GetComponent<Drop2D>().OnDropOnce = false;
+        _droppedMarble.transform.parent.GetComponent<Drop2D>().AddDropListner();
         Destroy(_droppedMarble);
         BigScreenRoomsControl.Bigroom.MarbleDimensionOverlay.gameObject.SetActive(false);
-        BigScreenRoomsControl.Bigroom.RemoveMarbleDataInRoom(Marbleid);
+        // BigScreenRoomsControl.Bigroom.RemoveMarbleDataInRoom(Marbleid);
         BigScreenRoomsControl.Bigroom._isMarbleDimension = false;
     }
-
     // _inputDimension.placeholder.GetComponent<TMP_Text>().color = new Color(0.196f, 0.196f, 0.196f); // Default TMPro placeholder color
 }

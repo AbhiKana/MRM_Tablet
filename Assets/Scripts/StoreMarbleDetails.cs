@@ -15,6 +15,7 @@ public class SpecificMarbleDetails
     public string price;
     public string created_at;
     public string modify_at;
+    public string url;
 
     public Texture mainTexture, circleImg;
     public Texture[] textures;
@@ -176,6 +177,7 @@ public class StoreMarbleDetails : MonoBehaviour
     {
         return new SpecificMarbleDetails
         {
+            url = marbleDetails.url,
             marble_name = marbleDetails.marble_name,
             mainTexture = marbleDetails.mainTexture,
             circleImg = marbleDetails.circleImg,
@@ -192,6 +194,7 @@ public class StoreMarbleDetails : MonoBehaviour
             category_id = marbleDetails.category_id,
             id = marbleDetails.id,
             isSelected = val
+            
         };
     }
 

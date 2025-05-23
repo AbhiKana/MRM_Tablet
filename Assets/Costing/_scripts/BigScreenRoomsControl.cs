@@ -35,6 +35,7 @@ public class BigScreenRoomsControl : MonoBehaviour
     [Space(5)]
     [Header("Tween Drag Marbles panel")]
     public Transform DragMarblesPanel;
+    public Transform MarbleMsgBox; // fade in marble msg box if already marble added in that room
     // public Transform DragPanelBG; // dragging  bg panel needed for drag code
     [Space(5)]
     [Header("Drag marble image Prefab and scrollview holder")]
@@ -46,6 +47,7 @@ public class BigScreenRoomsControl : MonoBehaviour
     public Transform MarbleDimensionOverlay;
     public bool _isMarbleDimension; // to check for dimension validation
     public List<MarbleDetails> dumyselectedMarbleList = new();
+    public List<MarbleDetails> clonedMarbleList = new();
     // current selected tabid
     public int currentTabId = 0;
     void Awake()
@@ -64,7 +66,7 @@ public class BigScreenRoomsControl : MonoBehaviour
         _toggleGroupHolder = _toggleButtonHolder.GetComponent<ToggleGroup>();
 
         // create selected marble list in drag panel
-        //AddSelectedMarblelistToScroll();
+        AddSelectedMarblelistToScroll();
         MarbleDimensionOverlay.gameObject.SetActive(false);
     }
 
@@ -135,14 +137,15 @@ public class BigScreenRoomsControl : MonoBehaviour
         RoomsManager.RoomInstance.RemoveRoomOverlay.gameObject.SetActive(false);
     }
 
-    //====================================adding removing Marbles data for costing ==================================== 
+    //================================= adding removing Marbles data for costing ===================================
     // On click of add Marbles selected marble list will tween in
     public void ClickonAddMarble()
     {
-        DragMarblesPanel.GetComponent<RectangleTween>().RectMoveUp();
-        // DragPanelBG.gameObject.SetActive(true);
+       // print("__ onadd");
+        DragMarblesPanel.GetComponent<RectangleTween>().RectMoveUp();       
     }
-    // create dumy selected marble list in footer scroll
+
+    // Create dumy selected marble list in footer scroll
     public void AddSelectedMarblelistToScroll()
     {
         // if already added marble destroy them add again
@@ -153,9 +156,7 @@ public class BigScreenRoomsControl : MonoBehaviour
                 Destroy(DragMarbleScroller.GetChild(i).gameObject);
             }
         }
-
-        // this count will be cms data of selected marble list
-
+        // this count will be cms data of selected marble list       
         // dumyselectedMarbleList will change to selected marble list from cms
         for (int i = 0; i < dumyselectedMarbleList.Count; i++)
         {
@@ -193,15 +194,20 @@ public class BigScreenRoomsControl : MonoBehaviour
         int roomIndex = RoomsManager.RoomInstance.RoomsAddedSequence.IndexOf(currentTabId);
         print("save marble in roomid " + roomIndex);
 
-        // find index of marble id in dumyselectedmarble list got get marble data from dumy marble list
+        // find index of marble id in dumyselectedmarble list to get marble data from dumy marble list
         int indexById = dumyselectedMarbleList.FindIndex(x => x.id == marbleid);
-        //add matched id data in scriptable object of that room with current id
-        // add marble dimension in dumy marble list then add to scriptable object of that room
-        dumyselectedMarbleList[indexById].marbleDimension = _marbleDimension;
-        _roomScriptableB[currentTabId].DropSelectedMarbles.Add(dumyselectedMarbleList[indexById]);
+        print(marbleid + " marble id in dumy indexbyid " + indexById);
+        // make each marble component clone from dumy selected list ======= and add to scriptable object     
+        MarbleDetails clonedMarble = dumyselectedMarbleList[indexById].DeepClone();
+        // add marble dimension in to clone
+        clonedMarble.marbleDimension = _marbleDimension;
+        //add matched id clone data in scriptable object of that room with current tab id          
+        _roomScriptableB[currentTabId].DropSelectedMarbles.Add(clonedMarble);
+        // add marble id to per room added marble sequence
         InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().AddedMarbleSequence.Add(marbleid);
+
         // ===== add and create marble information text data =================
-        InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().CreateMarbleTextInfo(marbleid, dumyselectedMarbleList[indexById].marble_name, dumyselectedMarbleList[indexById].PriceMarble, _marbleDimension);
+        InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().CreateMarbleTextInfo(marbleid, clonedMarble.marble_name, clonedMarble.PriceMarble, _marbleDimension);
         // if added marble border count is less than  5 then  cant add marble in that room else show border prefab
         int dropmarblecount = InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().DropImagePanelHolder.childCount;
         // if (dropmarblecount < 5)
@@ -216,26 +222,29 @@ public class BigScreenRoomsControl : MonoBehaviour
         int roomIndex = RoomsManager.RoomInstance.RoomsAddedSequence.IndexOf(currentTabId);
         print("remove marble in roomid " + roomIndex);
         //to remove find index of marble id in dumyselectedmarble list
-        int indexById = dumyselectedMarbleList.FindIndex(x => x.id == marbleid);
-        // remove marble dimension from dumy marble list
-        dumyselectedMarbleList[indexById].marbleDimension = "";
+        int indexById = _roomScriptableB[currentTabId].DropSelectedMarbles.FindIndex(x => x.id == marbleid);
+        print("marbleid " + marbleid + " ===== " + indexById);
+        // remove marble dimension from dumy marble list      
         //remove matching id data in scriptable object of that room
-        _roomScriptableB[currentTabId].DropSelectedMarbles.Remove(dumyselectedMarbleList[indexById]);
-
-        // remove marble info object in that room
-        InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().RemoveMarbleInfoObject(marbleid);
+        if (indexById >= 0)
+        {
+            _roomScriptableB[currentTabId].DropSelectedMarbles.Remove(_roomScriptableB[currentTabId].DropSelectedMarbles[indexById]);
+            // remove marble info object in that room
+            InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().RemoveMarbleInfoObject(marbleid);
+        }
 
         int dropmarblecount = InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().DropImagePanelHolder.childCount;
+        print("dropcount " + dropmarblecount);
         if (dropmarblecount == 0)
         {
             // create extra prefab for drop image if all added marbles are removed and count is 0
             InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().CreateDropBorderone();
         }
-        //print("ddcount " + dropmarblecount);
+
         OnoffInvoiceButton();
     }
 
-    // To show or off generate invoice btn if marlbes added or removed
+    // To On or off generate invoice btn if marlbes added or removed
     public void OnoffInvoiceButton()
     {
         CostCalculate.Costcal.GenerateBtn.gameObject.SetActive(false);
@@ -258,6 +267,10 @@ public class BigScreenRoomsControl : MonoBehaviour
         int roomIndex = RoomsManager.RoomInstance.RoomsAddedSequence.IndexOf(currentTabId);
         bool marbleExists = InstantiatedObjectsRoom[roomIndex].GetComponent<MarbleImageDropData>().AddedMarbleSequence.Contains(mid);
         print("marble exists " + marbleExists);
+        if (marbleExists)
+        {
+            MarbleMsgBox.GetComponent<PopUPTween>().ObjectfadeIn();
+        }
         return marbleExists;
     }
 }
