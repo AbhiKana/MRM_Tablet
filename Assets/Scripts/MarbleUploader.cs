@@ -1,7 +1,4 @@
-using System.Text;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 [System.Serializable]
 public class StoreUserData
@@ -25,7 +22,8 @@ public class MarbleUploader : DataTransmissionController
 
     protected override void ControlObjectActivation()
     {
-        thanksForSharingObj.SetActive(true);
+        if(thanksForSharingObj != null)
+            thanksForSharingObj.SetActive(true);
         manager.AddPageHistory(thanksForSharingObj);
         loginPanel.SetActive(false);
     }

@@ -1895,6 +1895,7 @@ MonoBehaviour:
       transport: 0
       tax: 0
       total: 0
+  shareButton: {fileID: 1407002053}
   ShowShareMsg: {fileID: 6670451}
 --- !u!1 &465837725
 GameObject:

@@ -29,6 +29,7 @@ public class SceneSwitchManager : MonoBehaviour
 
     public void LoadScene(SceneFieldRef sceneIndex)
     {
+
         LoadScene_Coroutine(sceneIndex);
     }   
 

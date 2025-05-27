@@ -12,7 +12,12 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     private void Start()
     {
-        getMarbles.OnDataLoaded.AddListener(GetSelectedMarbleList);
+        getMarbles.OnDataLoaded.AddListener(GetMarble);
+    }
+
+    void GetMarble()
+    {
+        Invoke(nameof(GetSelectedMarbleList), 0.5f);
     }
 
     public void GetSelectedMarbleList()

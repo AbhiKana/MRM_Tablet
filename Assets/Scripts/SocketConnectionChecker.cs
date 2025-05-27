@@ -42,7 +42,6 @@ public class SocketConnectionChecker : MonoBehaviour
         if (marbleUploader != null)
         {
             Debug.Log("Check data is filled or empty");
-
             Configurator c = marbleUploader.GetComponent<Configurator>();
 
             if (c != null) 

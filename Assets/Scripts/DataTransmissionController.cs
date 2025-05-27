@@ -1,4 +1,3 @@
-using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,14 +5,14 @@ using UnityEngine.UI;
 
 public abstract class DataTransmissionController : MonoBehaviour
 {
-    [SerializeField] protected UserData userData;
+    [SerializeField] public UserData userData;
     
-    [SerializeField] protected EmailValidation emailValidation;
-    [SerializeField] protected EmailValidation emailValidation2;
+    [SerializeField] public EmailValidation emailValidation;
+    [SerializeField] public EmailValidation emailValidation2;
 
-    [SerializeField] protected GameObject loginPanel;
+    [SerializeField] public GameObject loginPanel;
 
-    [SerializeField] protected Button DataSenderButton;
+    [SerializeField] public Button DataSenderButton;
 
     protected UI_Manager manager;
     protected WWWRequestTC requestTC;
@@ -96,8 +95,9 @@ public abstract class DataTransmissionController : MonoBehaviour
             form.AddField("name", email.NameinputField.text);
             form.AddField("email", email.EmailinputField.text);
             form.AddField("marble_id", GetSelectedMarble_ID());
-            form.AddField("tab_id", socketConnectionChecker.GetID());
 
+            if (socketConnectionChecker != null)
+                form.AddField("tab_id", socketConnectionChecker.GetID());
 
             Debug.Log("Get response from CMS 1");
             requestTC.Post(form, url, (Data, isSuccess) =>
@@ -144,7 +144,7 @@ public abstract class DataTransmissionController : MonoBehaviour
         WWWForm updateForm = new WWWForm();
         updateForm.AddField("user_id", userData.storeUserData.user_id);
         updateForm.AddField("marble_id", GetSelectedMarble_ID());
-
+        updateForm.AddField("tab_id", socketConnectionChecker.GetID());
         requestTC.Post(updateForm, updateUrl, (UpdateData, isSucess) =>
         {
             if (isSucess)

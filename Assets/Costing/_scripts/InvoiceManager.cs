@@ -1,19 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public class InvoiceManager : MonoBehaviour
 {
     // "http://192.168.1.151/mrm_showroom/api/marble_quotation
 
-
-
     public static InvoiceManager _invoiceMananger;
     //Upload marble invoice data to cms 
     public string CostcmsUrl;
     public MarbleInvoice MarbleInvoiceData;
+    public Button shareButton;
     public Transform ShowShareMsg;
+    public UserData userData;
+
+    //AuthenticatedBillSender authenticatedBillSender;
     void Awake()
     {
         if (_invoiceMananger != null)
@@ -26,10 +28,20 @@ public class InvoiceManager : MonoBehaviour
     void Start()
     {
         ShowShareMsg.gameObject.SetActive(false);
+        userData = FindObjectOfType<UserData>();
+       // authenticatedBillSender = FindObjectOfType<AuthenticatedBillSender>();
+       // Invoke(nameof(GetButonEvent),0.5f);
     }
+
+    //private void GetButonEvent()
+    //{
+    //    authenticatedBillSender.AssignButtonEvent();
+    //}
+
     // call this on share button
     public void OnclickOfShareInvoice()
     {
+        InvoiceManager._invoiceMananger.MarbleInvoiceData.user_id = int.Parse(userData.storeUserData.user_id);
         StartCoroutine(UploadData(MarbleInvoiceData));
     }
 
