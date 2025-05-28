@@ -58,11 +58,14 @@ public class MarbleLoader : MonoBehaviour
                 toggle.group = CategoryParent.GetComponent<ToggleGroup>();
                 toggle.GetComponentInChildren<TextMeshProUGUI>().text = category[i].category_name;
                 
-                if (i == 0)
+                /*if (i == 0)
                     toggle.isOn = true;
                 else 
-                    toggle.isOn = false;
-                toggle.GetComponent<ToggleSpriteChange>().OnToggleClicked();
+                    toggle.isOn = false;*/
+                ToggleSpriteChange t = toggle.GetComponent<ToggleSpriteChange>();
+                t.OnToggleClicked();
+                
+                t.GetComponent<CategoryToggle>().categoryId = category[i].category_id;
             }
             IsCategorySpawn = true;
         }

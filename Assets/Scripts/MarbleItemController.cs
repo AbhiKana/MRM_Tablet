@@ -177,8 +177,16 @@ public class MarbleItemController : MonoBehaviour
         specificMarbleDetails.isSelected = showMarbleDetails.IsWishlisted;
         specificMarbleDetails.url = marble.main_img;
 
-        if (specificMarbleDetails.textures == null)
+        if (showMarbleDetails.m_Textures == null)
+        {
+            Debug.Log("<color=green>Loading first time</color>");
             specificMarbleDetails.textures = new Texture[5];
+        }
+        else
+        {
+            Debug.Log("<color=blue>Loading second time</color>");
+            specificMarbleDetails.textures = showMarbleDetails.m_Textures;
+        }
 
         if (!detailViewer.AlreadyExists(marble.id, detailViewer.list))
         {

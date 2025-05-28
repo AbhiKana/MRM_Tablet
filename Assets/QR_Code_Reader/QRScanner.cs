@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using ZXing;
 using UnityEngine.Events;
 using UnityEngine.Android;
+using DG.Tweening;
 
 public class QRScanner : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class QRScanner : MonoBehaviour
     string QrCode = string.Empty;
     public RawImage rawImage;
     public GameObject spinner;
+    public Transform BorderBox;
+
     public IBarcodeReader barcodeReader;
 
     public static UnityEvent<String> OnQRDetect = new UnityEvent<string>(); 
@@ -33,6 +36,8 @@ public class QRScanner : MonoBehaviour
         Debug.Log("Scanner Open");
         QrCode = string.Empty;
         spinner.SetActive(false);
+        BorderBox.gameObject.SetActive(false);
+
         startWebcam();
         StartCoroutine(GetQRCode());
     }
@@ -51,6 +56,8 @@ public class QRScanner : MonoBehaviour
     }
     IEnumerator GetQRCode()
     {
+        BorderBox.gameObject.SetActive(true);
+
         Debug.Log("ScanAgain");
         IBarcodeReader barCodeReader = new BarcodeReader();
         var snap = new Texture2D(webcamTexture.width, webcamTexture.height, TextureFormat.ARGB32, false);
@@ -67,6 +74,9 @@ public class QRScanner : MonoBehaviour
                     {
                         Debug.Log("DECODED TEXT FROM QR: " + QrCode);
                         spinner.SetActive(true);
+                        BorderBox.DOScale(new Vector3(0.5f, 0.5f, 0.5f), 0.5f).OnComplete(() => {
+                            BorderBox.DOScale(new Vector3(1f, 1f, 1f), 0.5f).SetDelay(0.2f);
+                        });
                         OnQRDetect?.Invoke(QrCode);
                         //StartCoroutine(WaitforSec());
                         break;
@@ -87,6 +97,7 @@ public class QRScanner : MonoBehaviour
             Debug.Log("Not Detected");
        
         spinner.SetActive(false);
+        DOTween.Clear();
         Stopwebcam();
     }
 

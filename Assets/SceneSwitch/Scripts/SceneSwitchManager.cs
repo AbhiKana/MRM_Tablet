@@ -14,7 +14,7 @@ public class SceneSwitchManager : MonoBehaviour
     private float _target;
     public UnityEvent sceneChangeEvent;
 
-
+    bool loadSceneOnce = false;
     private void Awake()
     {
         if (instance != null)
@@ -29,12 +29,13 @@ public class SceneSwitchManager : MonoBehaviour
 
     public void LoadScene(SceneFieldRef sceneIndex)
     {
-
-        LoadScene_Coroutine(sceneIndex);
+        if(!loadSceneOnce)
+            LoadScene_Coroutine(sceneIndex);
     }   
 
     public async void LoadScene_Coroutine(SceneFieldRef index)
     {
+        loadSceneOnce = true;
         progressHolder.gameObject.SetActive(true);        
         progressBarImage.fillAmount = _target = 0;
 
@@ -60,6 +61,7 @@ public class SceneSwitchManager : MonoBehaviour
 
     public void UnLoadScene(SceneFieldRef index)
     {
+        loadSceneOnce = false;
         SceneManager.UnloadSceneAsync(index.SceneField.Name);
     }
 }

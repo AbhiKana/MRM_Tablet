@@ -99,7 +99,6 @@ public class UI_Manager : MonoBehaviour
 
     public void RefreshList()
     {
-        
         StartCoroutine("RefreshListData");
     }
 
@@ -110,7 +109,7 @@ public class UI_Manager : MonoBehaviour
             ClearOldList();
         }
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.4f);
         Debug.Log("Child count after refresh: " + scrollSnap.ChildObjects.Length);
         int previousIndex = listOfObjects[6].transform.GetSiblingIndex();
         listOfObjects[6].transform.SetSiblingIndex(0);

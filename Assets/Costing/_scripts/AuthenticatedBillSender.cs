@@ -4,8 +4,13 @@ using UnityEngine.UI;
 
 public class AuthenticatedBillSender : DataTransmissionController
 {
+
+    [Header("Authentication Propertites")]
+    [SerializeField] private GameObject marbleSelectionPrompt;
+
     [SerializeField] SceneSwitchManager sceneSwitchManager;
     [SerializeField] SceneFieldRef sceneField;
+    [SerializeField] StoreMarbleDetails storeMarbleDetails;
     public void CheckIfUserLoggedIn()
     {
         //if (!string.IsNullOrEmpty(userData.storeUserData.user_id))
@@ -24,6 +29,9 @@ public class AuthenticatedBillSender : DataTransmissionController
 
     protected override void ControlObjectActivation()
     {
-        sceneSwitchManager.LoadScene(sceneField);
+        if (storeMarbleDetails.list.Count == 0)
+            marbleSelectionPrompt.SetActive(true);
+        else
+            sceneSwitchManager.LoadScene(sceneField);
     }
 }

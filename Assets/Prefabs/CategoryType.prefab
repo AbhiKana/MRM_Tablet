@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4273675067538031258}
   - component: {fileID: 8317500975038410859}
   - component: {fileID: 3383088561501651022}
+  - component: {fileID: 7409972638240462603}
   m_Layer: 5
   m_Name: CategoryType
   m_TagString: Untagged
@@ -156,9 +157,21 @@ MonoBehaviour:
   UnselectedSprite: {fileID: 21300000, guid: d8e8f42adda24f34d84a159d8fdb55a9, type: 3}
   TriggerScreen: {fileID: 0}
   CurrentScreen: {fileID: 0}
-  myid: 0
-  myname: 
   getImage: 0
+--- !u!114 &7409972638240462603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3067882394731362731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c789c644061a5439a53ac4dcea1b92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  categoryId: 0
+  filterManager: {fileID: 0}
 --- !u!1 &3692822005490062947
 GameObject:
   m_ObjectHideFlags: 0
