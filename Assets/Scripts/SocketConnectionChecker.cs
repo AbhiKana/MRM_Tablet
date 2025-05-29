@@ -110,6 +110,21 @@ public class SocketConnectionChecker : MonoBehaviour
         Debug.Log("Tab ID to be sent");
         tcpClientController.SendMessage(data);
     }
+
+    public void SendCloseTabID()
+    {
+        MessageFormat m = new MessageFormat();
+        m.MessageKey = "close_tab_id";
+        m.MessageValue = tabId.ToString();
+
+        string data = JsonUtility.ToJson(m);
+
+        if (tcpClientController == null)
+            tcpClientController = FindObjectOfType<TCP_ClientController>();
+
+        Debug.Log("Tab ID to be sent");
+        tcpClientController.SendMessage(data);
+    }
 }
 
 

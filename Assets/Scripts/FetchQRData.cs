@@ -11,7 +11,7 @@ public class FetchQRData : MonoBehaviour
     
     // Text details info
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
-    [SerializeField] TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
+    [SerializeField] TextMeshProUGUI MarbleDimension, MarbleType, MarbleOrigin, MarbleAvailability, MarblePrice;
     public RawImage CircleImage, TopMarbleImage;
     
     [SerializeField] string fetchedData;
@@ -81,19 +81,22 @@ public class FetchQRData : MonoBehaviour
     // load marble text data after QR scan From Scriptable object
     void LoadMarbleTextData()
     {
-        MarbleName.text = _marbleQrDatascritable._marbleApiData.marbleDetails.marble_name;
-        MarbleDetails.text = _marbleQrDatascritable._marbleApiData.marbleDetails.description;
-        MarbleDimension.text = _marbleQrDatascritable._marbleApiData.marbleDetails.dimension;
-        MarbleMaterial.text = _marbleQrDatascritable._marbleApiData.marbleDetails.material;
-        MarbleFinish.text = _marbleQrDatascritable._marbleApiData.marbleDetails.finish;
+        var marble = _marbleQrDatascritable._marbleApiData.marbleDetails;
+        MarbleName.text =marble.marble_name;
+        MarbleDetails.text = marble.description;
+        MarbleDimension.text =marble.dimension;
+        MarbleType.text = marble.material;
+        MarbleOrigin.text = marble.finish;
+        MarbleAvailability.text = marble.availability.ToString();
+        MarblePrice.text = marble.price + " sq/ft";
     }
     public void LoadMarbleTextData(string marble_name, string description, string dimension, string material, string finish)
     {
         MarbleName.text = marble_name;
         MarbleDetails.text = description;
         MarbleDimension.text = dimension;
-        MarbleMaterial.text = material;
-        MarbleFinish.text = finish;
+        MarbleType.text = material;
+        MarbleOrigin.text = finish;
     }
 
     public void LoadedMarbleImageData(Texture mainTexture, Texture circleImg, Texture[] textures)
