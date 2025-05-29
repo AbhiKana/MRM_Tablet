@@ -112,31 +112,6 @@ public class ShowMarbleDetails : MonoBehaviour
         });
     }
 
-    /*public void DownloadImageInBG()
-    {
-        if (m_Textures == null)
-            m_Textures = new Texture[5];
-
-        for(int i=0; i< m_Textures.Length; i++)
-        {
-            GetDetailImage(marbleDetailsWithCategoryID.texture_img[i], m_Textures[i]);
-        }
-    }
-
-    void GetDetailImage(string url, Texture image)
-    {
-        Debug.Log("BG Image");
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
-        {
-            if (isSucess)
-            {
-                Debug.Log("BG Image 1");
-                image = rawTex;
-            }
-            else
-                Debug.Log("Couldn't fetch image data");
-        });
-    }*/
 
     private static void CheckAllImageLoaded()
     {

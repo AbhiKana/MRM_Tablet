@@ -119,7 +119,7 @@ public class RoomsManager : MonoBehaviour
         CurrentRoomName = name;
         HeadLineDimension.text = CurrentRoomName + " Dimensions";
         OverlayInput.text = "";
-        OverlayInput.placeholder.GetComponent<TMP_Text>().color = Color.gray;
+      //  OverlayInput.placeholder.GetComponent<TMP_Text>().color = Color.gray;
         OverlayInput.Select();
     }
 

@@ -16,7 +16,7 @@ public class SocketConnectionChecker : MonoBehaviour
 
 
     [Header("Tab ID")]
-    private const int tabId = 1;
+    private const int tabId = 3;
     public int GetID()
     {
         return tabId;

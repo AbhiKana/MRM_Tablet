@@ -32,6 +32,8 @@ public class TileDetailsList : MonoBehaviour
             mRM_Details.MarbleDimension.text = mrmDet.dimension;
             mRM_Details.MarbleMaterial.text = mrmDet.material;
             mRM_Details.MarbleFinish.text = mrmDet.finish;
+            mRM_Details.MarbleAvailability.text = mrmDet.availability.ToString();
+            mRM_Details.MarblePrice.text = mrmDet.price + " sq/ft";
             mRM_Details.isSelected.isOn = mrmDet.isSelected;
 
             if (mrmDet.mainTexture != null)

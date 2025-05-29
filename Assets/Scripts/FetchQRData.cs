@@ -90,15 +90,16 @@ public class FetchQRData : MonoBehaviour
         MarbleAvailability.text = marble.availability.ToString();
         MarblePrice.text = marble.price + " sq/ft";
     }
-    public void LoadMarbleTextData(string marble_name, string description, string dimension, string material, string finish)
+    public void LoadMarbleTextData(string marble_name, string description, string dimension, string material, string finish, string availibility, string price)
     {
         MarbleName.text = marble_name;
         MarbleDetails.text = description;
         MarbleDimension.text = dimension;
         MarbleType.text = material;
         MarbleOrigin.text = finish;
+        MarbleAvailability.text = availibility;
+        MarblePrice.text = price + " sq/ft";
     }
-
     public void LoadedMarbleImageData(Texture mainTexture, Texture circleImg, Texture[] textures)
     {
         var marbleDet = _specificMarbleDetails;
@@ -109,7 +110,6 @@ public class FetchQRData : MonoBehaviour
             BgImages[i].texture = textures[i];
         }
     }
-
     // load marble Image data after QR scan From Scriptable object
     void LoadMarbleImageData()
     {
@@ -129,7 +129,6 @@ public class FetchQRData : MonoBehaviour
             }
         }
     }
-
     void StoreTexture()
     {
         Debug.Log("Total Count: " + totalImageCount);
@@ -138,7 +137,6 @@ public class FetchQRData : MonoBehaviour
             boxImageTexture[i] = BgImages[i].texture;
         }
     }
-
     void GetImage(string url, RawImage image)
     {
         requestTC.GetTexture(url, (str, rawTex, isSucess) => 
@@ -161,9 +159,6 @@ public class FetchQRData : MonoBehaviour
                 Debug.Log("Couldn't fetch image data");
         });
     }
-
-    
-
     void GetImageTop(string url, RawImage image)
     {
         requestTC.GetTexture(url, (str, rawTex, isSucess) =>

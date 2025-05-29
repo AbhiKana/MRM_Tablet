@@ -169,22 +169,19 @@ public class BigScreenRoomsControl : MonoBehaviour
     }
 
     // show marble dimension overlay on drop of marle in any room
+  
+
     public void ShowMarbleDimensionOverlay(int M_id, GameObject droppedmarble)
     {
         _isMarbleDimension = true;
         MarbleDimensionOverlay.gameObject.SetActive(true);
         // MarbleDimensionOverlay.SetAsLastSibling();
-        TMP_InputField Inputemp = MarbleDimensionOverlay.GetComponentInChildren<TMP_InputField>();
-        Inputemp.text = "";
-        Inputemp.Select();
-        //make grey
-        Inputemp.placeholder.GetComponent<TMP_Text>().color = Color.gray;
-        Inputemp.GetComponent<DimensionTextValidation>().Marbleid = M_id;
-        Inputemp.GetComponent<DimensionTextValidation>()._droppedMarble = droppedmarble;
-        // move footer marbles scrolle tween down
+
+        MarbleDimensionOverlay.GetComponent<DimensionTextValidation>().Marbleid = M_id;
+        MarbleDimensionOverlay.GetComponent<DimensionTextValidation>()._droppedMarble = droppedmarble;
+        // move footer marbles scroll tween down
         DragMarblesPanel.GetComponent<RectangleTween>().RectMoveDown();
     }
-
 
     // drop marble then save marble data in particular room as per id
     public void SaveMarbleDataInRoom(int marbleid, string _marbleDimension)

@@ -5,7 +5,7 @@ public class MarbleItemController : MonoBehaviour
 {
     [SerializeField] private Button viewButton;
     [SerializeField] private Toggle wishlistToggle;
-    
+
     private ShowMarbleDetails showMarbleDetails;
     LoadImageInBG loadImageInBG;
 
@@ -41,19 +41,19 @@ public class MarbleItemController : MonoBehaviour
     }
     private void GetObjectComponent()
     {
-        if(showMarbleDetails == null) 
-            showMarbleDetails = GetComponent<ShowMarbleDetails>(); 
-        
-        if(loadImageInBG == null)
+        if (showMarbleDetails == null)
+            showMarbleDetails = GetComponent<ShowMarbleDetails>();
+
+        if (loadImageInBG == null)
             loadImageInBG = GetComponent<LoadImageInBG>();
-        
-        if (manager == null) 
+
+        if (manager == null)
             manager = FindAnyObjectByType<UI_Manager>();
 
-        if(getMRMDetails == null)
+        if (getMRMDetails == null)
             getMRMDetails = FindObjectOfType<GetMRMDetails>();
 
-        if(fetchQrData == null) 
+        if (fetchQrData == null)
             fetchQrData = FindObjectOfType<FetchQRData>();
     }
     private void SetToggle()
@@ -78,7 +78,7 @@ public class MarbleItemController : MonoBehaviour
             Debug.LogError("Load Second Time");
             MarbleDetail current_detail = AssignCurrentMarbleDetails();
             Debug.LogError("Check marble name: " + current_detail.marble_name);
-            fetchQrData.LoadMarbleTextData(current_detail.marble_name, current_detail.description, current_detail.dimension, current_detail.material, current_detail.finish);
+            fetchQrData.LoadMarbleTextData(current_detail.marble_name, current_detail.description, current_detail.dimension, current_detail.material, current_detail.finish, current_detail.availability.ToString(), current_detail.price);
             fetchQrData.LoadedMarbleImageData(showMarbleDetails.texture, showMarbleDetails.m_Textures[0], showMarbleDetails.m_Textures);
             getMRMDetails.storeMarbleDetails.SetToggleValue(showMarbleDetails.IsWishlisted);
 
@@ -94,7 +94,7 @@ public class MarbleItemController : MonoBehaviour
         }
         Debug.Log($"Marble Details - Name: {showMarbleDetails.marbleName}");
     }
-    
+
     // Method to handle wishlist toggle
     private void OnWishlistToggled(bool isOn)
     {
@@ -137,12 +137,11 @@ public class MarbleItemController : MonoBehaviour
         showMarbleDetails.IsWishlisted = true;
         if (showMarbleDetails.m_Textures != null && showMarbleDetails.m_Textures.Length == 0)
         {
-            Debug.Log("M_texture is null");
             loadImageInBG.LoadMarbleImageData();
         }
         AddMarbleIntoList();
         Debug.Log(showMarbleDetails.marbleName + " added to wishlist.");
-        
+
         MarbleWithTextDetails m = new MarbleWithTextDetails();
         m.id = showMarbleDetails.tileID;
         m.m_name = showMarbleDetails.marbleName;
@@ -153,7 +152,7 @@ public class MarbleItemController : MonoBehaviour
         getMRMDetails.storeMarbleDetails.RemoveSelectedMarble(showMarbleDetails.tileID);
 
         Debug.Log(showMarbleDetails.marbleName + " removed from wishlist.");
-       // WishlistManager.Instance.RemoveMarble(marbleName);
+        // WishlistManager.Instance.RemoveMarble(marbleName);
     }
     private void AddMarbleIntoList()
     {
@@ -165,7 +164,7 @@ public class MarbleItemController : MonoBehaviour
         specificMarbleDetails.id = marble.id;
 
         //getMRMDetails.LoadMarbleDetails(marble.id.ToString());
-        specificMarbleDetails.category_id= marble.category_id;
+        specificMarbleDetails.category_id = marble.category_id;
         specificMarbleDetails.availability = marble.availability;
         specificMarbleDetails.marble_name = marble.marble_name;
         specificMarbleDetails.description = marble.description;
@@ -193,35 +192,4 @@ public class MarbleItemController : MonoBehaviour
             detailViewer.list.Add(specificMarbleDetails);
         }
     }
-
-    /*void LoadMarbleImageData()
-    {
-        var marbleDet = showMarbleDetails.marbleDetailsWithCategoryID;
-        if (marbleDet.texture_img.Count > 0)
-        {
-            GetImage(marbleDet.texture_img[0], 0); // Using Texture instead of RawImage
-
-            for (int i = 0; i < marbleDet.texture_img.Count; i++)
-            {
-                GetImage(marbleDet.texture_img[i], i);
-            }
-        }
-    }
-    WWWRequestTC requestTC;
-
-    void GetImage(string url, int textureIndex)
-    {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
-        {
-            if (isSucess)
-            {
-                TextureScale.Bilinear(rawTex, 200, 200);
-                showMarbleDetails.m_Textures[textureIndex] = rawTex;
-            }
-            else
-            {
-                Debug.Log("<color=red>Couldn't fetch image data</color>");
-            }
-        });
-    }*/
 }

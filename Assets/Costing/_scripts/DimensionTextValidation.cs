@@ -8,133 +8,70 @@ using UnityEngine.Events;
 public class DimensionTextValidation : MonoBehaviour
 {
     // Start is called before the first frame update
-    public TMP_InputField _inputDimension;
+    public TMP_InputField _inputDimension1;
+    public TMP_InputField _inputDimension2;
     public int Marbleid = 0;
     public GameObject _droppedMarble;
-    private string _previousValidText = "";
-    private bool _isFormatting = false;
-
+   
     public UnityEvent DimensionSuccess;
     public UnityEvent ErrorInSuccess;
+
+    // text dimesion of marble 
+    public string TextDimesion2;
+
+  
     void Start()
     {
-        _inputDimension = this.GetComponent<TMP_InputField>();
-        // Debug.Log(ValidateDimensionFormatWithDecimals("10x20 ft"));
+        TextDimesion2 = "";
+    }
+    private void OnEnable()
+    {
+        _inputDimension1.text = "";
+        _inputDimension2.text = "";
+        _inputDimension1.Select();
+        _inputDimension1.placeholder.GetComponent<TMP_Text>().color = new Color(0.196f, 0.196f, 0.196f);
+        _inputDimension2.placeholder.GetComponent<TMP_Text>().color = new Color(0.196f, 0.196f, 0.196f);
     }
 
-    public void HandleDimensionInput()
+    // for each boxes check not empty and only float or integer 
+    // keep  content text type is decimal
+    // then combine both values with x like 12 x 12
+    public static bool ValidateInputDimension(TMP_InputField _inputtext)
     {
-        if (_isFormatting) return;
-
-        _isFormatting = true;
-
-        // Work directly with the current text
-        string currentText = _inputDimension.text;
-
-        // Skip formatting if user is deleting
-        if (!IsUserDeleting(currentText))
+        if ((int.TryParse(_inputtext.text, out int number) && number > 0) || (float.TryParse(_inputtext.text, out float number2) && number2 > 0f))
         {
-            string formattedText = FormatDimensionInput(currentText);
-
-            if (IsPartialInputValid(formattedText))
-            {
-                _inputDimension.text = formattedText;
-                //_previousValidText = formattedText;              
-                CheckdimensionsEntry();
-            }
-            else
-            {
-                _inputDimension.text = _previousValidText;
-            }
-        }
-        _isFormatting = false;
-    }
-    private bool IsUserDeleting(string currentText)
-    {
-        return currentText.Length < _previousValidText.Length;
-    }
-
-
-    private string FormatDimensionInput(string input)
-    {
-        string cleaned = Regex.Replace(input, @"[^\d.x]", "");
-
-        // Auto-insert 'x' logic
-        if (!cleaned.Contains("x") && cleaned.Length > 0 &&
-            !(cleaned.Contains(".") && cleaned.EndsWith(".")))
-        {
-            int insertPos = cleaned.Contains(".") ?
-                Mathf.Min(cleaned.IndexOf('.') + 2, cleaned.Length) :
-                cleaned.Length;
-            cleaned = cleaned.Insert(insertPos, "x");
-        }
-
-        return cleaned;
-    }
-
-    private bool IsPartialInputValid(string input)
-    {
-        // Allow empty string for backspace handling and partial inputs, but not "x" alone
-        if (string.IsNullOrEmpty(input)) return true;
-
-        string partialPattern = @"^(?!(x)$)(\d+)?(\.\d*)?(x(\d+)?(\.\d*)?)?$";
-        return Regex.IsMatch(input, partialPattern);
-    }
-
-    public bool ValidateDimensionFormatWithDecimals(string input)
-    {
-        // string pattern = @"^\d+(\.\d+)?x\d+(\.\d+)?\s*ft$"; // ft
-        //  string pattern = @"^\d+(\.\d+)?x\d+(\.\d+)?$"; // allows 0
-        string pattern = @"^(?!.*\b0(\.0+)?\b)[1-9]\d*(\.\d+)?x[1-9]\d*(\.\d+)?$";
-        return Regex.IsMatch(input, pattern, RegexOptions.IgnoreCase);
-    }
-
-    public void CheckdimensionsEntry()
-    {
-        if (string.IsNullOrEmpty(_inputDimension.text))
-        {
-            DimensionValidate();
+            _inputtext.placeholder.GetComponent<TMP_Text>().color = new Color(0.196f, 0.196f, 0.196f); // Default TMPro placeholder color
+            //go ahead
+            return true;
         }
         else
         {
-
-            if (ValidateDimensionFormatWithDecimals(_inputDimension.text))
-            {
-                ResetPlaceholderColor();
-                if (BigScreenRoomsControl.Bigroom._isMarbleDimension)
-                {
-                    // enable continuebtn
-
-                }
-                else
-                {
-                    RoomsManager.RoomInstance.CurrentDimension = _inputDimension.text + "ft";
-                }
-                DimensionSuccess?.Invoke();
-
-            }
-            else
-            {
-                DimensionValidate();
-            }
+            _inputtext.placeholder.GetComponent<TMP_Text>().color = Color.red;
+            return false;
         }
+
     }
-    private void ResetPlaceholderColor()
+
+    // check marble dimesion both  inputTextbox entry
+    public void CheckBothtextEntry()
     {
-        _inputDimension.placeholder.GetComponent<TMP_Text>().color =
-            new Color(0.196f, 0.196f, 0.196f); // Default TMPro color
-    }
-    public void DimensionValidate()
-    {
-        //_inputDimension.text = string.Empty;
-        _inputDimension.placeholder.GetComponent<TMP_Text>().color = Color.red;
-        ErrorInSuccess?.Invoke();
-    }
+        if (ValidateInputDimension(_inputDimension1) && ValidateInputDimension(_inputDimension2))
+        {
+            TextDimesion2 = _inputDimension1.text + "x" + _inputDimension2.text;
+          
+            DimensionSuccess?.Invoke();
+        }
+        else
+        {
+            ErrorInSuccess?.Invoke();
+        }
+    }     
+    
 
     // on click of continue button of marble dimesion overlay 
     public void OnclickContinueDimesion()
     { //send marble id and dimesions entered to save marble data in room
-        BigScreenRoomsControl.Bigroom.SaveMarbleDataInRoom(Marbleid, _inputDimension.text);
+        BigScreenRoomsControl.Bigroom.SaveMarbleDataInRoom(Marbleid, TextDimesion2);
         BigScreenRoomsControl.Bigroom.MarbleDimensionOverlay.gameObject.SetActive(false);
         BigScreenRoomsControl.Bigroom._isMarbleDimension = false;
     }
@@ -151,5 +88,7 @@ public class DimensionTextValidation : MonoBehaviour
         // BigScreenRoomsControl.Bigroom.RemoveMarbleDataInRoom(Marbleid);
         BigScreenRoomsControl.Bigroom._isMarbleDimension = false;
     }
-    // _inputDimension.placeholder.GetComponent<TMP_Text>().color = new Color(0.196f, 0.196f, 0.196f); // Default TMPro placeholder color
+  
+
+         
 }

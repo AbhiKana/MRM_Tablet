@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class MRM_Details : MonoBehaviour
 {
     public TextMeshProUGUI MarbleName, MarbleDescription;
-    public TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish;
+    public TextMeshProUGUI MarbleDimension, MarbleMaterial, MarbleFinish, MarbleAvailability, MarblePrice;
     public RawImage CircleImage, TopMarbleImage;
     public RawImage[] BgImages;
     public Toggle isSelected;

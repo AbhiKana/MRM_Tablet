@@ -53,7 +53,7 @@ public class ConnectViaInput : MonoBehaviour
     private void Start()
     {
         ConnectToServer();
-        TCP_ClientController.onServerDisconnect += ReconnectToServer;
+        //TCP_ClientController.onServerDisconnect += ReconnectToServer;
     }
     public void SetIP(TMP_InputField inputText)
     {
@@ -96,7 +96,7 @@ public class ConnectViaInput : MonoBehaviour
 
     private void OnDestroy()
     {
-        TCP_ClientController.onServerDisconnect -= ReconnectToServer;
+        //TCP_ClientController.onServerDisconnect -= ReconnectToServer;
     }
 
     void ReconnectToServer()
