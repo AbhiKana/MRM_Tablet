@@ -10,8 +10,6 @@ public class ConnectViaInput : MonoBehaviour
     [Header("Start as")]
 
     public ClientServerSelector clientServerSelector;
-
-
     
     private bool isConnectedToServer;
     public bool IsConnectedToServer
@@ -53,7 +51,7 @@ public class ConnectViaInput : MonoBehaviour
     private void Start()
     {
         ConnectToServer();
-        //TCP_ClientController.onServerDisconnect += ReconnectToServer;
+        TCP_ClientController.OnMessageReceived += ReconnectToServer;
     }
     public void SetIP(TMP_InputField inputText)
     {
@@ -79,7 +77,6 @@ public class ConnectViaInput : MonoBehaviour
             ipKey = PlayerPrefs.GetString(nameof(ipKey));
             InputPanel.GetComponentInChildren<TMP_InputField>().text = ipKey;
             clientServerSelector.GetSelectType();
-            //InitializeClient();
         }
         else
         {
@@ -96,14 +93,18 @@ public class ConnectViaInput : MonoBehaviour
 
     private void OnDestroy()
     {
-        //TCP_ClientController.onServerDisconnect -= ReconnectToServer;
+        //TCP_ClientController.OnServerDisconnected -= ReconnectToServer;
     }
 
-    void ReconnectToServer()
+    void ReconnectToServer(string msg)
     {
-        InvokeRepeating("InitializeClient", 3f, 3f);
-        IsConnected = false;
-        IsReconnecting = true;
+        if (msg.Contains("Server Disconnected"))
+        {
+            IsConnected = false;
+            IsReconnecting = true;
+            Debug.Log("Reconnect to server");
+            InvokeRepeating(nameof(InitializeClient), 3f, 3f);
+        }
     }
     private void ConnectToServer()
     {
@@ -115,26 +116,36 @@ public class ConnectViaInput : MonoBehaviour
                 GetIPFrom_InputField();
             }
         }
-        TCP_ClientController.onConnect += ClientConnected;
+        TCP_ClientController.OnConnect += ClientConnected;
     }
 
     [ContextMenu("Reconnect")]
     public void InitializeClient()
     {
-        Debug.Log("Initialize");
         if (clientServerSelector.GetClientController() != null)
         {
-            Debug.Log("Through streaming assets");
             clientServerSelector.GetClientController().GetComponent<TCP_ClientController>()._Initialze();
         }
     }
+
     public void ClientConnected()
     {
-        IsConnected = true;
-        IsConnectedToServer = true;
+        UpdateConnectionStatus();
+        OnConnectToserver?.Invoke();
     }
 
-    protected virtual void Update()
+    private void UpdateConnectionStatus()
+    {
+        IsConnected = true;
+
+        if (IsReconnecting)
+        {
+            CancelInvoke("InitializeClient");
+            IsReconnecting = false;
+        }
+    }
+
+    /*protected virtual void Update()
     {
         if (IsConnected)
         {
@@ -148,16 +159,11 @@ public class ConnectViaInput : MonoBehaviour
                 IsReconnecting = false;
             }
         }
-    }
+    }*/
 
     public void EnableInputField(bool val)
     {
         InputPanel.SetActive(val);
-    }
-
-    public void OnClientDisconnect()
-    {
-
     }
 
     public void QuitApp()

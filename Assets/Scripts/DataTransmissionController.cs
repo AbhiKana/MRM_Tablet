@@ -80,7 +80,7 @@ public abstract class DataTransmissionController : MonoBehaviour
 
     protected virtual void SaveUserData(EmailValidation email)
     {
-        Debug.Log("Get response from CMS");
+        Debug.Log("Get response from CMS"); 
         if (!userData.storeUserData.success)
         {
 

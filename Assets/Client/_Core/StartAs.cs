@@ -24,21 +24,20 @@ public class StartAs : MonoBehaviour
     public void Start()
     {
         ConnectToServer();
-        TCP_ClientController.onServerDisconnect += ReconnectToServer;
+        TCP_ClientController.OnServerDisconnected += ReconnectToServer;
     }
 
     private void OnDestroy()
     {
-        TCP_ClientController.onServerDisconnect -= ReconnectToServer;
+        TCP_ClientController.OnServerDisconnected -= ReconnectToServer;
         
     }
  
     void ReconnectToServer()
     {
-        InvokeRepeating("InitializeClient", 3f, 3f);
+        InvokeRepeating(nameof(InitializeClient), 3f, 3f);
         IsConnected = false;
         IsReconnecting = true;
-
     }
     private void ConnectToServer()
     {
@@ -56,7 +55,8 @@ public class StartAs : MonoBehaviour
                     Debug.LogError("Failed to load IP from file. Please check the file or provide a valid IP.");
                 }
         }
-        TCP_ClientController.onConnect += ClientConnected;
+
+        TCP_ClientController.OnConnect += ClientConnected;
     }
 
     [ContextMenu("Reconnect")]
@@ -72,9 +72,15 @@ public class StartAs : MonoBehaviour
     public void ClientConnected()
     {
         IsConnected = true;
+
+        if (IsReconnecting)
+        {
+            CancelInvoke("InitializeClient");
+            IsReconnecting = false;
+        }
     }
 
-    protected virtual void Update()
+    /*protected virtual void Update()
     {
         if (IsConnected)
         {
@@ -85,12 +91,7 @@ public class StartAs : MonoBehaviour
                 IsReconnecting = false;
             }
         }
-    }
-
-    public void OnClientDisconnect()
-    {
-        //UI_Status(true, false);
-    }
+    }*/
 
     public void QuitApp()
     {

@@ -20,8 +20,9 @@ public class TCP_ClientController : MonoBehaviour
     public bool _IsMessageReceived;
     bool isRunning = true;
 
-    public static UnityAction onConnect;
-    public static UnityAction onServerDisconnect;
+    public static UnityAction OnConnect;
+    public static UnityAction OnServerDisconnected;
+    public static UnityAction<string> OnMessageReceived;
     public void _Initialze()
     {
         Debug.Log("Client Started");
@@ -30,14 +31,15 @@ public class TCP_ClientController : MonoBehaviour
         connectViaInput = FindFirstObjectByType<ConnectViaInput>();
         ConnectToServer();
     }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SendMessage("Check connection");
         }
-        //Do some stuff after receiving message
-        if (_IsMessageReceived)
+
+        /*if (_IsMessageReceived)
         {
             Debug.Log("client: " + MsgFromServer);
             _status.ConnectedClientList(MsgFromServer);
@@ -49,7 +51,8 @@ public class TCP_ClientController : MonoBehaviour
 
             MsgFromServer = "";
             _IsMessageReceived = false;
-        }
+        }*/
+
 
         //Close TCP connections
         if (!isRunning)
@@ -57,7 +60,7 @@ public class TCP_ClientController : MonoBehaviour
             Thread.Sleep(100);
             if (tcpClient != null && tcpClient.Connected)
             {
-                tcpClient.Close(); 
+                tcpClient.Close();
                 Debug.Log("Server stopped listening.");
             }
         }
@@ -66,15 +69,47 @@ public class TCP_ClientController : MonoBehaviour
     //Connect to server
     private void ConnectToServer()
     {
+        string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
+        int port = 8052;
+
+        if (!string.IsNullOrEmpty(ip) && Connect(ip, port))
+        {
+            try
+            {
+                clientThread = new Thread(new ThreadStart(AttemptConnection));
+                clientThread.IsBackground = true;
+                clientThread.Start();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Client thread start exception: " + e);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("IP is null or connection failed.");
+        }
+    }
+
+    private bool Connect(string ip, int port)
+    {
         try
         {
-            clientThread = new Thread(new ThreadStart(AttemptConnection));
-            clientThread.IsBackground = true;
-            clientThread.Start();
+            tcpClient = new TcpClient();
+            tcpClient.Connect(ip, port);
+            Debug.Log("Connected to server: " + ip + ":" + port);
+
+            UnityMainThreadDispatcher.Enqueue(() =>
+            {
+                OnConnect?.Invoke();
+            });
+
+            return true;
         }
-        catch(Exception e)
+        catch (SocketException ex)
         {
-            Debug.Log("On Client connect exception: " + e);
+            Debug.LogError("Connection failed: " + ex.Message);
+            return false;
         }
     }
 
@@ -83,54 +118,60 @@ public class TCP_ClientController : MonoBehaviour
     {
         myIP = GetIPAddress();
         Debug.Log("MY IP: " + myIP);
+
+        byte[] buffer = new byte[1024];
+        isRunning = true;
+
         try
         {
-            if (startAs != null)
+            using (NetworkStream networkStream = tcpClient.GetStream())
             {
-                tcpClient = new TcpClient(startAs.ipKey, 8052);
-                Debug.Log("Attempting Connection via key");
-            }
+                int byteLength;
 
-            if(connectViaInput != null)
-            {
-                tcpClient = new TcpClient(connectViaInput.ipKey,  8052);
-                Debug.Log("Attempting Connection via input");
-            }
-
-            byte[] buffer = new byte[1024];
-            isRunning = true;
-            while (isRunning)
-            {
-                using (NetworkStream networkStream = tcpClient.GetStream())
+                while (isRunning && networkStream.CanRead)
                 {
-                    int byteLength;
-                    //Debug.Log("Get Stream");
-                    while (isRunning && networkStream.CanRead)
+                    if ((byteLength = networkStream.Read(buffer, 0, buffer.Length)) != 0)
                     {
-                        if ((byteLength = networkStream.Read(buffer, 0, buffer.Length)) != 0)
+                        if (byteLength == 0)
                         {
-                            var dataToBeCopy = new byte[byteLength];
-                            Array.Copy(buffer, 0, dataToBeCopy, 0, byteLength);
-                            string serverMessage = Encoding.ASCII.GetString(dataToBeCopy);
-                            MsgFromServer = serverMessage;
-                            _IsMessageReceived = true;
-                            Debug.Log("Message from server: " + serverMessage);
-                            serverMessage = "";
-                            onConnect?.Invoke();
+                            HandleServerDisconnection(byteLength);
+                            break;
                         }
-                    }                    
+
+                        byte[] dataToBeCopy = new byte[byteLength];
+                        Array.Copy(buffer, 0, dataToBeCopy, 0, byteLength);
+                        string serverMessage = Encoding.ASCII.GetString(dataToBeCopy);
+                        Debug.Log("Message from server: " + serverMessage);
+
+                        UnityMainThreadDispatcher.Enqueue(() =>
+                        {
+                            OnMessageReceived?.Invoke(serverMessage);
+                        });
+                    }
                 }
             }
-            tcpClient.Close();
         }
-        catch(SocketException e)
+        catch (SocketException e)
         {
             socketException = e.ToString();
-            //isRunning = false;  
-            //DisconnectClient(tcpClient);
-            //ConnectToServer();
-            Debug.Log(" OnConnect: " +e.ToString());
-        }       
+            Debug.Log("OnConnect: " + e.ToString());
+        }
+        finally
+        {
+            tcpClient?.Close();
+            isRunning = false;
+        }
+    }
+
+    private void HandleServerDisconnection(int byteLength)
+    {
+        Debug.LogWarning("Server disconnected or closed.");
+        isRunning = false;
+
+        UnityMainThreadDispatcher.Enqueue(() =>
+        {
+            OnServerDisconnected?.Invoke();
+        });
     }
 
     //Close TCP connections
