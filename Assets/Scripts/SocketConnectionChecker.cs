@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class MessageFormat
@@ -9,17 +10,13 @@ public class MessageFormat
 
 public class SocketConnectionChecker : MonoBehaviour
 {
-    [SerializeField] GameObject marbleUploader;
     TCP_ClientController tcpClientController;
-
     [SerializeField] ConnectViaInput connectViaInput;
+    [SerializeField] UserData userData;
 
-
-    [Header("Tab ID")]
-    private const int tabId = 3;
-    public int GetID()
+    private void Start()
     {
-        return tabId;
+        userData = FindObjectOfType<UserData>();
     }
     public void CheckConnectionStatus()
     {
@@ -28,10 +25,6 @@ public class SocketConnectionChecker : MonoBehaviour
             Debug.Log("Go to next page");
             Invoke(nameof(SendDataToConfig), 1f);
         }
-        else
-        {
-            Debug.Log("Connect to server first");
-        }
     }
 
     public void SendDataToConfig()
@@ -39,8 +32,17 @@ public class SocketConnectionChecker : MonoBehaviour
         if(tcpClientController == null)
             tcpClientController = FindObjectOfType<TCP_ClientController>();
 
-        if (marbleUploader != null)
+        if (userData != null)
         {
+            if (!string.IsNullOrEmpty(userData.storeUserData.user_id))
+            {
+                SendTabID();
+                SendUserData();
+            }
+        }
+        /*if (marbleUploader != null)
+        {
+            
             Debug.Log("Check data is filled or empty");
             Configurator c = marbleUploader.GetComponent<Configurator>();
 
@@ -79,12 +81,11 @@ public class SocketConnectionChecker : MonoBehaviour
                     SendUserData();
                 }
             }
-        }
+        }*/
     }
 
     private void SendUserData()
     {
-        UserData userData = FindObjectOfType<UserData>();
         if (userData.storeUserData.success)
         {
             Debug.Log("Sending Info to Multitaction");
@@ -100,7 +101,7 @@ public class SocketConnectionChecker : MonoBehaviour
     {
         MessageFormat m = new MessageFormat();
         m.MessageKey = "tab_id";
-        m.MessageValue = tabId.ToString();
+        m.MessageValue = Tab_ID.tabId.ToString();
 
         string data = JsonUtility.ToJson(m);
         
@@ -115,7 +116,7 @@ public class SocketConnectionChecker : MonoBehaviour
     {
         MessageFormat m = new MessageFormat();
         m.MessageKey = "close_tab_id";
-        m.MessageValue = tabId.ToString();
+        m.MessageValue = Tab_ID.tabId.ToString();
 
         string data = JsonUtility.ToJson(m);
 

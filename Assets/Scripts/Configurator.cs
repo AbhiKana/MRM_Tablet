@@ -1,7 +1,4 @@
-using System.Text;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class Configurator : DataTransmissionController
 {

@@ -18,7 +18,6 @@ public abstract class DataTransmissionController : MonoBehaviour
     protected WWWRequestTC requestTC;
     protected GetAllMarbles getAllMarbles;
     protected SelectionPanelController SelectionPanelController;
-    protected SocketConnectionChecker socketConnectionChecker;
 
     public string data;
     public bool OnConfigButtonClick;
@@ -30,7 +29,6 @@ public abstract class DataTransmissionController : MonoBehaviour
     {
         requestTC = new WWWRequestTC();
         manager = FindAnyObjectByType<UI_Manager>();
-        socketConnectionChecker = GetComponent<SocketConnectionChecker>();
         EventHandler();
     }
 
@@ -62,7 +60,6 @@ public abstract class DataTransmissionController : MonoBehaviour
 
             emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(() =>
             {
-                Debug.LogError("Send data to CMS through email 2");
                 OnDataSave?.Invoke();
             });
         }
@@ -70,13 +67,11 @@ public abstract class DataTransmissionController : MonoBehaviour
         {
             if (emailValidation.isCredentialsEntered)
             {
-                Debug.LogError("Send data to CMS through email 1");
                 SaveUserData(emailValidation);
                 OnDataSave?.Invoke();
             }
             else
             {
-                Debug.LogError("Send data to CMS through email 2 & 2");
                 SaveUserData(emailValidation2);
                 OnDataSave?.Invoke();
             }
@@ -95,9 +90,9 @@ public abstract class DataTransmissionController : MonoBehaviour
             form.AddField("name", email.NameinputField.text);
             form.AddField("email", email.EmailinputField.text);
             form.AddField("marble_id", GetSelectedMarble_ID());
+            form.AddField("tab_id", Tab_ID.GetID());
 
-            if (socketConnectionChecker != null)
-                form.AddField("tab_id", socketConnectionChecker.GetID());
+            //if (socketConnectionChecker != null)
 
             Debug.Log("Get response from CMS 1");
             requestTC.Post(form, url, (Data, isSuccess) =>
@@ -116,10 +111,6 @@ public abstract class DataTransmissionController : MonoBehaviour
                         UpdateUser(messageFormat);
                     else
                         data = JsonUtility.ToJson(messageFormat);
-                }
-                else
-                {
-
                 }
             });
         }
@@ -144,7 +135,7 @@ public abstract class DataTransmissionController : MonoBehaviour
         WWWForm updateForm = new WWWForm();
         updateForm.AddField("user_id", userData.storeUserData.user_id);
         updateForm.AddField("marble_id", GetSelectedMarble_ID());
-        updateForm.AddField("tab_id", socketConnectionChecker.GetID());
+        updateForm.AddField("tab_id", Tab_ID.GetID());
         requestTC.Post(updateForm, updateUrl, (UpdateData, isSucess) =>
         {
             if (isSucess)
