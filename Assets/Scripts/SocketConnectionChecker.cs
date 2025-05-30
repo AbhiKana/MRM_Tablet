@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 [System.Serializable]
 public class MessageFormat
@@ -40,48 +39,6 @@ public class SocketConnectionChecker : MonoBehaviour
                 SendUserData();
             }
         }
-        /*if (marbleUploader != null)
-        {
-            
-            Debug.Log("Check data is filled or empty");
-            Configurator c = marbleUploader.GetComponent<Configurator>();
-
-            if (c != null) 
-            {
-                Debug.Log("Config is not null");
-                string dataToSend = c.data;
-                if (!string.IsNullOrEmpty(dataToSend))
-                {
-                    Debug.LogError("Data to send " + dataToSend);
-                    SendTabID();
-                    tcpClientController.SendMessage(dataToSend);
-                }
-                else
-                {
-                    Debug.Log("Configurator uploader is empty");
-                    SendUserData();
-                }
-            }
-
-
-            MarbleUploader m = marbleUploader.GetComponent<MarbleUploader>();
-            if (m != null)
-            {
-                Debug.Log("Marble uploader is not null");
-                string dataToSend = m.data;
-                if (!string.IsNullOrEmpty(dataToSend))
-                {
-                    SendTabID();
-                    Debug.LogError("Data to send "+dataToSend);
-                    tcpClientController.SendMessage(dataToSend);
-                }
-                else
-                {
-                    Debug.Log("Message uploader is empty");
-                    SendUserData();
-                }
-            }
-        }*/
     }
 
     private void SendUserData()

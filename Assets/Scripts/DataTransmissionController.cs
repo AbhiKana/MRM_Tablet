@@ -68,12 +68,12 @@ public abstract class DataTransmissionController : MonoBehaviour
             if (emailValidation.isCredentialsEntered)
             {
                 SaveUserData(emailValidation);
-                OnDataSave?.Invoke();
+               // OnDataSave?.Invoke();
             }
             else
             {
                 SaveUserData(emailValidation2);
-                OnDataSave?.Invoke();
+               // OnDataSave?.Invoke();
             }
         }
     }
@@ -111,6 +111,9 @@ public abstract class DataTransmissionController : MonoBehaviour
                         UpdateUser(messageFormat);
                     else
                         data = JsonUtility.ToJson(messageFormat);
+
+
+                    OnDataSave?.Invoke();
                 }
             });
         }
