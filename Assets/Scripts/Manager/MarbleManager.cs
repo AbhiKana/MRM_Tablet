@@ -39,7 +39,7 @@ public static class MarbleManager
         {
             if (details.tileNameStr == marbleName)
             {
-                Debug.Log($"Removing marble object: {details.tileNameStr}");
+                //Debug.Log($"Removing marble object: {details.tileNameStr}");
                 selectionPanelController.availableTile.Remove(details);
                 break;
             }

@@ -3,9 +3,9 @@ using UnityEngine;
 public class SelectionPanelController : MonoBehaviour
 {
     [SerializeField] StoreMarbleDetails storeMarbleDetails;
-    [SerializeField] GameObject tilePrefab;
     [SerializeField] Transform parentObjectToSpawn;
-
+    [SerializeField] GameObject tilePrefab;
+    
     [SerializeField] int noof_marble;
 
     //Marble list

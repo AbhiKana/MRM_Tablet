@@ -132,7 +132,7 @@ public class UI_Manager : MonoBehaviour
 
         gameObjectsList.Clear();
         scrollSnap.ChildObjects = gameObjectsList.ToArray();
-        Debug.Log("Child count: " + scrollSnap.ChildObjects.Length);
+        //Debug.Log("Child count: " + scrollSnap.ChildObjects.Length);
     }
 
     public void ResetchildObjLength()

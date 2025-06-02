@@ -3,12 +3,12 @@ using UnityEngine.Events;
 
 public class LoadImageInBG : MonoBehaviour
 {
-    private ShowMarbleDetails showMarbleDetails;
+    [HideInInspector]public ShowMarbleDetails showMarbleDetails;
     WWWRequestTC requestTC;
 
     int totalImageCount, downlaodedImageCount;
 
-    UnityEvent OnBGImageDownload = new UnityEvent();
+    public UnityEvent OnBGImageDownload = new UnityEvent();
 
     void Start()
     {

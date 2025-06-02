@@ -29,7 +29,9 @@ public class SpecificMarbleDetails
 public class StoreMarbleDetails : MonoBehaviour
 {
     #region Variables
+    public TileDetailsList tileDetailsList;
     public MarbleQRDATA _marbleQrDatascritable;
+    public GameObject loader;
     [SerializeField] FetchQRData fetchQRData;
     [SerializeField] Toggle toggle;
     [SerializeField] RawImage topMarbleData;
@@ -37,7 +39,7 @@ public class StoreMarbleDetails : MonoBehaviour
     public SpecificMarbleDetails marbleDetails = new SpecificMarbleDetails();
 
     public List<SpecificMarbleDetails> list;
-    public List<SpecificMarbleDetails> loadedMarbles;
+    public List<ShowMarbleDetails> listOfMarbleDetails;
     [HideInInspector] public List<MarbleDetails> costCalculatorList;
 
     private bool ignoreToggleEvent = false;
@@ -48,7 +50,7 @@ public class StoreMarbleDetails : MonoBehaviour
     private void Start()
     {
         OnToggleClick();
-
+        tileDetailsList = FindObjectOfType<TileDetailsList>();
         //SelectionTileDetails.OnMarbleDeselected.AddListener(RemoveMarble);
         fetchQRData.OnDataLoaded.AddListener(() =>
         {
@@ -135,8 +137,6 @@ public class StoreMarbleDetails : MonoBehaviour
             }
         }
     }
-
-
     public void StoreDataInSriptable(SpecificMarbleDetails s)
     {
         var details = _marbleQrDatascritable._marbleApiData.marbleDetails;
@@ -194,7 +194,6 @@ public class StoreMarbleDetails : MonoBehaviour
             category_id = marbleDetails.category_id,
             id = marbleDetails.id,
             isSelected = val
-            
         };
     }
 
@@ -219,10 +218,22 @@ public class StoreMarbleDetails : MonoBehaviour
         {
             if (m.id == id)
             {
+                //listOfMarbleDetails.Remove(m)
                 list.Remove(m);
                 break;
             }
         }
+
+        foreach(ShowMarbleDetails show in listOfMarbleDetails)
+        {
+            if(show.tileID == id)
+            {
+                listOfMarbleDetails.Remove(show);
+                break;
+            }
+        }
+
+        tileDetailsList.RemoveLoadedMarbleFromList(id);
     }
     public void RemoveMarble(int index)
     {

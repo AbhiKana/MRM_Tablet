@@ -80,7 +80,7 @@ public class MarbleLoader : MonoBehaviour
             for (int i = 0; i < showMarbleDetails.Count; i++)
             {
                 showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
-                Debug.Log("------------------" + mDetails[i].description);
+                //Debug.Log("------------------" + mDetails[i].description);
                 showMarbleDetails[i].SetData();
             }
         }

@@ -61,7 +61,7 @@ public class ShowMarbleDetails : MonoBehaviour
     {
         Debug.Log("Before Assign check name: " + gameObject.name);
         IsWishlisted = val;
-        syncMarbleDetails.SyncMarbleWishlistedValue(this, syncMarbleDetails.gridMarbles);
+        syncMarbleDetails.SyncMarbleWishlistedValue(this, syncMarbleDetails.gridMarbles, IsWishlisted);
     }
     public void SetImage(Texture t)
     {

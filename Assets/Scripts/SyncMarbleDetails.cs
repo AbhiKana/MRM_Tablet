@@ -63,14 +63,18 @@ public class SyncMarbleDetails : MonoBehaviour
             }
         });
     }
-    public void SyncMarbleWishlistedValue(ShowMarbleDetails source, ShowMarbleDetails[] marbles)
+    public void SyncMarbleWishlistedValue(ShowMarbleDetails source, ShowMarbleDetails[] marbles, bool val)
     {
-        Debug.Log("Iswishlist to be on: "+ source.ToString());
 
         foreach (ShowMarbleDetails show in marbles)
         {
-            if(show.tileID==  source.tileID)
-                show.IsWishlisted = source.IsWishlisted;
+            //Debug.Log("Iswishlist to be on: " + source.ToString());
+            if (show.tileID == source.tileID)
+            {
+                //Debug.LogError("--: " + source.IsWishlisted);
+                show.IsWishlisted = val;
+                return;
+            }
         }
         Debug.Log($"Marble {source.marbleName} synced between Grid and Marquee");
     }
@@ -86,8 +90,7 @@ public class SyncMarbleDetails : MonoBehaviour
                 show.StoreRoomTextures(data);
                 //show.IsWishlisted = source.IsWishlisted;
             }
-        }
-        
+        }      
 
         /*if (marqueeMarbles[i].m_Textures.Length < 1)
         {

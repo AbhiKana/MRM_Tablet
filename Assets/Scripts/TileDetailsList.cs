@@ -1,20 +1,94 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TileDetailsList : MonoBehaviour
 {
+    UI_Manager uI_Manager;
     [SerializeField] StoreMarbleDetails storeMarbleDetails;
     [SerializeField] Transform parentObjectToSpawn;
     [SerializeField] GameObject tilePrefab;
 
     [SerializeField] int noof_marble;
-    public void SpawnMarbleDetailsList()
+    public int noof_imagedownload;
+    [SerializeField] bool isNewImageAdded; 
+
+    [SerializeField] List<LoadImageInBG> loadImageInBGs = new List<LoadImageInBG>();
+
+    private void Start()
     {
-        noof_marble = storeMarbleDetails.list.Count;
+        uI_Manager = FindObjectOfType<UI_Manager>();
+    }
+
+    private void HandleLoading()
+    {
+        noof_imagedownload++;
+
+        if(noof_imagedownload == noof_marble)
+        {
+            storeMarbleDetails.loader.gameObject.SetActive(false);
+            isNewImageAdded = false;
+            SpawnMarbleDetails();
+            //RemoveLoadedMarbleFromList();
+        }
+    }
+
+    public void RemoveLoadedMarbleFromList(int id)
+    {
+        foreach (LoadImageInBG show in loadImageInBGs)
+        {
+            if (show.showMarbleDetails.tileID == id)
+            {
+                loadImageInBGs.Remove(show);
+                break;
+            }
+        }
+    }
+
+    private void SpawnMarbleDetails()
+    {
         for (int i = 0; i < noof_marble; i++)
         {
             var mrmDet = storeMarbleDetails.list[i];
             AssignData_OnLoad(mrmDet);
         }
+
+        uI_Manager.RefreshList();
+    }
+
+    public void SpawnMarbleDetailsList()
+    {
+        Debug.Log("Spawn list of marbles");
+        noof_marble = storeMarbleDetails.list.Count;
+
+        //if(noof_imagedownload != 0)
+        //noof_imagedownload = 0;
+        for (int i = 0; i < noof_marble; i++)
+        {
+            var details = storeMarbleDetails.list[i].textures;
+            if (details != null && details.Length == 0)
+            {
+                storeMarbleDetails.loader.gameObject.SetActive(true);
+                LoadImageInBG loadImageInBG = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
+                loadImageInBG.LoadMarbleImageData();
+                Debug.Log("list of textures are not loaded");
+            }
+            /*else
+            {
+                noof_imagedownload++;
+            }*/
+
+            var imageLoader = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
+            if (!loadImageInBGs.Contains(imageLoader))
+            {
+                isNewImageAdded = true;
+                loadImageInBGs.Add(imageLoader);
+                loadImageInBGs[i].OnBGImageDownload.AddListener(HandleLoading);
+            }
+        }
+
+        if(!isNewImageAdded)
+            SpawnMarbleDetails();
     }
 
     private void AssignData_OnLoad(SpecificMarbleDetails mrmDet)
@@ -38,10 +112,14 @@ public class TileDetailsList : MonoBehaviour
 
             if (mrmDet.mainTexture != null)
                 mRM_Details.TopMarbleImage.texture = mrmDet.mainTexture;
-            if (mrmDet.textures[0] != null)
-                mRM_Details.CircleImage.texture = mrmDet.textures[0];
 
-            if (mrmDet.textures != null)
+            if (mrmDet.textures != null && mrmDet.textures.Length > 0)
+            {
+                if (mrmDet.textures[0] != null)
+                    mRM_Details.CircleImage.texture = mrmDet.textures[0];
+            }
+
+            if (mrmDet.textures != null && mrmDet.textures.Length > 0)
             {
                 for (int j = 0; j < mRM_Details.BgImages.Length; j++)
                 {
