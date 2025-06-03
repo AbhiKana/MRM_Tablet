@@ -125,7 +125,7 @@ public class UI_Manager : MonoBehaviour
         {
             if (obj != null)
             {
-                Debug.Log("Clear child object: " + obj.name);
+                //Debug.Log("Clear child object: " + obj.name);
                 Destroy(obj);
             }
         }

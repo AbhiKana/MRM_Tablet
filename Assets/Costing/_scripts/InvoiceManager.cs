@@ -15,6 +15,8 @@ public class InvoiceManager : MonoBehaviour
     public Transform ShowShareMsg;
     public UserData userData;
 
+
+    public GameObject loader;
     //AuthenticatedBillSender authenticatedBillSender;
     void Awake()
     {
@@ -38,9 +40,15 @@ public class InvoiceManager : MonoBehaviour
     //    authenticatedBillSender.AssignButtonEvent();
     //}
 
+    void HandleLoader(bool value)
+    {
+        loader.SetActive(value);
+    }
+
     // call this on share button
     public void OnclickOfShareInvoice()
     {
+        HandleLoader(true);
         InvoiceManager._invoiceMananger.MarbleInvoiceData.user_id = int.Parse(userData.storeUserData.user_id);
         StartCoroutine(UploadData(MarbleInvoiceData));
     }
@@ -66,6 +74,7 @@ public class InvoiceManager : MonoBehaviour
             Debug.Log("Upload successful!");
             Debug.Log("Response: " + request.downloadHandler.text);
             // show thank u for sharing page
+            HandleLoader(false);
             ShowShareMsg.gameObject.SetActive(true);
         }
         else

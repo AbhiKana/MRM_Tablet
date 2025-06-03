@@ -1,6 +1,5 @@
 using Udar.SceneManager;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AuthenticatedBillSender : DataTransmissionController
 {
@@ -11,20 +10,24 @@ public class AuthenticatedBillSender : DataTransmissionController
     [SerializeField] SceneSwitchManager sceneSwitchManager;
     [SerializeField] SceneFieldRef sceneField;
     [SerializeField] StoreMarbleDetails storeMarbleDetails;
+
+/*    private void Start()
+    {
+        DataSenderButton.onClick.AddListener(CheckIfUserLoggedIn);
+    }
     public void CheckIfUserLoggedIn()
     {
-        //if (!string.IsNullOrEmpty(userData.storeUserData.user_id))
-        //{
-        //    Debug.Log("Send Invoice Bill");
-        //    InvoiceManager._invoiceMananger.MarbleInvoiceData.user_id = int.Parse(userData.storeUserData.user_id);
-        //    InvoiceManager._invoiceMananger.OnclickOfShareInvoice();
-        //}
+        if (storeMarbleDetails.list.Count == 0)
+            marbleSelectionPrompt.SetActive(true);
         //else
-        //{
-        //    canvas.sortingOrder = 1;
-        //    CheckLoginData();
-        //    marbleUploader.DataSenderButton.onClick.Invoke();
-        //}
+            //sceneSwitchManager.LoadScene(sceneField);
+    }*/
+    protected override void CheckLoginData()
+    {
+        if (storeMarbleDetails.list.Count == 0)
+            marbleSelectionPrompt.SetActive(true);
+        else
+            base.CheckLoginData();
     }
 
     protected override void ControlObjectActivation()

@@ -110,10 +110,10 @@ public abstract class DataTransmissionController : MonoBehaviour
                     if (userData.storeUserData.already_register)
                         UpdateUser(messageFormat);
                     else
+                    {
                         data = JsonUtility.ToJson(messageFormat);
-
-
-                    OnDataSave?.Invoke();
+                        OnDataSave?.Invoke();
+                    }
                 }
             });
         }
@@ -145,6 +145,8 @@ public abstract class DataTransmissionController : MonoBehaviour
             {
                 Debug.Log("User updated with marble ID");
                 data = JsonUtility.ToJson(m);
+
+                OnDataSave?.Invoke();
             }
         });
     }

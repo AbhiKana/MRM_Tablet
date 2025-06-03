@@ -19,19 +19,6 @@ public class TileDetailsList : MonoBehaviour
         uI_Manager = FindObjectOfType<UI_Manager>();
     }
 
-    private void HandleLoading()
-    {
-        noof_imagedownload++;
-
-        if(noof_imagedownload == noof_marble)
-        {
-            storeMarbleDetails.loader.gameObject.SetActive(false);
-            isNewImageAdded = false;
-            SpawnMarbleDetails();
-            //RemoveLoadedMarbleFromList();
-        }
-    }
-
     /*public void RemoveLoadedMarbleFromList(int id)
     {
         foreach (LoadImageInBG show in loadImageInBGs)
@@ -59,6 +46,7 @@ public class TileDetailsList : MonoBehaviour
     {
         noof_marble = storeMarbleDetails.list.Count;
 
+        noof_imagedownload = 0;
         for (int i = 0; i < noof_marble; i++)
         {
             Debug.Log("Spawn list of marbles");
@@ -72,22 +60,27 @@ public class TileDetailsList : MonoBehaviour
             }
             else
             {
+                noof_imagedownload++;
                 Debug.Log("Loaded textures");
             }
-                var imageLoader = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
+            var imageLoader = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
             imageLoader.OnBGImageDownload.AddListener(HandleLoading);
-
-            /*if (!loadImageInBGs.Contains(imageLoader))
-            {
-                isNewImageAdded = true;
-                loadImageInBGs.Add(imageLoader);
-                loadImageInBGs[i].OnBGImageDownload.AddListener(HandleLoading);
-            }*/
-
         }
 
         if (!isNewImageAdded)
             SpawnMarbleDetails();
+    }
+    private void HandleLoading()
+    {
+        noof_imagedownload++;
+
+        if (noof_imagedownload == noof_marble)
+        {
+            storeMarbleDetails.loader.gameObject.SetActive(false);
+            isNewImageAdded = false;
+            SpawnMarbleDetails();
+            //RemoveLoadedMarbleFromList();
+        }
     }
 
     private void AssignData_OnLoad(SpecificMarbleDetails mrmDet)
