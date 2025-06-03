@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class TileDetailsList : MonoBehaviour
     public int noof_imagedownload;
     [SerializeField] bool isNewImageAdded; 
 
-    [SerializeField] List<LoadImageInBG> loadImageInBGs = new List<LoadImageInBG>();
+    //[SerializeField] List<LoadImageInBG> loadImageInBGs = new List<LoadImageInBG>();
 
     private void Start()
     {
@@ -33,7 +32,7 @@ public class TileDetailsList : MonoBehaviour
         }
     }
 
-    public void RemoveLoadedMarbleFromList(int id)
+    /*public void RemoveLoadedMarbleFromList(int id)
     {
         foreach (LoadImageInBG show in loadImageInBGs)
         {
@@ -43,7 +42,7 @@ public class TileDetailsList : MonoBehaviour
                 break;
             }
         }
-    }
+    }*/
 
     private void SpawnMarbleDetails()
     {
@@ -58,13 +57,11 @@ public class TileDetailsList : MonoBehaviour
 
     public void SpawnMarbleDetailsList()
     {
-        Debug.Log("Spawn list of marbles");
         noof_marble = storeMarbleDetails.list.Count;
 
-        //if(noof_imagedownload != 0)
-        //noof_imagedownload = 0;
         for (int i = 0; i < noof_marble; i++)
         {
+            Debug.Log("Spawn list of marbles");
             var details = storeMarbleDetails.list[i].textures;
             if (details != null && details.Length == 0)
             {
@@ -73,21 +70,23 @@ public class TileDetailsList : MonoBehaviour
                 loadImageInBG.LoadMarbleImageData();
                 Debug.Log("list of textures are not loaded");
             }
-            /*else
+            else
             {
-                noof_imagedownload++;
-            }*/
+                Debug.Log("Loaded textures");
+            }
+                var imageLoader = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
+            imageLoader.OnBGImageDownload.AddListener(HandleLoading);
 
-            var imageLoader = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
-            if (!loadImageInBGs.Contains(imageLoader))
+            /*if (!loadImageInBGs.Contains(imageLoader))
             {
                 isNewImageAdded = true;
                 loadImageInBGs.Add(imageLoader);
                 loadImageInBGs[i].OnBGImageDownload.AddListener(HandleLoading);
-            }
+            }*/
+
         }
 
-        if(!isNewImageAdded)
+        if (!isNewImageAdded)
             SpawnMarbleDetails();
     }
 

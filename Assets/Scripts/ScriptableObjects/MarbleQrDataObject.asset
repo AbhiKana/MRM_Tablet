@@ -13,18 +13,21 @@ MonoBehaviour:
   m_Name: MarbleQrDataObject
   m_EditorClassIdentifier: 
   _marbleApiData:
-    success: 0
+    success: 1
     marbleDetails:
-      id: 0
-      marble_name: 
-      description: 
-      dimension: 
-      material: 
-      finish: 
-      price: 
-      availability: 0
-      main_img: 
-      texture_img: []
-      category_id: 0
-      created_at: 
-      modify_at: 
+      id: 5
+      marble_name: Dyna
+      description: Test
+      dimension: 240X240
+      material: Test
+      finish: Test
+      price: 1400
+      availability: 30
+      category_id: 1
+      main_img: http://192.168.1.151/mrm_showroom/uploads/marble/main_images/1746442672_Dyna_Tiled.png
+      texture_img:
+      - http://192.168.1.151/mrm_showroom/uploads/marble/texture_images/1746442672_1743662605_image_333.png
+      - http://192.168.1.151/mrm_showroom/uploads/marble/texture_images/1746442672_1743662605_image_335.png
+      - http://192.168.1.151/mrm_showroom/uploads/marble/texture_images/1746442672_1743662605_image_336.png
+      - http://192.168.1.151/mrm_showroom/uploads/marble/texture_images/1746442672_1743662605_image_337.png
+      - http://192.168.1.151/mrm_showroom/uploads/marble/texture_images/1746442277_1743662605_image_337.png

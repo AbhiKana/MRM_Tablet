@@ -233,7 +233,7 @@ public class StoreMarbleDetails : MonoBehaviour
             }
         }
 
-        tileDetailsList.RemoveLoadedMarbleFromList(id);
+        //tileDetailsList.RemoveLoadedMarbleFromList(id);
     }
     public void RemoveMarble(int index)
     {

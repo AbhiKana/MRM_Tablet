@@ -91,6 +91,7 @@ public class MarbleItemController : MonoBehaviour
             manager.HandleLoaderPage(true);
             string id = showMarbleDetails.tileID.ToString();
             getMRMDetails.ViewMarbleDetails(id);
+            getMRMDetails.storeMarbleDetails.listOfMarbleDetails.Add(showMarbleDetails);
         }
         Debug.Log($"Marble Details - Name: {showMarbleDetails.marbleName}");
     }
