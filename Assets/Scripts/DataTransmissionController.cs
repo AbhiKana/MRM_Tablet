@@ -94,7 +94,7 @@ public abstract class DataTransmissionController : MonoBehaviour
 
             //if (socketConnectionChecker != null)
 
-            Debug.Log("Get response from CMS 1");
+            Debug.Log("Get response");
             requestTC.Post(form, url, (Data, isSuccess) =>
             {
                 Debug.Log("Response Data: " + Data);
@@ -108,12 +108,21 @@ public abstract class DataTransmissionController : MonoBehaviour
                     };
 
                     if (userData.storeUserData.already_register)
+                    {
+                        Debug.Log("<color=red>Update User</color>");
                         UpdateUser(messageFormat);
+                    }
                     else
                     {
+
+                        Debug.Log("<color=red>Update User</color>");
                         data = JsonUtility.ToJson(messageFormat);
                         OnDataSave?.Invoke();
                     }
+                }
+                else
+                {
+                    Debug.Log("<color=red>Not success/color>");
                 }
             });
         }
@@ -139,14 +148,19 @@ public abstract class DataTransmissionController : MonoBehaviour
         updateForm.AddField("user_id", userData.storeUserData.user_id);
         updateForm.AddField("marble_id", GetSelectedMarble_ID());
         updateForm.AddField("tab_id", Tab_ID.GetID());
-        requestTC.Post(updateForm, updateUrl, (UpdateData, isSucess) =>
+
+        Debug.Log("<color=red>Use API for Update User</color>");
+        requestTC.Post(updateForm, updateUrl, (UpdateData, isSuccess) =>
         {
-            if (isSucess)
+            if (isSuccess)
             {
                 Debug.Log("User updated with marble ID");
                 data = JsonUtility.ToJson(m);
-
                 OnDataSave?.Invoke();
+            }
+            else 
+            {
+                Debug.Log("<color=red>Update User false</color>");
             }
         });
     }

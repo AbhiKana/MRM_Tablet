@@ -13620,7 +13620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.9411765}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.78431374}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -22111,6 +22111,7 @@ GameObject:
   - component: {fileID: 2053831464}
   - component: {fileID: 2053831467}
   - component: {fileID: 2053831469}
+  - component: {fileID: 2053831470}
   m_Layer: 5
   m_Name: CircularWithAligning
   m_TagString: Untagged
@@ -22325,6 +22326,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2053831470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2053831462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671383e60664f964bbab193a1c52d177, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _list: {fileID: 2053831464}
+  _listBankSource: {fileID: 1106121318}
+  _listBoxSource: {fileID: 767322535}
+  _numOfBoxes: 14
 --- !u!1 &2072080397
 GameObject:
   m_ObjectHideFlags: 0

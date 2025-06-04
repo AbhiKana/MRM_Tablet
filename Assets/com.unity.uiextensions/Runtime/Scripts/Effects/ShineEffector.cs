@@ -78,6 +78,7 @@ namespace UnityEngine.UI.Extensions
             }
             else if (!effectRoot.activeSelf)
             {
+                //Debug.Log("Do not activate");
                 effectRoot.SetActive(true);
             }
             {

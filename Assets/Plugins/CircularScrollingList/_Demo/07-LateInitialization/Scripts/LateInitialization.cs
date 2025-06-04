@@ -13,6 +13,7 @@ namespace AirFishLab.ScrollingList.Demo
         [SerializeField]
         private int _numOfBoxes;
 
+        [ContextMenu("LateInitialize")]
         public void InitializeTheList()
         {
             _list.SetListBank(_listBankSource);

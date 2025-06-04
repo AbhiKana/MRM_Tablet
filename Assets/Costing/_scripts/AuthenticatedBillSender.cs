@@ -22,6 +22,7 @@ public class AuthenticatedBillSender : DataTransmissionController
         //else
             //sceneSwitchManager.LoadScene(sceneField);
     }*/
+
     protected override void CheckLoginData()
     {
         if (storeMarbleDetails.list.Count == 0)

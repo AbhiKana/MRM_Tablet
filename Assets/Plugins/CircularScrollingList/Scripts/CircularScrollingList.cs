@@ -164,6 +164,13 @@ namespace AirFishLab.ScrollingList
                 Initialize();
         }
 
+
+        [ContextMenu("ReOrder")]
+        public void SetInitialize()
+        {
+            Initialize();
+        }
+
         #region Initialization
 
         /// <summary>
@@ -171,8 +178,8 @@ namespace AirFishLab.ScrollingList
         /// </summary>
         public void SetListBank(BaseListBank listBank)
         {
-            if (CheckIsInitialized())
-                return;
+            /*if (CheckIsInitialized())
+                return;*/
 
             _listBank = listBank;
         }
@@ -182,8 +189,8 @@ namespace AirFishLab.ScrollingList
         /// </summary>
         public void Initialize()
         {
-            if (CheckIsInitialized())
-                return;
+            /*if (CheckIsInitialized())
+                return;*/
 
             Validate();
             _boxSetting.Initialize(gameObject);
@@ -257,6 +264,8 @@ namespace AirFishLab.ScrollingList
         #region Box Setup Functions
 
 
+
+        [ContextMenu("SetList")]
         public void SetList()
         {
             GetComponentReference();
@@ -299,6 +308,7 @@ namespace AirFishLab.ScrollingList
         private int ReassignListBoxes(
             List<ListBox> listBoxes, Transform rootTransform, int desiredNumOfBoxes)
         {
+            Debug.Log("reassigning boxes");
             var existingBoxes = new List<ListBox>();
 
             foreach (Transform child in rootTransform) {

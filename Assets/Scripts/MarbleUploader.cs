@@ -7,6 +7,7 @@ public class MarbleUploader : DataTransmissionController
 
     protected override void ControlObjectActivation()
     {
+        Debug.Log("<color=green>OnDataSave Invoke</color>");
         if(thanksForSharingObj != null)
             thanksForSharingObj.SetActive(true);
         manager.AddPageHistory(thanksForSharingObj);
@@ -16,7 +17,8 @@ public class MarbleUploader : DataTransmissionController
     protected override void UpdateUser(MessageFormat m)
     {
         base.UpdateUser(m);
-        Pdf_Generate(m.MessageValue);
+        Invoke(nameof(Pdf_apiCall), 1f);
+        //Pdf_Generate(m.MessageValue);
     }
 
     protected override void SaveUserData(EmailValidation email)
@@ -29,6 +31,11 @@ public class MarbleUploader : DataTransmissionController
     {
         if (!userData.storeUserData.already_register)
         {
+            Pdf_Generate(userData.storeUserData.user_id);
+        }
+        else
+        {
+            //Updated user
             Pdf_Generate(userData.storeUserData.user_id);
         }
     }

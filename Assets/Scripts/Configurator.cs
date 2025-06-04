@@ -15,8 +15,9 @@ public class Configurator : DataTransmissionController
 
     protected override void ControlObjectActivation()
     {
-        endSession.SetActive(true);
-        manager.AddPageHistory(endSession);
+        manager.OpenPage(8);
+        //endSession.SetActive(true);
+        //manager.AddPageHistory(endSession);
         loginPanel.SetActive(false);
     }
 }

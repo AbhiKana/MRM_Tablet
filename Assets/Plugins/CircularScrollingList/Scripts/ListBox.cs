@@ -89,11 +89,13 @@ namespace AirFishLab.ScrollingList
 
         public void PopToFront()
         {
+            //Debug.Log("Pop to front: "+ transform.gameObject.name);
             transform.SetAsLastSibling();
         }
 
         public void PushToBack()
         {
+            //Debug.Log("Pop to back: "+ transform.gameObject.name);
             transform.SetAsFirstSibling();
         }
 

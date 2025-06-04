@@ -45,6 +45,7 @@ namespace AirFishLab.ScrollingList
         #endregion
 
         public ListSetupData(
+            
             CircularScrollingList scrollingList,
             ListSetting listSetting, RectTransform rectTransform,
             Camera canvasRefCamera, List<IListBox> listBoxes,
@@ -56,6 +57,9 @@ namespace AirFishLab.ScrollingList
             CanvasRefCamera = canvasRefCamera;
             ListBoxes = listBoxes;
             ListContentProvider = listContentProvider;
+        
+        Debug.Log("Box Count: " + listBoxes.Count);
         }
+
     }
 }

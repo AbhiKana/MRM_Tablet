@@ -41,24 +41,24 @@ namespace AirFishLab.ScrollingList
 
         public void SetBoxRootTransform(RectTransform rootTransform)
         {
-            if (CheckIsInitialized())
-                return;
+            /*if (CheckIsInitialized())
+                return;*/
 
             _boxRootTransform = rootTransform;
         }
 
         public void SetBoxPrefab(ListBox boxPrefab)
         {
-            if (CheckIsInitialized())
-                return;
+            /*if (CheckIsInitialized())
+                return;*/
 
             _boxPrefab = boxPrefab;
         }
 
         public void SetNumOfBoxes(int numOfBoxes)
         {
-            if (CheckIsInitialized())
-                return;
+            /*if (CheckIsInitialized())
+                return;*/
 
             _numOfBoxes = numOfBoxes;
         }

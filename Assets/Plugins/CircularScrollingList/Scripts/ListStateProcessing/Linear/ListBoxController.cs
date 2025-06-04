@@ -107,6 +107,7 @@ namespace AirFishLab.ScrollingList.ListStateProcessing.Linear
         private void InitializeBoxes(ListSetupData setupData)
         {
             var numOfBoxes = _boxes.Count;
+            Debug.Log("No of boxes: "+ numOfBoxes);
             for (var boxID = 0; boxID < numOfBoxes; ++boxID) {
                 var box = _boxes[boxID];
                 var lastListBox =
@@ -157,6 +158,7 @@ namespace AirFishLab.ScrollingList.ListStateProcessing.Linear
 
             var allPositionStatuses = BoxPositionState.Nothing;
             foreach (var box in _boxes) {
+                Debug.Log("Name: "+ box);
                 var positionStatus =
                     _transformController.UpdateLocalTransform(box, movementValue);
 
@@ -427,8 +429,8 @@ namespace AirFishLab.ScrollingList.ListStateProcessing.Linear
 
             if (!isIdValid && isPreviouslyActivated)
                 box.IsActivated = false;
-            else if (isIdValid && !isPreviouslyActivated)
-                box.IsActivated = true;
+            //else if (isIdValid && !isPreviouslyActivated)
+                //box.IsActivated = true;
         }
 
         #endregion
