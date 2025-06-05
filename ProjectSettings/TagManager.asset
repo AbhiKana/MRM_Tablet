@@ -7,6 +7,8 @@ TagManager:
   - ControlCanvas
   - DragPanel
   - LoginCanvas
+  - FilterManager
+  - CircularFilter
   layers:
   - Default
   - TransparentFX

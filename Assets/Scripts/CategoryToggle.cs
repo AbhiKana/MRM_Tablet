@@ -3,8 +3,9 @@ using UnityEngine.UI;
 
 public class CategoryToggle : MonoBehaviour
 {
-   public int categoryId; // Set this in the Inspector
-    public MarbleFilterationController filterManager;
+    public int categoryId;
+    [SerializeField] MarbleFilterationController filterManager;
+    [SerializeField] MarbleFilterationController circularMarbleFilterization;
 
     private Toggle toggle;
 
@@ -16,7 +17,8 @@ public class CategoryToggle : MonoBehaviour
 
     private void Start()
     {
-        filterManager = FindAnyObjectByType<MarbleFilterationController>();
+        filterManager = GameObject.FindGameObjectWithTag("FilterManager").GetComponent<MarbleFilterationController>();
+        circularMarbleFilterization = GameObject.FindGameObjectWithTag("CircularFilter").GetComponent<MarbleFilterationController>();
     }
 
     void OnToggleChanged(bool isOn)
@@ -24,6 +26,7 @@ public class CategoryToggle : MonoBehaviour
         if (isOn)
         {
             filterManager.FilterByCategory(categoryId);
+            circularMarbleFilterization.FilterByCategory(categoryId);
         }
     }
 }

@@ -1310,6 +1310,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2829168799201377721, guid: 2a689dfac8e20aa4c8de719e8a210331,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -70
+      objectReference: {fileID: 0}
     - target: {fileID: 3499100643068944389, guid: 2a689dfac8e20aa4c8de719e8a210331,
         type: 3}
       propertyPath: m_Name
@@ -7548,7 +7553,7 @@ GameObject:
   - component: {fileID: 553628633}
   m_Layer: 0
   m_Name: MarbleFilteration
-  m_TagString: Untagged
+  m_TagString: FilterManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7580,8 +7585,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd335334f642d144ba090c598a9851ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  infiniteScrollerAdjuster: {fileID: 1304641404}
   inventoryContainer: {fileID: 2008128103}
-  CarouselMenu: {fileID: 2053831463}
+  isCircularList: 0
+  OnCategorySelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &562294903
 GameObject:
   m_ObjectHideFlags: 0
@@ -7853,6 +7862,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 681961224}
   - {fileID: 2053831463}
   - {fileID: 1860096516}
   - {fileID: 312919913}
@@ -9362,6 +9372,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 677862603}
   m_CullTransparentMesh: 1
+--- !u!1 &681961223
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 681961224}
+  m_Layer: 5
+  m_Name: UnfilteredObjectParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &681961224
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 681961223}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 568119197}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &702934372
 GameObject:
   m_ObjectHideFlags: 0
@@ -9870,6 +9915,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1f977a9b325fc74598aeb5d499e49cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &773673530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 773673531}
+  - component: {fileID: 773673533}
+  - component: {fileID: 773673532}
+  m_Layer: 0
+  m_Name: CircularMarbleFilteration
+  m_TagString: CircularFilter
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &773673531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773673530}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1061590714}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &773673532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773673530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbc1a389cb9e0f438b52261358f6fd9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circularScrollingList: {fileID: 2053831464}
+  lateInitialization: {fileID: 2053831470}
+  infiniteScrollerAdjuster: {fileID: 1304641404}
+  controller: {fileID: 773673533}
+  UnfilteredObjectParent: {fileID: 681961224}
+--- !u!114 &773673533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773673530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd335334f642d144ba090c598a9851ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  infiniteScrollerAdjuster: {fileID: 1304641404}
+  inventoryContainer: {fileID: 2053831463}
+  isCircularList: 1
+  OnCategorySelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &780936617
 GameObject:
   m_ObjectHideFlags: 0
@@ -12283,6 +12396,7 @@ Transform:
   - {fileID: 761588140}
   - {fileID: 2004314045}
   - {fileID: 553628632}
+  - {fileID: 773673531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1063417535
@@ -15076,6 +15190,7 @@ MonoBehaviour:
     type: 3}
   minSpacing: 130
   maxSpacing: 200
+  numOfbox: 0
   noofMarble: 0
 --- !u!4 &1304641405
 Transform:
@@ -21397,6 +21512,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: CategoryType
       objectReference: {fileID: 0}
+    - target: {fileID: 7409972638240462603, guid: 213b33a6a14e1434aad9423696347f54,
+        type: 3}
+      propertyPath: filterManager
+      value: 
+      objectReference: {fileID: 553628633}
+    - target: {fileID: 7409972638240462603, guid: 213b33a6a14e1434aad9423696347f54,
+        type: 3}
+      propertyPath: circularMarbleFilterization
+      value: 
+      objectReference: {fileID: 773673533}
     - target: {fileID: 8227856017841159061, guid: 213b33a6a14e1434aad9423696347f54,
         type: 3}
       propertyPath: m_text
@@ -22341,7 +22466,7 @@ MonoBehaviour:
   _list: {fileID: 2053831464}
   _listBankSource: {fileID: 1106121318}
   _listBoxSource: {fileID: 767322535}
-  _numOfBoxes: 14
+  _numOfBoxes: 15
 --- !u!1 &2072080397
 GameObject:
   m_ObjectHideFlags: 0

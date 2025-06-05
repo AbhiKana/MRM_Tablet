@@ -80,7 +80,7 @@ namespace AirFishLab.ScrollingList
         [SerializeField]
         [Tooltip("The objects that are used for displaying the content. " +
                  "They should be derived from the class ListBox")]
-        private List<ListBox> _listBoxes;
+        public List<ListBox> _listBoxes;
         [SerializeField]
         [FormerlySerializedAs("_setting")]
         [Tooltip("The setting of this list")]
@@ -265,7 +265,7 @@ namespace AirFishLab.ScrollingList
 
 
 
-        [ContextMenu("SetList")]
+        //[ContextMenu("SetList")]
         public void SetList()
         {
             GetComponentReference();
@@ -308,7 +308,7 @@ namespace AirFishLab.ScrollingList
         private int ReassignListBoxes(
             List<ListBox> listBoxes, Transform rootTransform, int desiredNumOfBoxes)
         {
-            Debug.Log("reassigning boxes");
+            //Debug.Log("reassigning boxes");
             var existingBoxes = new List<ListBox>();
 
             foreach (Transform child in rootTransform) {

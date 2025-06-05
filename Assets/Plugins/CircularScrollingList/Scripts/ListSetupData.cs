@@ -58,7 +58,7 @@ namespace AirFishLab.ScrollingList
             ListBoxes = listBoxes;
             ListContentProvider = listContentProvider;
         
-        Debug.Log("Box Count: " + listBoxes.Count);
+            //Debug.Log("Box Count: " + listBoxes.Count);
         }
 
     }

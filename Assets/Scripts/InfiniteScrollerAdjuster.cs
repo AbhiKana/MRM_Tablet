@@ -12,7 +12,7 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
 
     RectTransform rectTransform;
     
-    int numOfbox;
+    public int numOfbox;
     float prefabWidth;
     float spacing;
 
@@ -24,10 +24,29 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
         if(getAllMarbles != null) 
             getAllMarbles.OnAllMarbleDataLoaded.AddListener(SetCircularList);
     }
+
     private void SetCircularList()
     {
         rectTransform = circularScrollingList.GetComponent<RectTransform>();
         numOfbox = getAllMarbles.allMarbles.getMarblesList.marbleDetails.Count + noofMarble;
+        circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
+
+        AdjustSpacing();
+        AdjustPositionAndSize();
+
+        circularScrollingList.SetList();
+        //circularScrollingList.GenerateBoxesAndArrange();
+
+        if (numOfbox == 1)
+            circularScrollingList.enabled = false;
+    }
+
+
+    [ContextMenu("Resize List")]
+    public void ModifyCircularList()
+    {
+        rectTransform = circularScrollingList.GetComponent<RectTransform>();
+        numOfbox = circularScrollingList.ListBoxes.Length + noofMarble;
         circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
 
         AdjustSpacing();

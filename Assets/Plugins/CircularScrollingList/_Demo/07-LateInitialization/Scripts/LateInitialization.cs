@@ -11,7 +11,7 @@ namespace AirFishLab.ScrollingList.Demo
         [SerializeField]
         private ListBox _listBoxSource;
         [SerializeField]
-        private int _numOfBoxes;
+        public int _numOfBoxes;
 
         [ContextMenu("LateInitialize")]
         public void InitializeTheList()
