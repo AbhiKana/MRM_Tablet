@@ -41,11 +41,11 @@ public class CircularMarbleFilterization : MonoBehaviour
     public void  ModifyCircularList(int selectedCategory)
     {
         List<ListBox> tempList = new List<ListBox>();
-        int abc = 0;
+        //int abc = 0;
         foreach (Transform child in circularScrollingList.transform)
         {
-            abc++;
-            Debug.Log(abc);
+            //abc++;
+            //Debug.Log(abc);
             if (!child.gameObject.activeSelf)
             {
                 ListBox l = child.GetComponent<ListBox>();
@@ -60,11 +60,13 @@ public class CircularMarbleFilterization : MonoBehaviour
             circularScrollingList._listBoxes.Remove(tempList[i]);
         }
 
-        Invoke(nameof(ReSize), 1f);
+        ReSize();
+        //Invoke(nameof(ReSize), 1f);
     }
 
     void ReSize()
     {
+
         infiniteScrollerAdjuster.ModifyCircularList();
         lateInitialization._numOfBoxes = circularScrollingList.ListBoxes.Length;
         lateInitialization.InitializeTheList();

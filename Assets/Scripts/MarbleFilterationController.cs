@@ -28,6 +28,7 @@ public class MarbleFilterationController : MonoBehaviour
         }
         else
         {
+            Debug.Log("Category Selection First time");
             SetParenting(selectedCategory);
         }
     }

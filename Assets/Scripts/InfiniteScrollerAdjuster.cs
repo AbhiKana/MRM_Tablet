@@ -7,8 +7,14 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     [SerializeField] GetAllMarbles getAllMarbles;
     [SerializeField] GameObject tilePrefab;
 
-    [SerializeField] float minSpacing = 50f;
-    [SerializeField] float maxSpacing = 200f;
+    public float minSpacing;
+    public float maxSpacing;
+
+    float limitedMinSpacing = -30f;
+    float limitedMaxSpacing = 0;
+
+    float unlimitedMinSpacing = 130f;
+    float unlimitedMaxSpacing = 180f;
 
     RectTransform rectTransform;
     
@@ -49,6 +55,15 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
         numOfbox = circularScrollingList.ListBoxes.Length + noofMarble;
         circularScrollingList.BoxSetting._numOfBoxes = numOfbox;
 
+        if (numOfbox > 10)
+        {
+            minSpacing = unlimitedMinSpacing; maxSpacing = unlimitedMaxSpacing;
+        }
+        else
+        {
+           minSpacing = limitedMinSpacing; maxSpacing = limitedMaxSpacing;
+        }
+        
         AdjustSpacing();
         AdjustPositionAndSize();
 
@@ -71,7 +86,7 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
         if (numOfbox % 2 == 0 && numOfbox > 3)
         {
             float shift = prefabWidth / 2f;
-            rectTransform.anchoredPosition = new Vector2(shift, rectTransform.anchoredPosition.y);
+            rectTransform.anchoredPosition = new Vector2(-shift-70, rectTransform.anchoredPosition.y);
         }
         else
         {

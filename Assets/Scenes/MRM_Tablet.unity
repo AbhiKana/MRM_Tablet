@@ -7585,10 +7585,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd335334f642d144ba090c598a9851ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infiniteScrollerAdjuster: {fileID: 1304641404}
   inventoryContainer: {fileID: 2008128103}
   isCircularList: 0
   OnCategorySelection:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCategoryAlreadySelected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &562294903
@@ -9977,10 +9979,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd335334f642d144ba090c598a9851ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infiniteScrollerAdjuster: {fileID: 1304641404}
   inventoryContainer: {fileID: 2053831463}
   isCircularList: 1
   OnCategorySelection:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCategoryAlreadySelected:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &780936617
@@ -15189,7 +15193,7 @@ MonoBehaviour:
   tilePrefab: {fileID: 5736913497556586559, guid: fa48c16381c87b848a4d6add6d2bceea,
     type: 3}
   minSpacing: 130
-  maxSpacing: 200
+  maxSpacing: 180
   numOfbox: 0
   noofMarble: 0
 --- !u!4 &1304641405
@@ -21243,6 +21247,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1905118889}
   m_CullTransparentMesh: 1
+--- !u!1 &1910001857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1910001859}
+  - component: {fileID: 1910001858}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1910001858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910001857}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b40011ebeb2783048ac61271bfcd73f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  circularScrollingList: {fileID: 0}
+  getAllMarbles: {fileID: 0}
+  tilePrefab: {fileID: 0}
+  minSpacing: 130
+  maxSpacing: 200
+  numOfbox: 0
+  noofMarble: 0
+--- !u!4 &1910001859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1910001857}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1927762908
 GameObject:
   m_ObjectHideFlags: 0
@@ -27306,3 +27361,4 @@ SceneRoots:
   - {fileID: 482301943}
   - {fileID: 1075741785}
   - {fileID: 904068161}
+  - {fileID: 1910001859}
