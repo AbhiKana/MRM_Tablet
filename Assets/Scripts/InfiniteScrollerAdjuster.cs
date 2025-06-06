@@ -7,8 +7,8 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     [SerializeField] GetAllMarbles getAllMarbles;
     [SerializeField] GameObject tilePrefab;
 
-    public float minSpacing;
-    public float maxSpacing;
+    [SerializeField] float minSpacing;
+    [SerializeField] float maxSpacing;
 
     float limitedMinSpacing = -30f;
     float limitedMaxSpacing = 0;
@@ -29,6 +29,9 @@ public class InfiniteScrollerAdjuster : MonoBehaviour
     {
         if(getAllMarbles != null) 
             getAllMarbles.OnAllMarbleDataLoaded.AddListener(SetCircularList);
+
+        minSpacing = unlimitedMinSpacing;
+        maxSpacing = unlimitedMaxSpacing;
     }
 
     private void SetCircularList()
