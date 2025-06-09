@@ -1,3 +1,5 @@
+using System;
+using System.Security.Policy;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -75,8 +77,9 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
-        //Debug.Log("Set Image");
-        GetImage(marbleDetailsWithCategoryID.main_img, image);
+        ThreadedImageDownloader.Instance.DownloadImage(marbleDetailsWithCategoryID.main_img, image);
+
+        //GetImage(marbleDetailsWithCategoryID.main_img, image);
         MarbleTextDetails();
     }
 
