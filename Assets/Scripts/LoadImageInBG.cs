@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class LoadImageInBG : MonoBehaviour
 {
     [HideInInspector]public ShowMarbleDetails showMarbleDetails;
+    [SerializeField] RawImage dummy;
     WWWRequestTC requestTC;
-
     int totalImageCount, downlaodedImageCount;
 
     public UnityEvent OnBGImageDownload = new UnityEvent();
@@ -35,11 +36,11 @@ public class LoadImageInBG : MonoBehaviour
             totalImageCount = marbleDet.texture_img.Count;
             for (int i = 0; i < marbleDet.texture_img.Count; i++)
             {
-                GetImage(marbleDet.texture_img[i], i);
+                GetImageUsingthread(marbleDet.texture_img[i], i);
+                //GetImage(marbleDet.texture_img[i], i);
             }
         }
     }
-
     void GetImage(string url, int textureIndex)
     {
         requestTC.GetTexture(url, (str, rawTex, isSucess) =>
@@ -48,19 +49,36 @@ public class LoadImageInBG : MonoBehaviour
             {
                 TextureScale.Bilinear(rawTex, 200, 200);
                 showMarbleDetails.m_Textures[textureIndex] = rawTex;
-                downlaodedImageCount++;
-
-                if (totalImageCount == downlaodedImageCount)
-                {
-                    OnBGImageDownload?.Invoke();
-                    Debug.Log("<color=green>All Images downloaded</color>");
-                    downlaodedImageCount = 0;
-                }
+                CheckAllImageLoaded();
             }
             else
             {
                 Debug.Log("<color=red>Couldn't fetch image data</color>");
             }
         });
+    }
+    void GetImageUsingthread(string url, int textureIndex)
+    {
+        ThreadedImageDownloader.Instance.DownloadAndProcessImage
+        (
+            url,
+            dummy,
+            (success) =>
+            {
+                if (success) CheckAllImageLoaded();
+            },
+            ()=> showMarbleDetails.m_Textures[textureIndex] = dummy.texture
+        );
+    }
+    private void CheckAllImageLoaded()
+    {
+        downlaodedImageCount++;
+
+        if (totalImageCount == downlaodedImageCount)
+        {
+            OnBGImageDownload?.Invoke();
+            Debug.Log("<color=green>All Images downloaded</color>");
+            downlaodedImageCount = 0;
+        }
     }
 }

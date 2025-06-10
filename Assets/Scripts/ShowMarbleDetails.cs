@@ -75,13 +75,30 @@ public class ShowMarbleDetails : MonoBehaviour
         image.texture = t;
     }
 
+    //public override void Ch
+
     public void SetData()
     {
-        ThreadedImageDownloader.Instance.DownloadImage(marbleDetailsWithCategoryID.main_img, image);
+        ThreadedImageDownloader.Instance.DownloadAndProcessImage
+        (
+            marbleDetailsWithCategoryID.main_img,
+            image,
+            (success) =>
+            {
+                if (success) CheckAllImageLoaded();
+            },
+            () => Debug.Log("All images loaded")
+        );
 
-        //GetImage(marbleDetailsWithCategoryID.main_img, image);
+
+        //ThreadedImageDownloader.Instance.DownloadAndProcessImage(marbleDetailsWithCategoryID.main_img, image); //efficient without lag into main application
+        //ThreadedImageDownloader.Instance.DownloadImage(marbleDetailsWithCategoryID.main_img, image);  //efficient but lag into main application
+
+        //GetImage(marbleDetailsWithCategoryID.main_img, image);  Old Method for downloading images
         MarbleTextDetails();
     }
+
+
 
     public void MarbleTextDetails()
     {
@@ -91,6 +108,11 @@ public class ShowMarbleDetails : MonoBehaviour
         categoryID = marbleDetailsWithCategoryID.category_id;
         
         gameObject.name = marbleName + 1;
+    }
+
+    void AllImagesLoaded()
+    {
+        Debug.Log("All images downloaded!");
     }
 
     public void ShowData()
