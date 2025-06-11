@@ -9,14 +9,7 @@ public class TileDetailsList : MonoBehaviour
 
     [SerializeField] int noof_marble;
     public int noof_imagedownload;
-    [SerializeField] bool isNewImageAdded; 
-
-    //[SerializeField] List<LoadImageInBG> loadImageInBGs = new List<LoadImageInBG>();
-
-    private void Start()
-    {
-        uI_Manager = FindObjectOfType<UI_Manager>();
-    }
+    [SerializeField] bool isNewImageAdded;
 
     /*public void RemoveLoadedMarbleFromList(int id)
     {
@@ -29,7 +22,10 @@ public class TileDetailsList : MonoBehaviour
             }
         }
     }*/
-
+    private void Start()
+    {
+        uI_Manager = FindObjectOfType<UI_Manager>();
+    }
     private void SpawnMarbleDetails()
     {
         for (int i = 0; i < noof_marble; i++)
@@ -40,7 +36,6 @@ public class TileDetailsList : MonoBehaviour
 
         uI_Manager.RefreshList();
     }
-
     public void SpawnMarbleDetailsList()
     {
         noof_marble = storeMarbleDetails.list.Count;
@@ -81,7 +76,6 @@ public class TileDetailsList : MonoBehaviour
             //RemoveLoadedMarbleFromList();
         }
     }
-
     private void AssignData_OnLoad(SpecificMarbleDetails mrmDet)
     {
         GameObject marbleDetails = Instantiate(tilePrefab).gameObject;

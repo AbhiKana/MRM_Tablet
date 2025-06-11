@@ -95,7 +95,8 @@ public abstract class DataTransmissionController : MonoBehaviour
             //if (socketConnectionChecker != null)
 
             Debug.Log("Get response");
-            requestTC.Post(form, url, (Data, isSuccess) =>
+            WWWRequestTC w = new WWWRequestTC();
+            w.Post(form, url, (Data, isSuccess) =>
             {
                 Debug.Log("Response Data: " + Data);
                 if (isSuccess)
@@ -150,7 +151,8 @@ public abstract class DataTransmissionController : MonoBehaviour
         updateForm.AddField("tab_id", Tab_ID.GetID());
 
         Debug.Log("<color=red>Use API for Update User</color>");
-        requestTC.Post(updateForm, updateUrl, (UpdateData, isSuccess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.Post(updateForm, updateUrl, (UpdateData, isSuccess) =>
         {
             if (isSuccess)
             {

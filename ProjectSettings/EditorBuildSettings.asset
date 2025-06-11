@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CostScene.unity
     guid: 445304da616c79347b1910f00e3ec60a
+  - enabled: 0
+    path: Assets/Scenes/Test.unity
+    guid: ee2292214b54ea444b07ed0801456a06
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 70da4c54b557bed43894814f90178130,
       type: 2}

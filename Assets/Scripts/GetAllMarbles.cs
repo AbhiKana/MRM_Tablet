@@ -5,14 +5,14 @@ public class GetAllMarbles : MonoBehaviour
 {
     public MarbleList allMarbles;
     public Catergories categories;
-    public WWWRequestTC requestTC;
+    //public WWWRequestTC requestTC;
 
     public UnityEvent OnAllMarbleDataLoaded;
     public UnityEvent OnDataLoaded;
 
     private void Start()
     {
-        requestTC = new WWWRequestTC();
+       // requestTC = new WWWRequestTC();
         GetCategoryList();
         GetAllMarbleList();
     }
@@ -20,7 +20,8 @@ public class GetAllMarbles : MonoBehaviour
     public void GetCategoryList()
     {
         string url = Url.apiUrl + Url.marbleApi;
-        requestTC.Get(url, (Data, isSucess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.Get(url, (Data, isSucess) =>
         {
             categories = JsonUtility.FromJson<Catergories>(Data);
         });
@@ -31,7 +32,8 @@ public class GetAllMarbles : MonoBehaviour
         WWWForm form = new WWWForm();
         string url = Url.apiUrl + Url.marbleDetails;
         GetMarblesList marbles;
-        requestTC.Post(form, url, (Data, isSucess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.Post(form, url, (Data, isSucess) =>
         {
             if (isSucess)
             {

@@ -34,16 +34,35 @@ public class LoadImageInBG : MonoBehaviour
                 showMarbleDetails.m_Textures = new Texture[5];
 
             totalImageCount = marbleDet.texture_img.Count;
-            for (int i = 0; i < marbleDet.texture_img.Count; i++)
+            GetImageUsingthread(marbleDet.texture_img.ToArray());
+            
+            /*for (int i = 0; i < marbleDet.texture_img.Count; i++)
             {
                 GetImageUsingthread(marbleDet.texture_img[i], i);
                 //GetImage(marbleDet.texture_img[i], i);
-            }
+            }*/
         }
+    }
+    void GetImageUsingthread(string[] url)
+    {
+        int count = 0;
+        ThreadedImageDownloader.Instance.DownloadAndProcessImage
+        (
+            url,
+            dummy,
+            (success) =>
+            {
+                showMarbleDetails.m_Textures[count] = dummy.texture;
+                if(success)
+                    CheckAllImageLoaded();
+            },
+            () => { count++; }
+        );
     }
     void GetImage(string url, int textureIndex)
     {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
@@ -57,28 +76,19 @@ public class LoadImageInBG : MonoBehaviour
             }
         });
     }
-    void GetImageUsingthread(string url, int textureIndex)
-    {
-        ThreadedImageDownloader.Instance.DownloadAndProcessImage
-        (
-            url,
-            dummy,
-            (success) =>
-            {
-                if (success) CheckAllImageLoaded();
-            },
-            ()=> showMarbleDetails.m_Textures[textureIndex] = dummy.texture
-        );
-    }
     private void CheckAllImageLoaded()
     {
         downlaodedImageCount++;
-
         if (totalImageCount == downlaodedImageCount)
         {
-            OnBGImageDownload?.Invoke();
-            Debug.Log("<color=green>All Images downloaded</color>");
-            downlaodedImageCount = 0;
+            StopLoader();
         }
+    }
+
+    private void StopLoader()
+    {
+        OnBGImageDownload?.Invoke();
+        Debug.Log("<color=green>All Images downloaded</color>");
+        downlaodedImageCount = 0;
     }
 }

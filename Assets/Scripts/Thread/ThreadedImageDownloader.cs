@@ -42,7 +42,6 @@ public class ThreadedImageDownloader : MonoBehaviour
                             TextureScale.Bilinear(texture, 200, 200);
                             targetImage = texture;
                             success = true;
-                            //CheckAllImageLoaded();
                         }
                     }
                     catch (Exception e)
@@ -63,30 +62,65 @@ public class ThreadedImageDownloader : MonoBehaviour
     #endregion
 
     #region Method2
-    public void DownloadAndProcessImage(string url, RawImage targetImage, Action<bool> onComplete = null, Action onAllImagesLoaded = null)
+    public void DownloadAndProcessImage(string[] urls,RawImage targetImages,Action<bool> onComplete = null,Action onAllImagesLoaded = null)
     {
-        ThreadPool.QueueUserWorkItem(_ =>
+        if (urls == null || targetImages == null)
         {
-            // STAGE 1: Download (background thread)
-            byte[] imageData = DownloadWithWebClient(url);
-            if (imageData == null) return;
-            bool success = false;
-            // Prepare data for main thread
-            var creationData = new TextureCreationData
+            Debug.LogError("URLs and target images arrays must be non-null and of equal length");
+            return;
+        }
+
+        int totalDownloads = urls.Length;
+        int completedDownloads = 0;
+
+        for (int i = 0; i < urls.Length; i++)
+        {
+            int index = i; // Capture current index for closure
+            string url = urls[i];
+            RawImage targetImage = targetImages;
+
+            ThreadPool.QueueUserWorkItem(_ =>
             {
-                rawData = imageData,
-                targetWidth = 200,
-                targetHeight = 200,
-                targetImage = targetImage,
-                callback = onComplete
-            };
-            // STAGE 3: Final creation and assignment (main thread)
-            UnityMainThreadDispatcher.Enqueue(() =>
-            {
-                CreateAndAssignTexture(creationData, onAllImagesLoaded);
+                byte[] imageData = DownloadWithWebClient(url);
+                if (imageData == null)
+                {
+                    onComplete?.Invoke(false);
+                    return;
+                }
+
+                var creationData = new TextureCreationData
+                {
+                    rawData = imageData,
+                    targetWidth = 200,
+                    targetHeight = 200,
+                    targetImage = targetImage,
+                    callback = success => {
+                        onComplete?.Invoke(success);
+                        if (Interlocked.Increment(ref completedDownloads) == totalDownloads)
+                        {
+                            onAllImagesLoaded?.Invoke();
+                        }
+                    }
+                };
+
+                UnityMainThreadDispatcher.Enqueue(() =>
+                {
+                    CreateAndAssignTexture(creationData, onAllImagesLoaded);
+                });
             });
-        });
+        }
     }
+
+    // Overload for single image download
+    public void DownloadAndProcessImage(string url,RawImage targetImage,Action<bool> onComplete = null,Action onAllImagesLoaded = null)
+    {
+        DownloadAndProcessImage(
+            new string[] { url },
+            targetImage,
+            onComplete,
+            onAllImagesLoaded);
+    }
+
     private void CreateAndAssignTexture(TextureCreationData data, Action onAllImagesLoaded)
     {
         try
@@ -124,13 +158,11 @@ public class ThreadedImageDownloader : MonoBehaviour
         public Action<bool> callback;
     }
     #endregion
-
     private byte[] DownloadWithWebClient(string url)
     {
         try
         {
             //Debug.Log($"Download thread: {(System.Threading.Thread.CurrentThread.ManagedThreadId == 1 ? "MAIN" : "BACKGROUND")} " +  $"(Thread ID: {System.Threading.Thread.CurrentThread.ManagedThreadId})");
-
             // Using System.Net.WebClient for pure background downloading
             using (WebClient client = new WebClient())
             {

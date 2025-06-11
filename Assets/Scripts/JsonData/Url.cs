@@ -1,6 +1,6 @@
 public class Url 
 {
-    public static string apiUrl = "http://192.168.1.151/mrm_showroom/";
+    public static string apiUrl = "http://192.168.1.105/mrm_showroom/";
     public static string marbleDetails = "api/marble_details";
     public static string marbleApi = "api/marbles_api";
     public static string saveUserData = "api/save_user_data";

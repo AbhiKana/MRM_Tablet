@@ -1,10 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using AirFishLab.ScrollingList;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.Events;
+using System.Collections;
+using AirFishLab.ScrollingList;
+using System.Collections.Generic;
 
 public class MarbleLoader : MonoBehaviour
 {
@@ -73,19 +73,38 @@ public class MarbleLoader : MonoBehaviour
 
     public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
     {
+        List<string> url = new List<string>();
         if (!IsAllImageDownloaded)
         {
             var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
-            
+            url.Clear();
             for (int i = 0; i < showMarbleDetails.Count; i++)
             {
                 showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
-                //Debug.Log("------------------" + mDetails[i].description);
+                url.Add(showMarbleDetails[i].marbleDetailsWithCategoryID.main_img);
                 showMarbleDetails[i].SetData();
             }
+
+            //GetImageUsingthread(url.ToArray()); 
         }
     }
 
+    /*void GetImageUsingthread(string[] url)
+    {
+        int count = 0;
+        ThreadedImageDownloader.Instance.DownloadAndProcessImage
+        (
+            url,
+            dummy,
+            (success) =>
+            {
+                showMarbleDetails.m_Textures[count] = dummy.texture;
+                if (success)
+                    CheckAllImageLoaded();
+            },
+            () => { count++; }
+        );
+    }*/
     public void OnDataLoadedSucessfully()
     {
         IsAllImageDownloaded = true;

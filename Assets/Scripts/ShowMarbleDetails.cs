@@ -75,8 +75,6 @@ public class ShowMarbleDetails : MonoBehaviour
         image.texture = t;
     }
 
-    //public override void Ch
-
     public void SetData()
     {
         ThreadedImageDownloader.Instance.DownloadAndProcessImage
@@ -86,19 +84,12 @@ public class ShowMarbleDetails : MonoBehaviour
             (success) =>
             {
                 if (success) CheckAllImageLoaded();
-            },
-            () => Debug.Log("All images loaded")
+            }
         );
-
-
-        //ThreadedImageDownloader.Instance.DownloadAndProcessImage(marbleDetailsWithCategoryID.main_img, image); //efficient without lag into main application
-        //ThreadedImageDownloader.Instance.DownloadImage(marbleDetailsWithCategoryID.main_img, image);  //efficient but lag into main application
 
         //GetImage(marbleDetailsWithCategoryID.main_img, image);  Old Method for downloading images
         MarbleTextDetails();
     }
-
-
 
     public void MarbleTextDetails()
     {
@@ -110,11 +101,6 @@ public class ShowMarbleDetails : MonoBehaviour
         gameObject.name = marbleName + 1;
     }
 
-    void AllImagesLoaded()
-    {
-        Debug.Log("All images downloaded!");
-    }
-
     public void ShowData()
     {
         marbleNameText.text = marbleName;
@@ -123,7 +109,8 @@ public class ShowMarbleDetails : MonoBehaviour
 
     void GetImage(string url, RawImage image)
     {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
@@ -138,7 +125,7 @@ public class ShowMarbleDetails : MonoBehaviour
     }
 
 
-    private static void CheckAllImageLoaded()
+    private void CheckAllImageLoaded()
     {
         var d_image = MarbleLoader.downlaodedImageCount;
         var t_image = MarbleLoader.totalImageCount;
@@ -146,13 +133,18 @@ public class ShowMarbleDetails : MonoBehaviour
 
         if (MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
-            GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
-
-            getAllMarbles.OnDataLoaded?.Invoke();
-
-            ShowMarbleDetails instance = new ShowMarbleDetails();
-            instance.OnDataLoadOnce?.Invoke();
+            StopLoader();
         }
+    }
+
+    public void StopLoader()
+    {
+        GetAllMarbles getAllMarbles = FindObjectOfType<GetAllMarbles>();
+
+        getAllMarbles.OnDataLoaded?.Invoke();
+
+        ShowMarbleDetails instance = new ShowMarbleDetails();
+        instance.OnDataLoadOnce?.Invoke();
     }
 
     public void StoreRoomTextures(SpecificMarbleDetails specificMarbleDetails)

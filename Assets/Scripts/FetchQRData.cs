@@ -47,7 +47,8 @@ public class FetchQRData : MonoBehaviour
        
         WWWForm form = new WWWForm();
         form.AddField("id", data);
-        requestTC.Post(form, url, (Data, isSucess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.Post(form, url, (Data, isSucess) =>
         {
             if (isSucess)
             {
@@ -139,7 +140,8 @@ public class FetchQRData : MonoBehaviour
     }
     void GetImage(string url, RawImage image)
     {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) => 
+        WWWRequestTC w = new WWWRequestTC();
+        w.GetTexture(url, (str, rawTex, isSucess) => 
         {
             if (isSucess)
             {
@@ -161,7 +163,8 @@ public class FetchQRData : MonoBehaviour
     }
     void GetImageTop(string url, RawImage image)
     {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
+        WWWRequestTC w = new WWWRequestTC();
+        w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
