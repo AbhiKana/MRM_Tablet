@@ -75,9 +75,9 @@ public class MarbleItemController : MonoBehaviour
     {
         if (showMarbleDetails.texture != null && showMarbleDetails.m_Textures != null && showMarbleDetails.m_Textures.Length > 0)
         {
-            Debug.LogError("<color=blue>Load Second Time</color>");
+            Debug.Log("<color=blue>Load Second Time</color>");
             MarbleDetail current_detail = AssignCurrentMarbleDetails();
-            Debug.LogError("Check marble name: " + current_detail.marble_name);
+            //Debug.LogError("Check marble name: " + current_detail.marble_name);
             fetchQrData.LoadMarbleTextData(current_detail.marble_name, current_detail.description, current_detail.dimension, current_detail.material, current_detail.finish, current_detail.availability.ToString(), current_detail.price);
             fetchQrData.LoadedMarbleImageData(showMarbleDetails.texture, showMarbleDetails.m_Textures[0], showMarbleDetails.m_Textures);
             getMRMDetails.storeMarbleDetails.SetToggleValue(showMarbleDetails.IsWishlisted);

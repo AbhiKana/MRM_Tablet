@@ -43,6 +43,12 @@ public class TileDetailsList : MonoBehaviour
         noof_imagedownload = 0;
         for (int i = 0; i < noof_marble; i++)
         {
+            if (!storeMarbleDetails.list[i].marble_name.Equals(storeMarbleDetails.listOfMarbleDetails[i].marbleName))
+            {
+                Debug.LogError("Marble not matched");
+                //i--;
+                continue;
+            }
             Debug.Log("Spawn list of marbles");
             var details = storeMarbleDetails.list[i].textures;
             if (details != null && details.Length == 0)

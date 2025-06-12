@@ -70,6 +70,45 @@ public class ConnectViaInput : MonoBehaviour
             OnServerNotFound?.Invoke();
         }
     }
+    /*public void SetIP(TMP_InputField inputText)
+    {
+        if (string.IsNullOrEmpty(inputText.text.Trim()) ||
+           !Regex.IsMatch(inputText.text, @"^([0-9]{1,3}\.){3}[0-9]{1,3}$"))
+        {
+            inputText.text = "Enter Correct IP";
+            return;
+        }
+
+        ipKey = inputText.text;
+        PlayerPrefs.SetString(nameof(ipKey), ipKey);
+
+        // Disable button during connection attempt
+        var connectButton = InputPanel.GetComponentInChildren<Button>();
+        connectButton.interactable = false;
+        connectButton.GetComponentInChildren<TMP_Text>().text = "Connecting...";
+
+        // Start connection with 5 second timeout
+        var tcpController = clientServerSelector.GetClientController().GetComponent<TCP_ClientController>();
+        tcpController.ConnectWithTimeout(ipKey, 8052, 5f, (success) =>
+        {
+            UnityMainThreadDispatcher.Enqueue(() =>
+            {
+                connectButton.interactable = true;
+                connectButton.GetComponentInChildren<TMP_Text>().text = "Connect";
+
+                if (success)
+                {
+                    IsConnectedToServer = true;
+                    OnConnectToserver?.Invoke();
+                }
+                else
+                {
+                    IsConnectedToServer = false;
+                    OnServerNotFound?.Invoke();
+                }
+            });
+        });
+    }*/
     private void GetIPFrom_InputField()
     {
         if (PlayerPrefs.HasKey(nameof(ipKey)))
