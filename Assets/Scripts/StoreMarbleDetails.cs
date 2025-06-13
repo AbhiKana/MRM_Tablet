@@ -114,7 +114,6 @@ public class StoreMarbleDetails : MonoBehaviour
                     item.textures = marbleDetails.textures;
             }
         }
-        //if(list)
     }
 
     public void StoreTexturesInList(int id, ShowMarbleDetails showMarble)

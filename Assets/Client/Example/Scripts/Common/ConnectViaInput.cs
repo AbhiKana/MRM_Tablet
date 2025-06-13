@@ -51,7 +51,7 @@ public class ConnectViaInput : MonoBehaviour
     private void Start()
     {
         ConnectToServer();
-        TCP_ClientController.OnMessageReceived += ReconnectToServer;
+        //TCP_ClientController.OnMessageReceived += ReconnectToServer;
     }
     public void SetIP(TMP_InputField inputText)
     {
@@ -176,10 +176,9 @@ public class ConnectViaInput : MonoBehaviour
     private void UpdateConnectionStatus()
     {
         IsConnected = true;
-
         if (IsReconnecting)
         {
-            CancelInvoke("InitializeClient");
+            CancelInvoke(nameof(InitializeClient));
             IsReconnecting = false;
         }
     }

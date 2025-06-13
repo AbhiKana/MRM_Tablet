@@ -1,5 +1,3 @@
-using System;
-using System.Security.Policy;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,8 +5,8 @@ using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
 {
-    public StoreMarbleDetails storeMarbleDetails;
-    [HideInInspector]public SyncMarbleDetails syncMarbleDetails;
+    [HideInInspector] public StoreMarbleDetails storeMarbleDetails;
+    [HideInInspector] public SyncMarbleDetails syncMarbleDetails;
 
     public MarbleDetail marbleDetailsWithCategoryID;
     public Texture[] m_Textures;
@@ -84,11 +82,43 @@ public class ShowMarbleDetails : MonoBehaviour
             (success) =>
             {
                 if (success) CheckAllImageLoaded();
+            },
+            () =>
+            {
+                CheckInWishList();
             }
         );
 
         //GetImage(marbleDetailsWithCategoryID.main_img, image);  Old Method for downloading images
         MarbleTextDetails();
+    }
+
+    private void CheckInWishList()
+    {
+        StoreMarbleDetails storeMarbleDetails = FindObjectOfType<StoreMarbleDetails>();
+
+        var marbleDetail = storeMarbleDetails.list.Find(m => m.id == marbleDetailsWithCategoryID.id);
+
+        if (marbleDetail != null)
+        {
+            //Debug.Log(marbleDetail.marble_name);
+            IsWishlisted = marbleDetail.isSelected;
+            m_Textures = marbleDetail.textures;
+            texture = marbleDetail.mainTexture;
+        }
+        
+        //SpecificMarbleDetails marbleDetail = null;
+        
+        /*foreach (var m in storeMarbleDetails.list)
+        {
+            Debug.Log(m.marble_name);
+            if (m.id == marbleDetailsWithCategoryID.id)
+            {
+                Debug.LogError(m.marble_name);
+                IsWishlisted = marbleDetail.isSelected;
+                marbleDetail = null;
+            }
+        }*/
     }
 
     public void MarbleTextDetails()
@@ -123,7 +153,6 @@ public class ShowMarbleDetails : MonoBehaviour
                 Debug.Log("Couldn't fetch image data");
         });
     }
-
 
     private void CheckAllImageLoaded()
     {

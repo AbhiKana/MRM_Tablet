@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class TileDetailsList : MonoBehaviour
@@ -39,31 +40,39 @@ public class TileDetailsList : MonoBehaviour
     public void SpawnMarbleDetailsList()
     {
         noof_marble = storeMarbleDetails.list.Count;
-
         noof_imagedownload = 0;
+
         for (int i = 0; i < noof_marble; i++)
         {
-            if (!storeMarbleDetails.list[i].marble_name.Equals(storeMarbleDetails.listOfMarbleDetails[i].marbleName))
+            // Find corresponding marble in listOfMarbleDetails by name
+            string currentMarbleName = storeMarbleDetails.list[i].marble_name;
+            var marbleDetail = storeMarbleDetails.listOfMarbleDetails.FirstOrDefault(
+                m => m.marbleName.Equals(currentMarbleName)
+            );
+
+            if (marbleDetail == null)
             {
-                Debug.LogError("Marble not matched");
-                //i--;
+                Debug.LogError($"Marble {currentMarbleName} not found in details list");
                 continue;
             }
-            Debug.Log("Spawn list of marbles");
+
+            Debug.Log("Processing marble: " + currentMarbleName);
+
             var details = storeMarbleDetails.list[i].textures;
-            if (details != null && details.Length == 0)
+            if (details == null || details.Length == 0)
             {
                 storeMarbleDetails.loader.gameObject.SetActive(true);
-                LoadImageInBG loadImageInBG = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
+                LoadImageInBG loadImageInBG = marbleDetail.GetComponent<LoadImageInBG>();
                 loadImageInBG.LoadMarbleImageData();
-                Debug.Log("list of textures are not loaded");
+                Debug.Log("Textures not loaded - starting download");
             }
             else
             {
                 noof_imagedownload++;
-                Debug.Log("Loaded textures");
+                Debug.Log("Textures already loaded");
             }
-            var imageLoader = storeMarbleDetails.listOfMarbleDetails[i].GetComponent<LoadImageInBG>();
+
+            var imageLoader = marbleDetail.GetComponent<LoadImageInBG>();
             imageLoader.OnBGImageDownload.AddListener(HandleLoading);
         }
 

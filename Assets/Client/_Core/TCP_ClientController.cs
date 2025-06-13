@@ -24,13 +24,15 @@ public class TCP_ClientController : MonoBehaviour
     public static UnityAction OnConnect;
     public static UnityAction OnServerDisconnected;
     public static UnityAction<string> OnMessageReceived;
+    
     public void _Initialze()
     {
         Debug.Log("Client Started");
         _status = GetComponent<ClientStatus_ClientSide>();
         startAs = FindFirstObjectByType<StartAs>();
         connectViaInput = FindFirstObjectByType<ConnectViaInput>();
-        ConnectToServer();
+        //ConnectToServer();
+        ConnectToServer_New();
     }
 
     void Update()
@@ -54,7 +56,6 @@ public class TCP_ClientController : MonoBehaviour
             _IsMessageReceived = false;
         }*/
 
-
         //Close TCP connections
         if (!isRunning)
         {
@@ -68,7 +69,7 @@ public class TCP_ClientController : MonoBehaviour
     }
 
     //Connect to server
-    /*private void ConnectToServer()
+    private void ConnectToServer()
     {
         string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
         int port = 8052;
@@ -90,105 +91,7 @@ public class TCP_ClientController : MonoBehaviour
         {
             Debug.LogWarning("IP is null or connection failed.");
         }
-    }*/
-    public void ConnectWithTimeout(string ip, int port, float timeoutSeconds, Action<bool> callback)
-    {
-        StartCoroutine(ConnectCoroutine(ip, port, timeoutSeconds, callback));
     }
-
-    private IEnumerator ConnectCoroutine(string ip, int port, float timeoutSeconds, Action<bool> callback)
-    {
-        bool connected = false;
-        bool timedOut = false;
-        float startTime = Time.time;
-
-        // Run connection attempt on a background thread
-        Thread connectThread = new Thread(() =>
-        {
-            try
-            {
-                tcpClient = new TcpClient();
-                var result = tcpClient.BeginConnect(ip, port, null, null);
-
-                // Wait for connection or timeout
-                connected = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(timeoutSeconds));
-
-                if (connected)
-                {
-                    tcpClient.EndConnect(result);
-                    serverIP = ip;
-                    Debug.Log("Connected to server: " + ip + ":" + port);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogError("Connection error: " + e.Message);
-            }
-        });
-
-        connectThread.IsBackground = true;
-        connectThread.Start();
-
-        // Wait for thread completion or timeout
-        while (connectThread.IsAlive && Time.time - startTime < timeoutSeconds)
-        {
-            yield return null;
-        }
-
-        if (connectThread.IsAlive)
-        {
-            // Force close if timeout
-            tcpClient?.Close();
-            connectThread.Abort();
-            timedOut = true;
-        }
-
-        UnityMainThreadDispatcher.Enqueue(() =>
-        {
-            if (connected)
-            {
-                OnConnect?.Invoke();
-                StartMessageListeningThread();
-                callback?.Invoke(true);
-            }
-            else
-            {
-                callback?.Invoke(false);
-                Debug.Log(timedOut ? "Connection timed out" : "Connection failed");
-            }
-        });
-    }
-
-    private void StartMessageListeningThread()
-    {
-        if (clientThread == null || !clientThread.IsAlive)
-        {
-            clientThread = new Thread(AttemptConnection);
-            clientThread.IsBackground = true;
-            clientThread.Start();
-        }
-    }
-    private void ConnectToServer()
-    {
-        string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
-        int port = 8052;
-
-        if (!string.IsNullOrEmpty(ip))
-        {
-            ConnectWithTimeout(ip, port, 5f, (success) =>
-            {
-                if (!success)
-                {
-                    Debug.LogWarning("Connection failed to: " + ip);
-                }
-            });
-        }
-        else
-        {
-            Debug.LogWarning("IP is null or empty");
-        }
-    }
-
     private bool Connect(string ip, int port)
     {
         try
@@ -350,5 +253,133 @@ public class TCP_ClientController : MonoBehaviour
     {
         StopClient();
     }
+
+    #region Connection_New
+    private void StartMessageListeningThread()
+    {
+        if (clientThread == null || !clientThread.IsAlive)
+        {
+            clientThread = new Thread(AttemptConnection);
+            clientThread.IsBackground = true;
+            clientThread.Start();
+        }
+    }
+    private void ConnectToServer_New()
+    {
+        string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
+        int port = 8052;
+
+        if (!string.IsNullOrEmpty(ip))
+        {
+            ConnectWithTimeout(ip, port, 5f, (success) =>
+            {
+                if (!success)
+                {
+                    Debug.LogWarning("Connection failed to: " + ip);
+                }
+            });
+        }
+        else
+        {
+            Debug.LogWarning("IP is null or empty");
+        }
+    }
+
+    public void ConnectWithTimeout(string ip, int port, float timeoutSeconds, Action<bool> callback)
+    {
+        StartCoroutine(ConnectCoroutine(ip, port, timeoutSeconds, callback));
+    }
+
+    private IEnumerator ConnectCoroutine(string ip, int port, float timeoutSeconds, Action<bool> callback)
+    {
+        bool connected = false;
+        bool timedOut = false;
+        bool validated = false;
+        float startTime = Time.time;
+
+        Thread connectThread = new Thread(() =>
+        {
+            try
+            {
+                tcpClient = new TcpClient();
+                var result = tcpClient.BeginConnect(ip, port, null, null);
+
+                // Wait for connection or timeout
+                connected = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(timeoutSeconds));
+
+                if (connected)
+                {
+                    tcpClient.EndConnect(result);
+
+                    // NEW: Verify connection is actually usable
+                    validated = VerifyConnectionActive(tcpClient);
+
+                    if (validated)
+                    {
+                        serverIP = ip;
+                        Debug.Log("Connected to server: " + ip + ":" + port);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("Connection error: " + e.Message);
+            }
+        });
+
+        connectThread.IsBackground = true;
+        connectThread.Start();
+
+        while (connectThread.IsAlive && Time.time - startTime < timeoutSeconds)
+        {
+            yield return null;
+        }
+
+        if (connectThread.IsAlive)
+        {
+            tcpClient?.Close();
+            connectThread.Abort();
+            timedOut = true;
+        }
+
+        UnityMainThreadDispatcher.Enqueue(() =>
+        {
+            if (connected && validated) // CHANGED: Check both flags
+            {
+                OnConnect?.Invoke();
+                StartMessageListeningThread();
+                callback?.Invoke(true);
+            }
+            else
+            {
+                callback?.Invoke(false);
+                Debug.Log(timedOut ? "Connection timed out" :
+                          (connected ? "Connection failed validation" : "Connection failed"));
+            }
+        });
+    }
+
+    private bool VerifyConnectionActive(TcpClient client)
+    {
+        try
+        {
+            // Test 1: Check if socket is connected
+            if (!client.Connected) return false;
+
+            // Test 2: Small read/write test
+            var stream = client.GetStream();
+            if (!stream.CanWrite || !stream.CanRead) return false;
+
+            // Test 3: Send ping if your protocol supports it
+            // (Implement protocol-specific verification here)
+
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+    #endregion
 }
 

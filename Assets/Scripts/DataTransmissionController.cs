@@ -37,7 +37,7 @@ public abstract class DataTransmissionController : MonoBehaviour
         DataSenderButton.onClick.AddListener(() =>
         {
             CheckLoginData();
-            OnConfigButtonClick = true;
+            //OnConfigButtonClick = true;
         });
 
         emailValidation2.EmailSuccess.AddListener(() =>
@@ -68,12 +68,14 @@ public abstract class DataTransmissionController : MonoBehaviour
             if (emailValidation.isCredentialsEntered)
             {
                 SaveUserData(emailValidation);
-               // OnDataSave?.Invoke();
+                OnConfigButtonClick = true;
+                // OnDataSave?.Invoke();
             }
             else
             {
                 SaveUserData(emailValidation2);
-               // OnDataSave?.Invoke();
+                OnConfigButtonClick = true;
+                // OnDataSave?.Invoke();
             }
         }
     }

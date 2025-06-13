@@ -39,6 +39,7 @@ public class ListOfMarblesInventory : MonoBehaviour
             marble.price = noof_Marbles[i].price;
             marble.tileID = noof_Marbles[i].tileID;
             marble.categoryID = noof_Marbles[i].categoryID;
+            marble.IsWishlisted = noof_Marbles[i].IsWishlisted;
             marble.ShowData();
         }
 

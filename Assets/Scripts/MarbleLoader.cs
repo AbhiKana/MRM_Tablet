@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using System.Collections;
 using AirFishLab.ScrollingList;
 using System.Collections.Generic;
+using System.Linq;
 
 public class MarbleLoader : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class MarbleLoader : MonoBehaviour
         foreach (Transform transform in circularScrollingList.transform)
         {
             var showDetails = transform.GetComponent<ShowMarbleDetails>();
+            //showDetails.IsWishlisted = 
             if (!listOfAllMarbles.Contains(showDetails))
             {
                 listOfAllMarbles.Add(showDetails);
@@ -84,27 +86,9 @@ public class MarbleLoader : MonoBehaviour
                 url.Add(showMarbleDetails[i].marbleDetailsWithCategoryID.main_img);
                 showMarbleDetails[i].SetData();
             }
-
-            //GetImageUsingthread(url.ToArray()); 
         }
     }
 
-    /*void GetImageUsingthread(string[] url)
-    {
-        int count = 0;
-        ThreadedImageDownloader.Instance.DownloadAndProcessImage
-        (
-            url,
-            dummy,
-            (success) =>
-            {
-                showMarbleDetails.m_Textures[count] = dummy.texture;
-                if (success)
-                    CheckAllImageLoaded();
-            },
-            () => { count++; }
-        );
-    }*/
     public void OnDataLoadedSucessfully()
     {
         IsAllImageDownloaded = true;
