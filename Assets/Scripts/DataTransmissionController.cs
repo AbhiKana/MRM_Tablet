@@ -61,6 +61,7 @@ public abstract class DataTransmissionController : MonoBehaviour
             emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(() =>
             {
                 OnDataSave?.Invoke();
+                SaveUserData(emailValidation2);
             });
         }
         else
@@ -69,13 +70,13 @@ public abstract class DataTransmissionController : MonoBehaviour
             {
                 SaveUserData(emailValidation);
                 OnConfigButtonClick = true;
-                // OnDataSave?.Invoke();
+                OnDataSave?.Invoke();
             }
             else
             {
                 SaveUserData(emailValidation2);
                 OnConfigButtonClick = true;
-                // OnDataSave?.Invoke();
+                OnDataSave?.Invoke();
             }
         }
     }
