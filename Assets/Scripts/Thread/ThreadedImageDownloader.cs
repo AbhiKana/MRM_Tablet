@@ -1,11 +1,15 @@
 using System;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ThreadedImageDownloader : MonoBehaviour
 {
+
+    private static readonly HttpClient _httpClient = new HttpClient();
     private static ThreadedImageDownloader _instance;
     public static ThreadedImageDownloader Instance
     {
@@ -79,9 +83,60 @@ public class ThreadedImageDownloader : MonoBehaviour
             string url = urls[i];
             RawImage targetImage = targetImages;
 
-            ThreadPool.QueueUserWorkItem(_ =>
+            ThreadPool.QueueUserWorkItem(async _ =>
             {
-                byte[] imageData = DownloadWithWebClient(url);
+                byte[] imageData = await _httpClient.GetByteArrayAsync(url);
+                //byte[] imageData = DownloadWithWebClient(url);
+                if (imageData == null)
+                {
+                    onComplete?.Invoke(false);
+                    return;
+                }
+
+                var creationData = new TextureCreationData
+                {
+                    rawData = imageData,
+                    targetWidth = 200,
+                    targetHeight = 200,
+                    targetImage = targetImage,
+                    callback = success => {
+                        onComplete?.Invoke(success);
+                        if (Interlocked.Increment(ref completedDownloads) == totalDownloads)
+                        {
+                            onAllImagesLoaded?.Invoke();
+                        }
+                    }
+                };
+
+                UnityMainThreadDispatcher.Enqueue(() =>
+                {
+                    CreateAndAssignTexture(creationData, onAllImagesLoaded);
+                });
+            });
+        }
+    }
+
+    public void DownloadAndProcessImage_Single(string[] urls, RawImage targetImages, Action<bool> onComplete = null, Action onAllImagesLoaded = null)
+    {
+        if (urls == null || targetImages == null)
+        {
+            Debug.LogError("URLs and target images arrays must be non-null and of equal length");
+            return;
+        }
+
+        int totalDownloads = urls.Length;
+        int completedDownloads = 0;
+
+        for (int i = 0; i < urls.Length; i++)
+        {
+            int index = i; // Capture current index for closure
+            string url = urls[i];
+            RawImage targetImage = targetImages;
+
+            ThreadPool.QueueUserWorkItem(async _ =>
+            {
+                byte[] imageData = _httpClient.GetByteArrayAsync(url).Result;
+                //byte[] imageData = DownloadWithWebClient(url);
                 if (imageData == null)
                 {
                     onComplete?.Invoke(false);
@@ -114,7 +169,7 @@ public class ThreadedImageDownloader : MonoBehaviour
     // Overload for single image download
     public void DownloadAndProcessImage(string url,RawImage targetImage,Action<bool> onComplete = null,Action onAllImagesLoaded = null)
     {
-        DownloadAndProcessImage(
+        DownloadAndProcessImage_Single(
             new string[] { url },
             targetImage,
             onComplete,
@@ -180,4 +235,36 @@ public class ThreadedImageDownloader : MonoBehaviour
             return null;
         }
     }
+
+
+    /*private static readonly HttpClient _httpClient = new HttpClient();
+    public  async byte[] DownloadSingleImage(string url, HttpClient _httpClient)
+    {
+        try
+        {
+            byte[] imageData = await _httpClient.GetByteArrayAsync(url);
+
+            // 2. Process texture (background thread)
+            *//*var texture = _texturePool.Get();
+            if (!await Task.Run(() => TryLoadTexture(imageData, texture)))
+            {
+                Debug.LogError($"Failed to load image: {url}");
+                return;
+            }*//*
+
+            // 3. Only final assignment on main thread
+            _mainThreadActions.Enqueue(() =>
+            {
+                target.texture = texture;
+                onComplete?.Invoke();
+            });
+
+            //return imageData;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Download failed: {ex.Message}");
+            return null;
+        }
+    }*/
 }

@@ -10,7 +10,6 @@ public class EmailDummyData : MonoBehaviour
 
     private void Start()
     {
-        Invoke(nameof(LoadSavedEmail), 1f);
         emailValidation.EmailSuccess.AddListener(SaveEmailAndName);
     }
 
@@ -22,6 +21,11 @@ public class EmailDummyData : MonoBehaviour
         PlayerPrefs.SetString(EMAIL_KEY, email);
         PlayerPrefs.SetString(NAME_KEY, name);
         PlayerPrefs.Save();
+    }
+
+    public void Get()
+    {
+        Invoke(nameof(LoadSavedEmail), 0.1f);
     }
 
     public void LoadSavedEmail()
