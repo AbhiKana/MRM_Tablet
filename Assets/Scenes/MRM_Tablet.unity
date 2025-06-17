@@ -10265,6 +10265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emailValidation: {fileID: 2086080254}
+  emailValidation_2: {fileID: 2136699845}
 --- !u!224 &767322533 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1144530545411021394, guid: fa48c16381c87b848a4d6add6d2bceea,

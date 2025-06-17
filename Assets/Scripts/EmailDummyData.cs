@@ -3,7 +3,7 @@ using UnityEngine;
 public class EmailDummyData : MonoBehaviour
 {
     [SerializeField] EmailValidation emailValidation;
-    //[SerializeField] EmailValidation emailValidation_2;
+    [SerializeField] EmailValidation emailValidation_2;
 
     private const string EMAIL_KEY = "UserEmail";
     private const string NAME_KEY = "UserName";

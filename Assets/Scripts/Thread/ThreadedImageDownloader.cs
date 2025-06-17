@@ -133,7 +133,7 @@ public class ThreadedImageDownloader : MonoBehaviour
             string url = urls[i];
             RawImage targetImage = targetImages;
 
-            ThreadPool.QueueUserWorkItem(async _ =>
+            ThreadPool.QueueUserWorkItem(_ =>
             {
                 byte[] imageData = _httpClient.GetByteArrayAsync(url).Result;
                 //byte[] imageData = DownloadWithWebClient(url);
