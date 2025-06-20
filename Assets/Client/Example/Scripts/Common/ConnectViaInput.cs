@@ -33,6 +33,7 @@ public class ConnectViaInput : MonoBehaviour
     public bool IsReconnecting = false;
     
     public UnityEvent OnConnectToserver;
+    public UnityEvent OnServerDisconnect;
     public UnityEvent OnServerNotFound;
 
     public void Awake()
@@ -51,7 +52,7 @@ public class ConnectViaInput : MonoBehaviour
     private void Start()
     {
         ConnectToServer();
-        //TCP_ClientController.OnMessageReceived += ReconnectToServer;
+        TCP_ClientController.OnMessageReceived += ReconnectToServer;
     }
     public void SetIP(TMP_InputField inputText)
     {
@@ -132,17 +133,19 @@ public class ConnectViaInput : MonoBehaviour
 
     private void OnDestroy()
     {
-        //TCP_ClientController.OnServerDisconnected -= ReconnectToServer;
+        TCP_ClientController.OnMessageReceived -= ReconnectToServer;
     }
 
     void ReconnectToServer(string msg)
     {
         if (msg.Contains("Server Disconnected"))
         {
+            OnServerDisconnect?.Invoke();
             IsConnected = false;
+            IsConnectedToServer = false;
             IsReconnecting = true;
-            Debug.Log("Reconnect to server");
-            InvokeRepeating(nameof(InitializeClient), 3f, 3f);
+            Debug.Log("Please, Reconnect to server");
+            //InvokeRepeating(nameof(InitializeClient), 3f, 3f);
         }
     }
     private void ConnectToServer()

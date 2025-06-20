@@ -30,9 +30,7 @@ public class StartAs : MonoBehaviour
     private void OnDestroy()
     {
         TCP_ClientController.OnServerDisconnected -= ReconnectToServer;
-        
     }
- 
     void ReconnectToServer()
     {
         InvokeRepeating(nameof(InitializeClient), 3f, 3f);

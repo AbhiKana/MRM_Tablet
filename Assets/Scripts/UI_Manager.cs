@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -26,7 +27,6 @@ public class UI_Manager : MonoBehaviour
             go.SetActive(false);
         }
     }
-
 
     public void OpenPage(int index)
     {
@@ -116,7 +116,6 @@ public class UI_Manager : MonoBehaviour
         listOfObjects[6].SetActive(true);
         listOfObjects[6].transform.SetSiblingIndex(previousIndex);
         listOfObjects[6].SetActive(false);
-        //StartCoroutine(RefreshOldData);
     }
     public void ClearOldList()
     {
@@ -125,19 +124,16 @@ public class UI_Manager : MonoBehaviour
         {
             if (obj != null)
             {
-                //Debug.Log("Clear child object: " + obj.name);
                 Destroy(obj);
             }
         }
 
         gameObjectsList.Clear();
         scrollSnap.ChildObjects = gameObjectsList.ToArray();
-        //Debug.Log("Child count: " + scrollSnap.ChildObjects.Length);
     }
 
     public void ResetchildObjLength()
     {
-        //scrollSnap.ChildObjects = new GameObject[0];
         scrollSnap.ChildObjects = null;
     }
 }

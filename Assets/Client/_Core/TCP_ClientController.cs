@@ -92,6 +92,29 @@ public class TCP_ClientController : MonoBehaviour
             Debug.LogWarning("IP is null or connection failed.");
         }
     }
+
+
+    private void ConnectToServer_New()
+    {
+        string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
+        int port = 8052;
+
+        if (!string.IsNullOrEmpty(ip))
+        {
+            ConnectWithTimeout(ip, port, 5f, (success) =>
+            {
+                if (!success)
+                {
+                    Debug.LogWarning("Connection failed to: " + ip);
+                }
+            });
+        }
+        else
+        {
+            Debug.LogWarning("IP is null or empty");
+        }
+    }
+
     private bool Connect(string ip, int port)
     {
         try
@@ -262,26 +285,6 @@ public class TCP_ClientController : MonoBehaviour
             clientThread = new Thread(AttemptConnection);
             clientThread.IsBackground = true;
             clientThread.Start();
-        }
-    }
-    private void ConnectToServer_New()
-    {
-        string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
-        int port = 8052;
-
-        if (!string.IsNullOrEmpty(ip))
-        {
-            ConnectWithTimeout(ip, port, 5f, (success) =>
-            {
-                if (!success)
-                {
-                    Debug.LogWarning("Connection failed to: " + ip);
-                }
-            });
-        }
-        else
-        {
-            Debug.LogWarning("IP is null or empty");
         }
     }
 
