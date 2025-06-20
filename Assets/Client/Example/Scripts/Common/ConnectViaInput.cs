@@ -27,6 +27,8 @@ public class ConnectViaInput : MonoBehaviour
     //Reference the IP connection Gamobject into the Input Panel varliable in this script through Unity Editor 
     [SerializeField] GameObject InputPanel;
 
+    public GameObject panel => InputPanel;
+
     starting starting;
     public string ipKey;
     public bool IsConnected = false;

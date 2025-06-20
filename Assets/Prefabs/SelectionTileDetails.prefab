@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.39215687}
     m_SelectedColor: {r: 0.8584906, g: 0.8584906, b: 0.8584906, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -504,7 +504,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.39215687}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
@@ -929,9 +929,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd0b47307fbefee479c8f3d49a4624b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  assignPageNumbers: {fileID: 0}
   manager: {fileID: 0}
   tileImage: {fileID: 2976387163145073239}
   tileName: {fileID: 4557836413858614723}
   viewButton: {fileID: 8466274805491734999}
   DeleteButton: {fileID: 6241460826619260043}
   pageNum: 0
+  OnDelete:
+    m_PersistentCalls:
+      m_Calls: []
