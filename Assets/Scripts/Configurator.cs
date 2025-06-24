@@ -7,8 +7,9 @@ public class Configurator : DataTransmissionController
 
     [Header("Child Properties")]
     [SerializeField] ConnectViaInput connectViaInput;
-    [SerializeField] GameObject endSession;
+    [SerializeField] GameObject endSessionParent;
     [SerializeField] GameObject waitObjectPanel;
+    [SerializeField] GameObject endSessionButton;
 
     protected override void CheckLoginData()
     {
@@ -28,8 +29,7 @@ public class Configurator : DataTransmissionController
 
         if (connectViaInput.IsConnectedToServer)
         {
-            Debug.Log("Check Client connected");
-            
+            Debug.Log("Check Client connected");            
             base.CheckLoginData();
         }
     }
@@ -42,6 +42,7 @@ public class Configurator : DataTransmissionController
 
     public void OnTabAccepted()
     {
-        waitObjectPanel.SetActive(true);
+        waitObjectPanel.SetActive(false);
+        endSessionButton.SetActive(true);
     }
 }
