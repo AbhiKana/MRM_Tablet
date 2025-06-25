@@ -4,12 +4,21 @@ using UnityEngine.UI;
 
 public class Configurator : DataTransmissionController
 {
-
     [Header("Child Properties")]
     [SerializeField] ConnectViaInput connectViaInput;
     [SerializeField] GameObject endSessionParent;
     [SerializeField] GameObject waitObjectPanel;
     [SerializeField] GameObject endSessionButton;
+
+    private void OnEnable()
+    {
+        TCP_ClientController.OnServerDisconnected += ResetConfig;
+    }
+
+    private void OnDestroy()
+    {
+        TCP_ClientController.OnServerDisconnected -= ResetConfig;
+    }
 
     protected override void CheckLoginData()
     {
@@ -37,12 +46,18 @@ public class Configurator : DataTransmissionController
     protected override void ControlObjectActivation()
     {
         manager.OpenPage(8);
-        loginPanel.SetActive(false);
+         emailValidation2.gameObject.SetActive(false);
     }
 
     public void OnTabAccepted()
     {
         waitObjectPanel.SetActive(false);
         endSessionButton.SetActive(true);
+    }
+
+    public void ResetConfig()
+    {
+        waitObjectPanel.SetActive(true);
+        endSessionButton.SetActive(false);
     }
 }

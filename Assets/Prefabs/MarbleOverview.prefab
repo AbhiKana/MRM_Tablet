@@ -85,8 +85,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7086846014383353906}
   - component: {fileID: 6179994524343238021}
-  - component: {fileID: 7173314703891484852}
   - component: {fileID: 6840583478786293021}
+  - component: {fileID: 7173314703891484852}
   - component: {fileID: 1254729699119882109}
   - component: {fileID: 4724660465082213609}
   m_Layer: 5
@@ -130,6 +130,32 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2913698957292138109}
   m_CullTransparentMesh: 1
+--- !u!114 &6840583478786293021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2913698957292138109}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!114 &7173314703891484852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,32 +195,6 @@ MonoBehaviour:
   OnDataLoadOnce:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6840583478786293021
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2913698957292138109}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 4
-  m_Spacing: 0
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
-  m_ChildScaleHeight: 0
-  m_ReverseArrangement: 0
 --- !u!114 &1254729699119882109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1502,7 +1502,9 @@ MonoBehaviour:
   UnselectedSprite: {fileID: 21300000, guid: ab69ff80e1714a440a7c192e781a0aaa, type: 3}
   TriggerScreen: {fileID: 0}
   CurrentScreen: {fileID: 0}
+  textMesh: {fileID: 0}
   getImage: 0
+  IsTextEdit: 0
 --- !u!114 &356097932134909613 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4822036442664534379, guid: 883b5bb5298fab0498f9576fac769543,

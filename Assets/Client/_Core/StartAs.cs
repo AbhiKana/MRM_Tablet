@@ -24,12 +24,12 @@ public class StartAs : MonoBehaviour
     public void Start()
     {
         ConnectToServer();
-        TCP_ClientController.OnServerDisconnected += ReconnectToServer;
+        //TCP_ClientController.OnServerDisconnected += ReconnectToServer;
     }
 
     private void OnDestroy()
     {
-        TCP_ClientController.OnServerDisconnected -= ReconnectToServer;
+        //TCP_ClientController.OnServerDisconnected -= ReconnectToServer;
     }
     void ReconnectToServer()
     {

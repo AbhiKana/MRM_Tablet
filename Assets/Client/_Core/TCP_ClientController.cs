@@ -170,6 +170,7 @@ public class TCP_ClientController : MonoBehaviour
                         UnityMainThreadDispatcher.Enqueue(() =>
                         {
                             OnMessageReceived?.Invoke(serverMessage);
+
                         });
                     }
                 }
@@ -194,7 +195,7 @@ public class TCP_ClientController : MonoBehaviour
 
         UnityMainThreadDispatcher.Enqueue(() =>
         {
-            OnServerDisconnected?.Invoke();
+            //OnServerDisconnected?.Invoke();
         });
     }
     
@@ -366,7 +367,6 @@ public class TCP_ClientController : MonoBehaviour
     {
         try
         {
-            // Test 1: Check if socket is connected
             if (!client.Connected) return false;
 
             // Test 2: Small read/write test

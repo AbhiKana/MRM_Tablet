@@ -3,7 +3,6 @@ using UnityEngine;
 public class EmailDummyData : MonoBehaviour
 {
     [SerializeField] EmailValidation emailValidation;
-    [SerializeField] EmailValidation emailValidation_2;
 
     private const string EMAIL_KEY = "UserEmail";
     private const string NAME_KEY = "UserName";
@@ -38,9 +37,6 @@ public class EmailDummyData : MonoBehaviour
             
             emailValidation.NameinputField.text = savedName;
             emailValidation.EmailinputField.text = savedEmail;
-            
-            //emailValidation_2.NameinputField.text = savedName;
-            //emailValidation_2.EmailinputField.text = savedEmail;
         }
     }
 }

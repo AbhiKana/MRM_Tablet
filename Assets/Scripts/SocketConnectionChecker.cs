@@ -80,7 +80,7 @@ public class SocketConnectionChecker : MonoBehaviour
         if (tcpClientController == null)
             tcpClientController = FindObjectOfType<TCP_ClientController>();
 
-        Debug.Log("Tab ID to be sent");
+        Debug.Log("Closing Tab ID to be sent");
         tcpClientController.SendMessage(data);
     }
 }

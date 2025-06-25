@@ -5,15 +5,11 @@ using UnityEngine.UI;
 
 public abstract class DataTransmissionController : MonoBehaviour
 {
-    [SerializeField] public UserData userData;
-    
     [SerializeField] public EmailValidation emailValidation;
     [SerializeField] public EmailValidation emailValidation2;
-
-    [SerializeField] public GameObject loginPanel;
-
     [SerializeField] public Button DataSenderButton;
 
+    protected UserData userData;
     protected UI_Manager manager;
     protected WWWRequestTC requestTC;
     protected GetAllMarbles getAllMarbles;
@@ -23,12 +19,14 @@ public abstract class DataTransmissionController : MonoBehaviour
     public bool OnConfigButtonClick;
     
     public UnityEvent OnDataSave;
+    
     protected abstract void ControlObjectActivation();
     
     private void Start()
     {
         requestTC = new WWWRequestTC();
         manager = FindAnyObjectByType<UI_Manager>();
+        userData = FindAnyObjectByType<UserData>();
         EventHandler();
     }
 
@@ -118,7 +116,6 @@ public abstract class DataTransmissionController : MonoBehaviour
                     }
                     else
                     {
-
                         Debug.Log("<color=red>Update User</color>");
                         data = JsonUtility.ToJson(messageFormat);
                         OnDataSave?.Invoke();
@@ -192,10 +189,10 @@ public abstract class DataTransmissionController : MonoBehaviour
                 }
             }
         }
-        return EditStringValye(s);
+        return EditStringValue(s);
     }
 
-    private string EditStringValye(StringBuilder s)
+    private string EditStringValue(StringBuilder s)
     {
         if (!string.IsNullOrEmpty(s.ToString()))
         {

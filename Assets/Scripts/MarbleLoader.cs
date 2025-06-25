@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using System.Collections;
 using AirFishLab.ScrollingList;
 using System.Collections.Generic;
-using System.Linq;
 
 public class MarbleLoader : MonoBehaviour
 {
@@ -30,7 +29,11 @@ public class MarbleLoader : MonoBehaviour
 
     IEnumerator StoreMarblesInList()
     {
-        yield return new WaitForSeconds(0.5f);
+        if (!IsAllImageDownloaded)
+        {
+            Loader.Instance.LoaderActivation(true);   
+        }
+            yield return new WaitForSeconds(0.5f);
         foreach (Transform transform in circularScrollingList.transform)
         {
             var showDetails = transform.GetComponent<ShowMarbleDetails>();
@@ -49,6 +52,7 @@ public class MarbleLoader : MonoBehaviour
     {
         if (!IsCategorySpawn)
         {
+            //Loader.Instance.LoaderActivation(true);
             var category = getAllMarbles.categories.category;
             for (int i = 0; i < category.Count; i++)
             {
@@ -60,10 +64,6 @@ public class MarbleLoader : MonoBehaviour
                 toggle.group = CategoryParent.GetComponent<ToggleGroup>();
                 toggle.GetComponentInChildren<TextMeshProUGUI>().text = category[i].category_name;
                 
-                /*if (i == 0)
-                    toggle.isOn = true;
-                else 
-                    toggle.isOn = false;*/
                 ToggleSpriteChange t = toggle.GetComponent<ToggleSpriteChange>();
                 t.OnToggleClicked();
                 

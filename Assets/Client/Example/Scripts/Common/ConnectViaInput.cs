@@ -142,6 +142,7 @@ public class ConnectViaInput : MonoBehaviour
     {
         if (msg.Contains("Server Disconnected"))
         {
+            TCP_ClientController.OnServerDisconnected?.Invoke();
             OnServerDisconnect?.Invoke();
             IsConnected = false;
             IsConnectedToServer = false;
@@ -183,26 +184,10 @@ public class ConnectViaInput : MonoBehaviour
         IsConnected = true;
         if (IsReconnecting)
         {
-            CancelInvoke(nameof(InitializeClient));
+            //CancelInvoke(nameof(InitializeClient));
             IsReconnecting = false;
         }
     }
-
-    /*protected virtual void Update()
-    {
-        if (IsConnected)
-        {
-            OnConnectToserver?.Invoke();
-            IsConnected = false;
-        
-            if (IsReconnecting)
-            {
-                Debug.LogError("Stop Invoke repeating");
-                CancelInvoke("InitializeClient");
-                IsReconnecting = false;
-            }
-        }
-    }*/
 
     public void EnableInputField(bool val)
     {

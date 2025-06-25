@@ -11,7 +11,6 @@ public class ShowMarbleDetails : MonoBehaviour
     public MarbleDetail marbleDetailsWithCategoryID;
     public Texture[] m_Textures;
 
-
     FetchQRData fetchQRData;
     WWWRequestTC requestTC;
     public RawImage image;

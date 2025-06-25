@@ -11,7 +11,7 @@ public class MarbleUploader : DataTransmissionController
         if(thanksForSharingObj != null)
             thanksForSharingObj.SetActive(true);
         manager.AddPageHistory(thanksForSharingObj);
-        loginPanel.SetActive(false);
+        emailValidation2.gameObject.SetActive(false);
     }
 
     protected override void UpdateUser(MessageFormat m)

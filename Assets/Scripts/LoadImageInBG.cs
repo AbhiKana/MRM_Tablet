@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -35,9 +34,9 @@ public class LoadImageInBG : MonoBehaviour
             if (showMarbleDetails.m_Textures.Length < 1)
                 showMarbleDetails.m_Textures = new Texture[5];
 
-            //totalImageCount = 1;
             totalImageCount = marbleDet.texture_img.Count;
             GetImageUsingthread(marbleDet.texture_img.ToArray());
+            
             /*for (int i = 0; i < marbleDet.texture_img.Count; i++)
             {
                 GetImageUsingthread(marbleDet.texture_img[i], i);

@@ -2,7 +2,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -245,12 +244,12 @@ public class ThreadedImageDownloader : MonoBehaviour
             byte[] imageData = await _httpClient.GetByteArrayAsync(url);
 
             // 2. Process texture (background thread)
-            *//*var texture = _texturePool.Get();
+            var texture = _texturePool.Get();
             if (!await Task.Run(() => TryLoadTexture(imageData, texture)))
             {
                 Debug.LogError($"Failed to load image: {url}");
                 return;
-            }*//*
+            }
 
             // 3. Only final assignment on main thread
             _mainThreadActions.Enqueue(() =>

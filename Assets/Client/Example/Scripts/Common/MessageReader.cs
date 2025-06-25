@@ -12,17 +12,25 @@ public class MessageReader : MonoBehaviour
 
     public void ProcessMessage(string recvMsg)
     {
-        revmsg = JsonUtility.FromJson<MessageFormat>(recvMsg);
-        Debug.Log(recvMsg);
-        switch (revmsg.MessageKey)
+        if (recvMsg.StartsWith("{\"MessageKey\":\"accepted_tab_id\""))
         {
-            case "accepted_tab_id":
-                if (revmsg.MessageValue == Tab_ID.GetID().ToString())
-                {
-                    configurator.OnTabAccepted();
-                    Debug.Log("Please proceed to the configration: " + revmsg.MessageValue);
-                }
-                break;
+            revmsg = JsonUtility.FromJson<MessageFormat>(recvMsg);
+
+            Debug.Log(recvMsg);
+            switch (revmsg.MessageKey)
+            {
+                case "accepted_tab_id":
+                    if (revmsg.MessageValue == Tab_ID.GetID().ToString())
+                    {
+                        configurator.OnTabAccepted();
+                        Debug.Log("Please proceed to the configration: " + revmsg.MessageValue);
+                    }
+                    else
+                        Debug.Log("Tab ID doesn't match");
+                    break;
+
+            }
+
         }
     }
 
