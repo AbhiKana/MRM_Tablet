@@ -31,7 +31,7 @@ public class StoreMarbleDetails : MonoBehaviour
     #region Variables
     public TileDetailsList tileDetailsList;
     public MarbleQRDATA _marbleQrDatascritable;
-    public GameObject loader;
+    //public GameObject loader;
     [SerializeField] FetchQRData fetchQRData;
     [SerializeField] Toggle toggle;
     [SerializeField] RawImage topMarbleData;

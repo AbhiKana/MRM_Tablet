@@ -12,7 +12,7 @@ public class MessageReader : MonoBehaviour
 
     public void ProcessMessage(string recvMsg)
     {
-        if (recvMsg.StartsWith("{\"MessageKey\":\"accepted_tab_id\""))
+        if (recvMsg.StartsWith("{\"MessageKey\""))
         {
             revmsg = JsonUtility.FromJson<MessageFormat>(recvMsg);
 
@@ -25,12 +25,16 @@ public class MessageReader : MonoBehaviour
                         configurator.OnTabAccepted();
                         Debug.Log("Please proceed to the configration: " + revmsg.MessageValue);
                     }
-                    else
-                        Debug.Log("Tab ID doesn't match");
                     break;
 
+                case "disconnect_tab_id":
+                    if (revmsg.MessageValue == Tab_ID.GetID().ToString())
+                    {
+                        Debug.Log("Tab disconnected");
+                        configurator.ResetConfig();
+                    }
+                    break;
             }
-
         }
     }
 

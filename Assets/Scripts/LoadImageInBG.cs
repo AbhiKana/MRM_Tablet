@@ -35,13 +35,13 @@ public class LoadImageInBG : MonoBehaviour
                 showMarbleDetails.m_Textures = new Texture[5];
 
             totalImageCount = marbleDet.texture_img.Count;
-            GetImageUsingthread(marbleDet.texture_img.ToArray());
+           // GetImageUsingthread(marbleDet.texture_img.ToArray());
             
-            /*for (int i = 0; i < marbleDet.texture_img.Count; i++)
+            for (int i = 0; i < marbleDet.texture_img.Count; i++)
             {
-                GetImageUsingthread(marbleDet.texture_img[i], i);
-                //GetImage(marbleDet.texture_img[i], i);
-            }*/
+                //GetImageUsingthread(marbleDet.texture_img[i], i);
+                GetImage(marbleDet.texture_img[i], i);
+            }
         }
     }
     void GetImageUsingthread(string[] url)
@@ -57,7 +57,7 @@ public class LoadImageInBG : MonoBehaviour
                 if(success)
                     CheckAllImageLoaded();
             },
-            () => { count++; }
+            () => { count++; Debug.Log("Count: " + count); }
         );
 
         /*AdvancedImageDownloader.Instance.DownloadMultipleImages

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing.Printing;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -10,7 +9,6 @@ public class UI_Manager : MonoBehaviour
     public StoreMarbleDetails marbleDetails;
 
     public GameObject HeaderPage;
-    public GameObject LoaderPage;
 
     public GameObject[] listOfObjects;
     [SerializeField] private List<GameObject> pageHistory = new List<GameObject>();
@@ -90,11 +88,6 @@ public class UI_Manager : MonoBehaviour
     {
         ClearOldList();
         RefreshList();
-    }
-
-    public void HandleLoaderPage(bool val)
-    {
-        LoaderPage.SetActive(val);
     }
 
     public void RefreshList()

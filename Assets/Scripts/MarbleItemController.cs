@@ -88,7 +88,8 @@ public class MarbleItemController : MonoBehaviour
         else
         {
             Debug.Log("<color=blue>Load First Time</color>");
-            manager.HandleLoaderPage(true);
+            //manager.HandleLoaderPage(true);
+            Loader.Instance.LoaderActivation(true);
             string id = showMarbleDetails.tileID.ToString();
             getMRMDetails.ViewMarbleDetails(id);
             getMRMDetails.storeMarbleDetails.listOfMarbleDetails.Add(showMarbleDetails);

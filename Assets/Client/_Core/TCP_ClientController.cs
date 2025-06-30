@@ -170,7 +170,6 @@ public class TCP_ClientController : MonoBehaviour
                         UnityMainThreadDispatcher.Enqueue(() =>
                         {
                             OnMessageReceived?.Invoke(serverMessage);
-
                         });
                     }
                 }
@@ -193,10 +192,10 @@ public class TCP_ClientController : MonoBehaviour
         Debug.LogWarning("Server disconnected or closed.");
         isRunning = false;
 
-        UnityMainThreadDispatcher.Enqueue(() =>
-        {
-            //OnServerDisconnected?.Invoke();
-        });
+        //UnityMainThreadDispatcher.Enqueue(() =>
+        //{
+        //    //OnServerDisconnected?.Invoke();
+        //});
     }
     
     //Close TCP connections
@@ -357,8 +356,7 @@ public class TCP_ClientController : MonoBehaviour
             else
             {
                 callback?.Invoke(false);
-                Debug.Log(timedOut ? "Connection timed out" :
-                          (connected ? "Connection failed validation" : "Connection failed"));
+                Debug.Log(timedOut ? "Connection timed out" : (connected ? "Connection failed validation" : "Connection failed"));
             }
         });
     }

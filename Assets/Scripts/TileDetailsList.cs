@@ -61,7 +61,8 @@ public class TileDetailsList : MonoBehaviour
             var details = storeMarbleDetails.list[i].textures;
             if (details == null || details.Length == 0)
             {
-                storeMarbleDetails.loader.gameObject.SetActive(true);
+                Loader.Instance.LoaderActivation(true);  
+                //storeMarbleDetails.loader.gameObject.SetActive(true);
                 LoadImageInBG loadImageInBG = marbleDetail.GetComponent<LoadImageInBG>();
                 loadImageInBG.LoadMarbleImageData();
                 Debug.Log("Textures not loaded - starting download");
@@ -85,7 +86,8 @@ public class TileDetailsList : MonoBehaviour
 
         if (noof_imagedownload == noof_marble)
         {
-            storeMarbleDetails.loader.gameObject.SetActive(false);
+            Loader.Instance.LoaderActivation(false);
+            //storeMarbleDetails.loader.gameObject.SetActive(false);
             isNewImageAdded = false;
             SpawnMarbleDetails();
             //RemoveLoadedMarbleFromList();
