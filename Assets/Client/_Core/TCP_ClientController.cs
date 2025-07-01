@@ -93,7 +93,6 @@ public class TCP_ClientController : MonoBehaviour
         }
     }
 
-
     private void ConnectToServer_New()
     {
         string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
@@ -255,28 +254,6 @@ public class TCP_ClientController : MonoBehaviour
         return MsgFromServer;
     }
 
-    //Close TCP connections
-    public void StopClient()
-    {
-        isRunning = false;
-        Thread.Sleep(100);
-        if (tcpClient != null && tcpClient.Connected)
-        {
-
-            if (tcpClient.GetStream() != null)
-                tcpClient.GetStream().Close();
-            tcpClient.Close();
-            Debug.Log("Client socket connection closed.....");
-        }
-        clientThread?.Abort();
-        clientThread = null;
-    }
-
-    private void OnDisable()
-    {
-        StopClient();
-    }
-
     #region Connection_New
     private void StartMessageListeningThread()
     {
@@ -382,5 +359,41 @@ public class TCP_ClientController : MonoBehaviour
         }
     }
     #endregion
+
+    //Close TCP connections
+    public void StopClient()
+    {
+        Debug.Log("Client Disconnect");
+        isRunning = false;
+        Thread.Sleep(100);
+        if (tcpClient != null && tcpClient.Connected)
+        {
+
+            if (tcpClient.GetStream() != null)
+                tcpClient.GetStream().Close();
+            tcpClient.Close();
+            Debug.Log("Client socket connection closed.....");
+        }
+        clientThread?.Abort();
+        clientThread = null;
+    }
+    private void OnDisable()
+    {
+        StopClient();
+    }
+
+    private void OnApplicationPause(bool pause)
+    {
+        Debug.Log("App Paused");
+        if(pause)
+        {
+            StopClient();
+        }
+    }
+
+    private void OnApplicationQuit()
+    {
+        StopClient();
+    }
 }
 
