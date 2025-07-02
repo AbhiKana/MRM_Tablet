@@ -363,12 +363,12 @@ public class TCP_ClientController : MonoBehaviour
     //Close TCP connections
     public void StopClient()
     {
+        SendMessage("Kill App");
         Debug.Log("Client Disconnect");
         isRunning = false;
         Thread.Sleep(100);
         if (tcpClient != null && tcpClient.Connected)
         {
-
             if (tcpClient.GetStream() != null)
                 tcpClient.GetStream().Close();
             tcpClient.Close();
@@ -377,20 +377,15 @@ public class TCP_ClientController : MonoBehaviour
         clientThread?.Abort();
         clientThread = null;
     }
-    private void OnDisable()
-    {
-        StopClient();
-    }
 
     private void OnApplicationPause(bool pause)
     {
-        Debug.Log("App Paused");
-        if(pause)
+        if (pause)
         {
-            StopClient();
+            SendMessage("Pause");
+            //StopClient();
         }
     }
-
     private void OnApplicationQuit()
     {
         StopClient();

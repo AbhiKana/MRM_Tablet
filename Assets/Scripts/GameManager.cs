@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] Button QuitButton;
+    /*[SerializeField] Button QuitButton;
+    [SerializeField] TCP_ClientController tCP_ClientController;
     private void Start()
     {
         QuitButton.onClick.AddListener(QuitApp);
@@ -18,12 +19,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("App Paused");
         if (pause)
         {
-            //TCP_ClientController.StopClient();
+            if(tCP_ClientController == null)
+                tCP_ClientController = FindObjectOfType<TCP_ClientController>();
+            
+            tCP_ClientController.StopClient();
         }
-    }
-
-    private void OnApplicationQuit()
-    {
-        //StopClient();
-    }
+    }*/
 }
