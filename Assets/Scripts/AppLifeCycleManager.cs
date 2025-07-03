@@ -1,33 +1,34 @@
+using System.Collections;
 using UnityEngine;
 
 public class AppLifeCycleManager : MonoBehaviour
 {
-
-    [SerializeField] bool Disconnected = false;
     TCP_ClientController tcpClient;
-    ConnectViaInput connectViaInput;
     ClientServerSelector clientServerSelector;
+    bool Disconnected = false;
+    bool isReconnecting = false;
+    
     private void Start()
     {
-        clientServerSelector= FindObjectOfType<ClientServerSelector>();
+        if (clientServerSelector == null)
+            clientServerSelector = FindObjectOfType<ClientServerSelector>();
     }
 
     [ContextMenu("Disconnect")]
     public void OnAppKilledFromBackground()
     {
+        if (isReconnecting) return;
+
         Disconnected = true;
         if (tcpClient == null)
             tcpClient = FindObjectOfType<TCP_ClientController>();
 
-        tcpClient.SendMessage("Pause");
-        tcpClient.StopClient();
-        
-        if(clientServerSelector == null)
-            clientServerSelector = FindObjectOfType<ClientServerSelector>();
-
-        //clientServerSelector.DestroyClientObject();
-        //
-        Destroy(tcpClient.gameObject);
+        if (tcpClient != null)
+        {
+            tcpClient.SendMessage("Pause");
+            tcpClient.StopClient();
+            Destroy(tcpClient.gameObject);
+        }
     }
 
     void OnApplicationPause(bool pauseStatus)
@@ -38,14 +39,23 @@ public class AppLifeCycleManager : MonoBehaviour
         }
         else
         {
-            if(Disconnected)
+            if (Disconnected && !isReconnecting)
             {
-                if (clientServerSelector == null)
-                    clientServerSelector = FindObjectOfType<ClientServerSelector>();
-
-                clientServerSelector.GetSelectType();
-                Disconnected = false;
+                isReconnecting = true;
+                StartCoroutine(ReconnectAfterDelay(0.5f));
             }
         }
+    }
+
+    private IEnumerator ReconnectAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (clientServerSelector == null)
+            clientServerSelector = FindObjectOfType<ClientServerSelector>();
+
+        clientServerSelector.GetSelectType();
+        Disconnected = false;
+        isReconnecting = false;
     }
 }

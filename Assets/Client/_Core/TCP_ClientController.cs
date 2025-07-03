@@ -33,7 +33,7 @@ public class TCP_ClientController : MonoBehaviour
         startAs = FindFirstObjectByType<StartAs>();
         connectViaInput = FindFirstObjectByType<ConnectViaInput>();
         //ConnectToServer();
-        ConnectToServer_New();
+        StartCoroutine(ConnectToServer_New());
     }
 
     void Update()
@@ -94,8 +94,10 @@ public class TCP_ClientController : MonoBehaviour
         }
     }
 
-    private void ConnectToServer_New()
+    private IEnumerator ConnectToServer_New()
     {
+        //StopClient();
+        yield return new WaitForSeconds(0.1f);
         string ip = connectViaInput?.ipKey ?? startAs?.ipKey;
         int port = 8052;
 
@@ -305,6 +307,8 @@ public class TCP_ClientController : MonoBehaviour
             catch (Exception e)
             {
                 Debug.LogError("Connection error: " + e.Message);
+                //In case if server is not running
+                StopClient();
             }
         });
 
@@ -318,6 +322,7 @@ public class TCP_ClientController : MonoBehaviour
 
         if (connectThread.IsAlive)
         {
+            Debug.Log("Is Connection Problem");
             tcpClient?.Close();
             connectThread.Abort();
             timedOut = true;
@@ -335,6 +340,8 @@ public class TCP_ClientController : MonoBehaviour
             {
                 callback?.Invoke(false);
                 Debug.Log(timedOut ? "Connection timed out" : (connected ? "Connection failed validation" : "Connection failed"));
+
+                //Destroy(gameObject);
             }
         });
     }
@@ -363,24 +370,43 @@ public class TCP_ClientController : MonoBehaviour
 
     //Close TCP connections
 
-    //[ContextMenu("Disconnect")]
     public void StopClient()
     {
         Debug.Log("Client Disconnect");
         isRunning = false;
-        Thread.Sleep(100);
-        if (tcpClient != null && tcpClient.Connected)
-        {
-            if (tcpClient.GetStream() != null)
-                tcpClient.GetStream().Close();
-            tcpClient.Close();
-            //tcpClient.Dispose();
-            Debug.Log("Client socket connection closed.....");
-        }
-        clientThread?.Abort();
-        clientThread = null;
 
-        //Destroy(this.gameObject);
+        try
+        {
+            // First stop the thread
+            if (clientThread != null && clientThread.IsAlive)
+            {
+                clientThread.Abort();
+                clientThread = null;
+            }
+
+            // Then close the TCP connection
+            if (tcpClient != null)
+            {
+                if (tcpClient.Connected)
+                {
+                    var stream = tcpClient.GetStream();
+                    if (stream != null)
+                    {
+                        stream.Close();
+                        Thread.Sleep(50); // Small delay to ensure stream closure
+                    }
+                    tcpClient.Close();
+                }
+                tcpClient.Dispose();
+                tcpClient = null;
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogWarning("Error during client shutdown: " + e.Message);
+        }
+
+        Debug.Log("Client socket connection closed");
     }
 
     private void OnApplicationQuit()

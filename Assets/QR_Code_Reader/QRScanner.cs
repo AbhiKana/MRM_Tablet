@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
 using UnityEngine.Events;
-using UnityEngine.Android;
 using DG.Tweening;
 
 public class QRScanner : MonoBehaviour
