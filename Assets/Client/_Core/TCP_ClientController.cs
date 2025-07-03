@@ -25,6 +25,7 @@ public class TCP_ClientController : MonoBehaviour
     public static UnityAction OnServerDisconnected;
     public static UnityAction<string> OnMessageReceived;
     
+
     public void _Initialze()
     {
         Debug.Log("Client Started");
@@ -361,9 +362,10 @@ public class TCP_ClientController : MonoBehaviour
     #endregion
 
     //Close TCP connections
+
+    //[ContextMenu("Disconnect")]
     public void StopClient()
     {
-        SendMessage("Kill App");
         Debug.Log("Client Disconnect");
         isRunning = false;
         Thread.Sleep(100);
@@ -372,20 +374,15 @@ public class TCP_ClientController : MonoBehaviour
             if (tcpClient.GetStream() != null)
                 tcpClient.GetStream().Close();
             tcpClient.Close();
+            //tcpClient.Dispose();
             Debug.Log("Client socket connection closed.....");
         }
         clientThread?.Abort();
         clientThread = null;
+
+        //Destroy(this.gameObject);
     }
 
-    private void OnApplicationPause(bool pause)
-    {
-        if (pause)
-        {
-            SendMessage("Pause");
-            //StopClient();
-        }
-    }
     private void OnApplicationQuit()
     {
         StopClient();

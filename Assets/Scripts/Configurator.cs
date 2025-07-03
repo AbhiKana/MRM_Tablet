@@ -9,7 +9,7 @@ public class Configurator : DataTransmissionController
     [SerializeField] GameObject endSessionParent;
     [SerializeField] GameObject waitObjectPanel;
     [SerializeField] GameObject endSessionButton;
-
+    [SerializeField] GameObject TabDisconnected;
     private void OnEnable()
     {
         TCP_ClientController.OnServerDisconnected += ResetConfig;
@@ -58,6 +58,12 @@ public class Configurator : DataTransmissionController
     public void ResetConfig()
     {
         waitObjectPanel.SetActive(true);
+        endSessionButton.SetActive(false);
+    }
+
+    public void TabDisconnectThroughConfig()
+    {
+        TabDisconnected.gameObject.SetActive(true);
         endSessionButton.SetActive(false);
     }
 }

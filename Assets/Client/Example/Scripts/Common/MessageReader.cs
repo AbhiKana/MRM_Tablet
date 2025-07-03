@@ -31,7 +31,7 @@ public class MessageReader : MonoBehaviour
                     if (revmsg.MessageValue == Tab_ID.GetID().ToString())
                     {
                         Debug.Log("Tab disconnected");
-                        configurator.ResetConfig();
+                        configurator.TabDisconnectThroughConfig();
                     }
                     break;
             }

@@ -6,9 +6,6 @@ public class AppQuitController : MonoBehaviour
     private const float DOUBLE_PRESS_DELAY = 1.5f;
     private bool backPressedOnce = false;
 
-    // For detecting app termination
-    private bool isQuitting = false;
-
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
@@ -31,7 +28,6 @@ public class AppQuitController : MonoBehaviour
             }
             else if (Time.time - backButtonLastPress <= DOUBLE_PRESS_DELAY)
             {
-                isQuitting = true;
                 QuitApplication();
             }
             else
@@ -44,27 +40,6 @@ public class AppQuitController : MonoBehaviour
         {
             backPressedOnce = false;
         }
-    }
-
-    /*void OnApplicationPause(bool pauseStatus)
-    {
-        if (pauseStatus && !isQuitting)
-        {
-            // App moved to background (could be followed by termination)
-            SaveAppState();
-        }
-    }*/
-
-    void OnApplicationQuit()
-    {
-        SaveAppState();
-    }
-
-    void SaveAppState()
-    {
-        // Implement your save logic here
-        //TCP_ClientController tCP_ClientController = FindObjectOfType<TCP_ClientController>();
-        //tCP_ClientController.StopClient();
     }
 
     void QuitApplication()

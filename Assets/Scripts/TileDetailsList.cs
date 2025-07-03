@@ -5,6 +5,7 @@ public class TileDetailsList : MonoBehaviour
 {
     UI_Manager uI_Manager;
     [SerializeField] StoreMarbleDetails storeMarbleDetails;
+    [SerializeField] Transform parentObj;
     [SerializeField] Transform parentObjectToSpawn;
     [SerializeField] GameObject tilePrefab;
 
@@ -41,7 +42,7 @@ public class TileDetailsList : MonoBehaviour
     {
         noof_marble = storeMarbleDetails.list.Count;
         noof_imagedownload = 0;
-
+        
         for (int i = 0; i < noof_marble; i++)
         {
             // Find corresponding marble in listOfMarbleDetails by name
@@ -86,13 +87,20 @@ public class TileDetailsList : MonoBehaviour
 
         if (noof_imagedownload == noof_marble)
         {
-            Loader.Instance.LoaderActivation(false);
-            //storeMarbleDetails.loader.gameObject.SetActive(false);
-            isNewImageAdded = false;
-            SpawnMarbleDetails();
-            //RemoveLoadedMarbleFromList();
+            parentObj.gameObject.SetActive(true);
+            Invoke(nameof(ShortDelay), 0.5f);
         }
     }
+
+    private void ShortDelay()
+    {
+        parentObj.gameObject.SetActive(false);
+        Loader.Instance.LoaderActivation(false);
+
+        isNewImageAdded = false;
+        SpawnMarbleDetails();
+    }
+
     private void AssignData_OnLoad(SpecificMarbleDetails mrmDet)
     {
         GameObject marbleDetails = Instantiate(tilePrefab).gameObject;

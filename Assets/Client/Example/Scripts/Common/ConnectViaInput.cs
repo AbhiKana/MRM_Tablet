@@ -51,6 +51,12 @@ public class ConnectViaInput : MonoBehaviour
         }
     }
 
+    [ContextMenu("Reconnect")]
+    public void ReInitialize()
+    {
+        clientServerSelector.GetSelectType();
+    }
+    
     private void Start()
     {
         ConnectToServer();
@@ -162,15 +168,6 @@ public class ConnectViaInput : MonoBehaviour
             }
         }
         TCP_ClientController.OnConnect += ClientConnected;
-    }
-
-    [ContextMenu("Reconnect")]
-    public void InitializeClient()
-    {
-        if (clientServerSelector.GetClientController() != null)
-        {
-            clientServerSelector.GetClientController().GetComponent<TCP_ClientController>()._Initialze();
-        }
     }
 
     public void ClientConnected()

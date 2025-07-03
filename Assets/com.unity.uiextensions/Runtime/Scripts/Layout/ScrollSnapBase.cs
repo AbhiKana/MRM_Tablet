@@ -364,6 +364,7 @@ namespace UnityEngine.UI.Extensions
 
                 _lerp = true;
                 CurrentPage = screenIndex;
+                Debug.Log("Current Page: "+ CurrentPage);
                 GetPositionforPage(_currentPage, ref _lerp_target);
                 ScreenChange();
             }
@@ -400,6 +401,7 @@ namespace UnityEngine.UI.Extensions
         /// <param name="target">Outputs the local position for the selected page</param>
         internal void GetPositionforPage(int page, ref Vector3 target)
         {
+            //Debug.Log("Page Pos: "+ target);
             _childPos = -_childSize * page;
             if (_isVertical)
             {
