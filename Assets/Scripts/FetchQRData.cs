@@ -24,13 +24,13 @@ public class FetchQRData : MonoBehaviour
     WWWRequestTC requestTC;
 
     public UnityEvent OnDataLoaded;
-    public UnityEvent OnDataLoadError = new UnityEvent();
+    public UnityEvent OnDataLoadError;
 
     [SerializeField] int totalImageCount = 0;
     [SerializeField] int downlaodedImageCount = 0;
+
     private void Start()
-    {
-        requestTC = new WWWRequestTC();
+    {   
         QRScanner.OnQRDetect.AddListener(LoadData);
         OnDataLoaded.AddListener(() =>
         {
