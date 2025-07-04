@@ -5,6 +5,8 @@ public class MarbleUploader : DataTransmissionController
 {
     [SerializeField] GameObject thanksForSharingObj;
 
+    [Header("Scriptable Objects")]
+    [SerializeField] MessageSenderDetails user_id_object;
     protected override void ControlObjectActivation()
     {
         Debug.Log("<color=green>OnDataSave Invoke</color>");
@@ -45,7 +47,7 @@ public class MarbleUploader : DataTransmissionController
         string pdfUrl = Url.apiUrl + Url.pdf;
 
         WWWForm form = new WWWForm();
-        form.AddField("user_id", user_id);
+        form.AddField(user_id_object.nameVal, user_id);
 
         WWWRequestTC w = new WWWRequestTC();
         w.Post(form, pdfUrl, (formData, isSuccess) =>

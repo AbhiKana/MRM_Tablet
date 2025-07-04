@@ -15,12 +15,9 @@ public class QRScanner : MonoBehaviour
     public RawImage rawImage;
     public GameObject spinner;
     public Transform BorderBox;
-
-
     public IBarcodeReader barcodeReader;
 
     public static UnityEvent<string> OnQRDetect = new UnityEvent<string>();
-
     RenderTexture rawimageTexture;
 
     private void Awake()
@@ -69,7 +66,7 @@ public class QRScanner : MonoBehaviour
     void Stopwebcam()
     {
         webcamTexture.Stop();
-        rawimageTexture.Release();
+        rawimageTexture?.Release();
         //rawImage.texture = null;
     }
 

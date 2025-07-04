@@ -13,6 +13,12 @@ public class SocketConnectionChecker : MonoBehaviour
     [SerializeField] ConnectViaInput connectViaInput;
     [SerializeField] UserData userData;
 
+
+    [Header("Scriptable Objects")]
+    [SerializeField] MessageSenderDetails user_id;
+    [SerializeField] MessageSenderDetails tab_id;
+    [SerializeField] MessageSenderDetails close_tab_id;
+
     private void Start()
     {
         userData = FindObjectOfType<UserData>();
@@ -47,7 +53,7 @@ public class SocketConnectionChecker : MonoBehaviour
         {
             Debug.Log("Sending Info to Multitaction");
             MessageFormat messageFormat = new MessageFormat();
-            messageFormat.MessageKey = "user_id";
+            messageFormat.MessageKey = user_id.nameVal;
             messageFormat.MessageValue = userData.storeUserData.user_id;
             string data = JsonUtility.ToJson(messageFormat);
             tcpClientController.SendMessage(data);
@@ -57,7 +63,7 @@ public class SocketConnectionChecker : MonoBehaviour
     public void SendTabID()
     {
         MessageFormat m = new MessageFormat();
-        m.MessageKey = "tab_id";
+        m.MessageKey = tab_id.nameVal;
         m.MessageValue = Tab_ID.tabId.ToString();
 
         string data = JsonUtility.ToJson(m);
@@ -72,7 +78,7 @@ public class SocketConnectionChecker : MonoBehaviour
     public void SendCloseTabID()
     {
         MessageFormat m = new MessageFormat();
-        m.MessageKey = "close_tab_id";
+        m.MessageKey =close_tab_id.name;
         m.MessageValue = Tab_ID.tabId.ToString();
 
         string data = JsonUtility.ToJson(m);

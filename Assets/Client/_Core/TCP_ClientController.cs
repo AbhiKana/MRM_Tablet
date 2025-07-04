@@ -58,7 +58,7 @@ public class TCP_ClientController : MonoBehaviour
         }*/
 
         //Close TCP connections
-        if (!isRunning)
+        /*if (!isRunning)
         {
             Thread.Sleep(100);
             if (tcpClient != null && tcpClient.Connected)
@@ -66,7 +66,7 @@ public class TCP_ClientController : MonoBehaviour
                 tcpClient.Close();
                 Debug.Log("Server stopped listening.");
             }
-        }
+        }*/
     }
 
     //Connect to server

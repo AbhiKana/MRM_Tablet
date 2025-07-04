@@ -1142,7 +1142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &121188232
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9511,6 +9511,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   connectViaInput: {fileID: 972451989}
   userData: {fileID: 1240531875}
+  user_id: {fileID: 11400000, guid: 196e94d47cc72ac46ab76b1be129d1a4, type: 2}
+  tab_id: {fileID: 11400000, guid: 6e8a9f36734b47944994626464b66947, type: 2}
+  close_tab_id: {fileID: 11400000, guid: da402038115f47f4880c0a1fdbde2edd, type: 2}
 --- !u!114 &621252337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13009,7 +13012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &941520768
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22137,6 +22140,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   thanksForSharingObj: {fileID: 1206790814}
+  user_id_object: {fileID: 11400000, guid: 196e94d47cc72ac46ab76b1be129d1a4, type: 2}
 --- !u!1 &1693450365
 GameObject:
   m_ObjectHideFlags: 0

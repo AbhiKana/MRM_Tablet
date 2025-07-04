@@ -4,6 +4,7 @@ public class MessageReader : MonoBehaviour
 {
     private Configurator configurator;
     public MessageFormat revmsg;
+
     private void Start()
     {
         configurator = FindObjectOfType<Configurator>();
@@ -26,7 +27,6 @@ public class MessageReader : MonoBehaviour
                         Debug.Log("Please proceed to the configration: " + revmsg.MessageValue);
                     }
                     break;
-
                 case "disconnect_tab_id":
                     if (revmsg.MessageValue == Tab_ID.GetID().ToString())
                     {
