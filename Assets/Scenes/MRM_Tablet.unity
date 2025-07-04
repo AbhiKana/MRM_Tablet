@@ -1142,7 +1142,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &121188232
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2726,7 +2726,7 @@ GameObject:
   - component: {fileID: 235625656}
   - component: {fileID: 235625657}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: AppQuitController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3044,7 +3044,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &257858484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4191,7 +4191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &313449265
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13009,7 +13009,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &941520768
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13055,7 +13055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _messagePrefab: {fileID: 7001399534701900153, guid: 2426f42757e48a44591f55c031722521,
     type: 3}
-  _showTimerRender: 1
+  _showTimerRender: 0
   _darkTheme: 1
   _minimumMessageTime: 3
   _margin: {x: 20, y: 100}
