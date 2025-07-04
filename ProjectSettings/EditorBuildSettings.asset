@@ -18,15 +18,15 @@ EditorBuildSettings:
     path: Assets/ToastNotificationMessage/Tutorial/Demo/ShowCase.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
-    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 70da4c54b557bed43894814f90178130,
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 0da47ddfaa03a2c4c98de2aad19faed8,
       type: 2}
-    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 736c5509c9604074081a3eaceedd76cd,
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: ec8e1b4a63426664c9d59e23baaf0a57,
       type: 2}
-    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 7e643b4319f06b649a7d6f7aeaa5397d,
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 9cdd25dddc5065e44b36d29fb8e62577,
       type: 2}
-    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: fa3659b300f71044198f49f5bd4a0af2,
+    com.unity.xr.magicleap.magic_leap_settings: {fileID: 11400000, guid: cae9e0328a0075942a69043492dd3666,
       type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 8c78213ad93897c4c8d5c5038c9b5a5d,
       type: 2}
-    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 8e86a8a8f593dfa4a93e1147efdd0aa3,
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 0e2fdeb3e8cb768498207ff517a46dc2,
       type: 2}
