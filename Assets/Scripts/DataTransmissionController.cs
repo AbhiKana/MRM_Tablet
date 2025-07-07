@@ -82,11 +82,9 @@ public abstract class DataTransmissionController : MonoBehaviour
     protected virtual void SaveUserData(EmailValidation email)
     {
         Debug.Log("Get response from CMS"); 
-        if (!userData.storeUserData.success)
-        {
-
+        //if (!userData.storeUserData.success)
+        //{
             string url = Url.apiUrl + Url.saveUserData;
-
             WWWForm form = new WWWForm();
             form.AddField("name", email.NameinputField.text);
             form.AddField("email", email.EmailinputField.text);
@@ -126,18 +124,18 @@ public abstract class DataTransmissionController : MonoBehaviour
                     Debug.Log("<color=red>Not success/color>");
                 }
             });
-        }
-        else
-        {
-            Debug.Log("Get response from CMS 2");
+       // }
+        //else
+       // {
+           /* Debug.Log("Get response from CMS 2");
 
             MessageFormat messageFormat = new MessageFormat
             {
                 MessageKey = "user_id",
                 MessageValue = userData.storeUserData.user_id
             };
-            UpdateUser(messageFormat);
-        }
+            UpdateUser(messageFormat);*/
+      //  }
     }
 
 

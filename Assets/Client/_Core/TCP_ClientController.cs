@@ -206,8 +206,6 @@ public class TCP_ClientController : MonoBehaviour
         if (tcpClient != null && tcpClient.Connected)
         {
             tcpClient.Close();
-
-            //tcpClient.BeginConnect();
         }
     }
 
@@ -409,9 +407,9 @@ public class TCP_ClientController : MonoBehaviour
         Debug.Log("Client socket connection closed");
     }
 
-    private void OnApplicationQuit()
+    /*private void OnApplicationQuit()
     {
-        Invoke( nameof(StopClient), 0.1f);
-    }
+        StopClient();
+    }*/
 }
 

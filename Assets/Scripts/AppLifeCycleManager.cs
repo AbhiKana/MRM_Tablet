@@ -1,10 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class AppLifeCycleManager : MonoBehaviour
 {
     TCP_ClientController tcpClient;
     ClientServerSelector clientServerSelector;
+
+    [SerializeField] UnityEvent OnAppKillFromBackground;
     bool Disconnected = false;
     bool isReconnecting = false;
     
@@ -25,6 +28,7 @@ public class AppLifeCycleManager : MonoBehaviour
 
         if (tcpClient != null)
         {
+            OnAppKillFromBackground?.Invoke();
             tcpClient.SendMessage("Pause");
             tcpClient.StopClient();
             Destroy(tcpClient.gameObject);
@@ -45,6 +49,11 @@ public class AppLifeCycleManager : MonoBehaviour
                 StartCoroutine(ReconnectAfterDelay(0.5f));
             }
         }
+    }
+
+    private void OnApplicationQuit()
+    {
+        OnAppKilledFromBackground();
     }
 
     private IEnumerator ReconnectAfterDelay(float delay)

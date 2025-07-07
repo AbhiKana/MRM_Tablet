@@ -2,12 +2,14 @@ using UnityEngine;
 
 public class MessageReader : MonoBehaviour
 {
+    private ConnectionStateManager connectionStateManager;
     private Configurator configurator;
     public MessageFormat revmsg;
-
+    
     private void Start()
     {
         configurator = FindObjectOfType<Configurator>();
+        connectionStateManager = FindObjectOfType<ConnectionStateManager>();
         TCP_ClientController.OnMessageReceived += ProcessMessage;
     }
 
@@ -24,6 +26,7 @@ public class MessageReader : MonoBehaviour
                     if (revmsg.MessageValue == Tab_ID.GetID().ToString())
                     {
                         configurator.OnTabAccepted();
+                        connectionStateManager.ConfiguratorAccepted();
                         Debug.Log("Please proceed to the configration: " + revmsg.MessageValue);
                     }
                     break;
@@ -31,6 +34,7 @@ public class MessageReader : MonoBehaviour
                     if (revmsg.MessageValue == Tab_ID.GetID().ToString())
                     {
                         Debug.Log("Tab disconnected");
+                        connectionStateManager.DisconnectFromConfigurator();
                         configurator.TabDisconnectThroughConfig();
                     }
                     break;

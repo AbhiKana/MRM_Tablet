@@ -9824,6 +9824,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1547029857}
+        m_TargetAssemblyTypeName: ConnectionStateManager, Assembly-CSharp
+        m_MethodName: WaitForConfigurator
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   connectViaInput: {fileID: 972451989}
   endSessionParent: {fileID: 469469355}
   waitObjectPanel: {fileID: 1678536643}
@@ -17971,7 +17983,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1263159203}
   m_OnClick:
     m_PersistentCalls:
@@ -19418,6 +19430,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1547029857}
+        m_TargetAssemblyTypeName: ConnectionStateManager, Assembly-CSharp
+        m_MethodName: DisconnectFromConfigurator
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 621252336}
         m_TargetAssemblyTypeName: SocketConnectionChecker, Assembly-CSharp
         m_MethodName: SendCloseTabID
@@ -20822,39 +20846,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1506811198}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_SendPointerHoverToParent: 1
-  m_MoveRepeatDelay: 0.5
-  m_MoveRepeatRate: 0.1
-  m_XRTrackingOrigin: {fileID: 0}
-  m_ActionsAsset: {fileID: -944628639613478452, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_PointAction: {fileID: -1654692200621890270, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_MoveAction: {fileID: -8784545083839296357, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_SubmitAction: {fileID: 392368643174621059, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_CancelAction: {fileID: 7727032971491509709, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_LeftClickAction: {fileID: 3001919216989983466, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_MiddleClickAction: {fileID: -2185481485913320682, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_RightClickAction: {fileID: -4090225696740746782, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: ca9f5fa95ffab41fb9a615ab714db018,
-    type: 3}
-  m_DeselectOnBackgroundClick: 1
-  m_PointerBehavior: 0
-  m_CursorLockBehavior: 0
-  m_ScrollDeltaPerTick: 6
+  m_HorizontalAxis: Horizontal
+  m_VerticalAxis: Vertical
+  m_SubmitButton: Submit
+  m_CancelButton: Cancel
+  m_InputActionsPerSecond: 10
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!1 &1511756283
 GameObject:
   m_ObjectHideFlags: 0
@@ -21501,6 +21503,102 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &1547029856
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1547029858}
+  - component: {fileID: 1547029857}
+  m_Layer: 0
+  m_Name: ConnectionStateManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1547029857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547029856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04a7df110719a73419da587ad724bc9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _currentState: 0
+  OnConnectedToServer:
+    m_PersistentCalls:
+      m_Calls: []
+  OnWaitingForConfigurator:
+    m_PersistentCalls:
+      m_Calls: []
+  OnConnectedToConfigurator:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1263159202}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnDisconnectedFromConfigurator:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1263159202}
+        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
+        m_MethodName: set_interactable
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnDisconnectedFromServer:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 908578444}
+        m_TargetAssemblyTypeName: UI_Manager, Assembly-CSharp
+        m_MethodName: OpenPage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!4 &1547029858
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1547029856}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1592997354
 GameObject:
   m_ObjectHideFlags: 0
@@ -24491,12 +24589,12 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24531,7 +24629,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24542,6 +24640,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24577,7 +24680,7 @@ PrefabInstance:
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_Target
       value: 
-      objectReference: {fileID: 62619039}
+      objectReference: {fileID: 1547029857}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[4].m_Target
@@ -24588,6 +24691,11 @@ PrefabInstance:
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1064533976}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1547029857}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnServerNotFound.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
@@ -24621,7 +24729,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24661,7 +24769,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: SetActive
+      value: ConnectToServer
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24675,8 +24783,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: set_interactable
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: DisconnectFromServer
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24711,7 +24829,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
-      value: UnityEngine.GameObject, UnityEngine
+      value: ConnectionStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24736,7 +24854,7 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnConnectToserver.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_IntArgument
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24747,6 +24865,11 @@ PrefabInstance:
         type: 3}
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.UI.Selectable, UnityEngine.UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ConnectionStateManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
@@ -24791,6 +24914,11 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
@@ -24841,6 +24969,11 @@ PrefabInstance:
     - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
         type: 3}
       propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 8488228655045919959, guid: cb4185b2e733025408e085570de6a3c8,
+        type: 3}
+      propertyPath: OnServerDisconnect.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 9111082602145736257, guid: cb4185b2e733025408e085570de6a3c8,
@@ -26008,6 +26141,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94db23aff12c74b9d42a58f90e87a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnAppKillFromBackground:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 621252336}
+        m_TargetAssemblyTypeName: SocketConnectionChecker, Assembly-CSharp
+        m_MethodName: SendCloseTabID
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1960337742
 GameObject:
   m_ObjectHideFlags: 0
@@ -32515,3 +32663,4 @@ SceneRoots:
   - {fileID: 235625656}
   - {fileID: 1955537297}
   - {fileID: 257858486}
+  - {fileID: 1547029858}

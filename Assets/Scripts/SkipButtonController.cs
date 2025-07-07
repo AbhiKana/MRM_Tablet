@@ -19,8 +19,6 @@ public class SkipButtonController : MonoBehaviour
             manager.OpenPage(0);
         }
     }
-    
-
     public void SetConfigClick(bool val)
     {
         IsConfigClick = val;
