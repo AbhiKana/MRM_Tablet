@@ -6,7 +6,7 @@ public class SelectionPanelController : MonoBehaviour
     [SerializeField] Transform parentObjectToSpawn;
     [SerializeField] GameObject tilePrefab;
     
-    [SerializeField] int noof_marble;
+    public int noof_marble;
 
     //Marble list
     public List<SelectionTileDetails> availableTile;

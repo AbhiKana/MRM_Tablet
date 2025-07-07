@@ -411,7 +411,7 @@ public class TCP_ClientController : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        StopClient();
+        Invoke( nameof(StopClient), 0.1f);
     }
 }
 

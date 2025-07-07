@@ -9,7 +9,7 @@ public class TileDetailsList : MonoBehaviour
     [SerializeField] Transform parentObjectToSpawn;
     [SerializeField] GameObject tilePrefab;
 
-    [SerializeField] int noof_marble;
+    public int noof_marble;
     public int noof_imagedownload;
     [SerializeField] bool isNewImageAdded;
 
