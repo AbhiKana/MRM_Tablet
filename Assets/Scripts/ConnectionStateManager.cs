@@ -73,7 +73,8 @@ public class ConnectionStateManager : MonoBehaviour
 
     public void WaitForConfigurator()
     {
-        CurrentState = ConnectionState.WaitingForConfigurator;
+        if(CurrentState != ConnectionState.ConnectedToConfigurator)
+            CurrentState = ConnectionState.WaitingForConfigurator;
     }
 
     public void ConfiguratorAccepted()

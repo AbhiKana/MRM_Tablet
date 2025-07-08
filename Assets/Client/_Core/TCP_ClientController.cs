@@ -407,9 +407,9 @@ public class TCP_ClientController : MonoBehaviour
         Debug.Log("Client socket connection closed");
     }
 
-    /*private void OnApplicationQuit()
+    private void OnApplicationQuit()
     {
-        StopClient();
-    }*/
+        //StopClient();
+    }
 }
 

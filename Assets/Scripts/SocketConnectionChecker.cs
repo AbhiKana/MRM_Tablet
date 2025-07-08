@@ -11,6 +11,7 @@ public class SocketConnectionChecker : MonoBehaviour
 {
     TCP_ClientController tcpClientController;
     [SerializeField] ConnectViaInput connectViaInput;
+    [SerializeField] ConnectionStateManager connectionStateManager;
     [SerializeField] UserData userData;
 
     [Header("Scriptable Objects")]
@@ -26,6 +27,9 @@ public class SocketConnectionChecker : MonoBehaviour
     {
         if (connectViaInput.IsConnectedToServer)
         {
+            if (connectionStateManager.CurrentState == ConnectionState.ConnectedToConfigurator)
+                return;
+
             Debug.Log("Go to next page");
             Invoke(nameof(SendDataToConfig), 1f);
         }

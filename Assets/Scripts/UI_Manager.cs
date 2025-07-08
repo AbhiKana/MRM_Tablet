@@ -28,6 +28,7 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenPage(int index)
     {
+        Debug.Log("Open Page: "+ index);
         if (pageHistory.Count > 0)
         {
             GameObject currentPage = pageHistory[pageHistory.Count - 1];
@@ -43,6 +44,7 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenPage(GameObject newPage)
     {
+        Debug.Log("Open Page: "+ newPage.name);
         if (pageHistory.Count > 0)
         {
             GameObject currentPage = pageHistory[pageHistory.Count - 1];
@@ -124,7 +126,6 @@ public class UI_Manager : MonoBehaviour
         gameObjectsList.Clear();
         scrollSnap.ChildObjects = gameObjectsList.ToArray();
     }
-
     public void ResetchildObjLength()
     {
         scrollSnap.ChildObjects = null;

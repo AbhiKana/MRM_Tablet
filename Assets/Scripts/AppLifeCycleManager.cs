@@ -6,7 +6,7 @@ public class AppLifeCycleManager : MonoBehaviour
 {
     TCP_ClientController tcpClient;
     ClientServerSelector clientServerSelector;
-
+    SocketConnectionChecker socketConnectionChecker;
     [SerializeField] UnityEvent OnAppKillFromBackground;
     bool Disconnected = false;
     bool isReconnecting = false;
@@ -15,10 +15,17 @@ public class AppLifeCycleManager : MonoBehaviour
     {
         if (clientServerSelector == null)
             clientServerSelector = FindObjectOfType<ClientServerSelector>();
+
+        socketConnectionChecker = FindObjectOfType<SocketConnectionChecker>();
     }
 
     [ContextMenu("Disconnect")]
     public void OnAppKilledFromBackground()
+    {
+        HandleConnection();
+    }
+
+    private void HandleConnection()
     {
         if (isReconnecting) return;
 
@@ -28,8 +35,8 @@ public class AppLifeCycleManager : MonoBehaviour
 
         if (tcpClient != null)
         {
-            OnAppKillFromBackground?.Invoke();
             tcpClient.SendMessage("Pause");
+            OnAppKillFromBackground?.Invoke();
             tcpClient.StopClient();
             Destroy(tcpClient.gameObject);
         }
@@ -46,7 +53,7 @@ public class AppLifeCycleManager : MonoBehaviour
             if (Disconnected && !isReconnecting)
             {
                 isReconnecting = true;
-                StartCoroutine(ReconnectAfterDelay(0.5f));
+                StartCoroutine(ReconnectAfterDelay(0.3f));
             }
         }
     }
@@ -66,5 +73,10 @@ public class AppLifeCycleManager : MonoBehaviour
         clientServerSelector.GetSelectType();
         Disconnected = false;
         isReconnecting = false;
+   
+        yield return new WaitForSeconds(0.2f);
+
+        socketConnectionChecker.CheckConnectionStatus();
     }
+
 }

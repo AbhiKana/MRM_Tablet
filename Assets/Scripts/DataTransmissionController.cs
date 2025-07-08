@@ -28,6 +28,8 @@ public abstract class DataTransmissionController : MonoBehaviour
         manager = FindAnyObjectByType<UI_Manager>();
         userData = FindAnyObjectByType<UserData>();
         EventHandler();
+
+        //OnDataSave.AddListener(() => Debug.Log("how many times get it's called"));
     }
 
     protected virtual void EventHandler()
@@ -81,7 +83,7 @@ public abstract class DataTransmissionController : MonoBehaviour
 
     protected virtual void SaveUserData(EmailValidation email)
     {
-        Debug.Log("Get response from CMS"); 
+        Debug.Log("Get response from CMS");
         //if (!userData.storeUserData.success)
         //{
             string url = Url.apiUrl + Url.saveUserData;
@@ -156,7 +158,7 @@ public abstract class DataTransmissionController : MonoBehaviour
             {
                 Debug.Log("User updated with marble ID");
                 data = JsonUtility.ToJson(m);
-                OnDataSave?.Invoke();
+                //OnDataSave?.Invoke();
             }
             else 
             {

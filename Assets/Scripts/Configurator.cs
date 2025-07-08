@@ -46,24 +46,27 @@ public class Configurator : DataTransmissionController
     protected override void ControlObjectActivation()
     {
         manager.OpenPage(8);
-         emailValidation2.gameObject.SetActive(false);
+        emailValidation2.gameObject.SetActive(false);
     }
 
     public void OnTabAccepted()
     {
-        waitObjectPanel.SetActive(false);
         endSessionButton.SetActive(true);
+        waitObjectPanel.SetActive(false);
+        TabDisconnected.gameObject.SetActive(false);
     }
 
     public void ResetConfig()
     {
         waitObjectPanel.SetActive(true);
         endSessionButton.SetActive(false);
+        TabDisconnected.gameObject.SetActive(false);
     }
 
     public void TabDisconnectThroughConfig()
     {
         TabDisconnected.gameObject.SetActive(true);
         endSessionButton.SetActive(false);
+        waitObjectPanel.SetActive(false);
     }
 }
