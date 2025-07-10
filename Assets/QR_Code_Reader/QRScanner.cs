@@ -17,8 +17,13 @@ public class QRScanner : MonoBehaviour
     public Transform BorderBox;
     public IBarcodeReader barcodeReader;
 
-    public static UnityEvent<string> OnQRDetect = new UnityEvent<string>();
     RenderTexture rawimageTexture;
+
+    public static UnityEvent<string> OnQRDetect = new UnityEvent<string>();
+    
+    [Tooltip("Invoked if the user denies camera permission.")]
+    public UnityEvent OnPermissionDenied = new UnityEvent();
+
 
     private void Awake()
     {
@@ -41,18 +46,49 @@ public class QRScanner : MonoBehaviour
         Scan();
     }
 
-    private void Scan()
+    public void Scan()
+    {
+
+        ResetCameraComponent();
+        Debug.Log("Permission granted! Starting camera...");
+        StartWebcam();
+        StartCoroutine(GetQRCode());
+
+        //CheckCameraPermission();
+
+        //StartWebcam();
+        //StartCoroutine(GetQRCode());
+    }
+
+    private void ResetCameraComponent()
     {
         BorderBox.localScale = Vector3.one;
         Debug.Log("Scanner Open");
         QrCode = string.Empty;
         spinner.SetActive(false);
         BorderBox.gameObject.SetActive(false);
-
-        StartWebcam();
-        StartCoroutine(GetQRCode());
     }
 
+    void CheckCameraPermission()
+    {
+        /*CameraPermission.Instance.RequestCameraAccess(
+             onGranted: () =>
+             {
+                 ResetCameraComponent();
+                 Debug.Log("Permission granted! Starting camera...");
+                 StartWebcam();
+                 StartCoroutine(GetQRCode());
+             },
+             onDenied: () =>
+             {
+                 //Stop();
+                 Debug.Log("Permission denied. Firing OnPermissionDenied event.");
+                 CameraPermission.Instance.RequestCameraAccess(onGranted: null, onDenied: null, onDeniedPermanently: null);
+                 //OnPermissionDenied?.Invoke();
+             }
+
+        );  */ 
+    }
     void StartWebcam()
     {
         //webcamTexture = new WebCamTexture();
@@ -65,7 +101,7 @@ public class QRScanner : MonoBehaviour
 
     void Stopwebcam()
     {
-        webcamTexture.Stop();
+        webcamTexture?.Stop();
         rawimageTexture?.Release();
         //rawImage.texture = null;
     }
@@ -105,7 +141,7 @@ public class QRScanner : MonoBehaviour
         // webcamTexture.Stop();
     }
 
-    void Stop()
+    public void Stop()
     {
         if (!string.IsNullOrEmpty(QrCode))
             Debug.Log("Detected");

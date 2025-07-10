@@ -25,7 +25,6 @@ public class ToggleSpriteChange : MonoBehaviour
 
     public void OnToggleClicked()
     {
-        //Debug.Log("Check on clicks");
         if (image) image.sprite = toggle.isOn ? Selectedsprite : UnselectedSprite;
         SetScreenStatus();
         ChnageTextColor();

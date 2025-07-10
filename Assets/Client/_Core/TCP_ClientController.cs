@@ -42,31 +42,6 @@ public class TCP_ClientController : MonoBehaviour
         {
             SendMessage("Check connection");
         }
-
-        /*if (_IsMessageReceived)
-        {
-            Debug.Log("client: " + MsgFromServer);
-            _status.ConnectedClientList(MsgFromServer);
-            if(MsgFromServer.Contains("Server Disconnected"))
-            {
-                Debug.Log("Try connection again");
-                onServerDisconnect?.Invoke();
-            }
-
-            MsgFromServer = "";
-            _IsMessageReceived = false;
-        }*/
-
-        //Close TCP connections
-        /*if (!isRunning)
-        {
-            Thread.Sleep(100);
-            if (tcpClient != null && tcpClient.Connected)
-            {
-                tcpClient.Close();
-                Debug.Log("Server stopped listening.");
-            }
-        }*/
     }
 
     //Connect to server

@@ -52,7 +52,6 @@ public class UI_Manager : MonoBehaviour
         }
 
         newPage.SetActive(true);
-        //pageHistory.Add(newPage);
     }
 
     public void GoBack()

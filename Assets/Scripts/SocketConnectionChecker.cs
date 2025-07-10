@@ -92,11 +92,4 @@ public class SocketConnectionChecker : MonoBehaviour
         Debug.Log("Closing Tab ID to be sent: " + data);
         tcpClientController.SendMessage(data);
     }
-
-    /*private void OnApplicationQuit()
-    {
-        SendCloseTabID();
-    }*/
 }
-
-
