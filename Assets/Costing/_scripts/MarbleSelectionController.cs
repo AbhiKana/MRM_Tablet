@@ -9,7 +9,7 @@ public class MarbleSelectionController : MonoBehaviour
 
     public void GoToMarbleSelection()
     {
-        if(storeMarbleDetails.listOfMarbleDetails.Count > 0)
+        if(storeMarbleDetails.list.Count > 0)
         {
             OnMarbleSelectionClicked?.Invoke();
         }
