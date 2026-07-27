@@ -1,0 +1,11 @@
+﻿<Solution>
+  <Project Path="UnityUIExtensions.csproj" />
+  <Project Path="UnityUIExtensions.examples.csproj" />
+  <Project Path="UnityUIExtensions.editor.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Assembly-CSharp-Editor-firstpass.csproj" />
+  <Project Path="Udar.SceneManager.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="Udar.SceneManager.Examples.csproj" />
+</Solution>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 //public class MarbleApiData : MonoBehaviour
@@ -18,6 +19,15 @@ using System.Collections.Generic;
 //    }
 //}
 
+#region /app_status
+[Serializable]
+public class AppStatus
+{
+    public int code;
+    public bool success;
+    public string data;
+}
+#endregion
 
 [System.Serializable]
 public class MarbleApiData

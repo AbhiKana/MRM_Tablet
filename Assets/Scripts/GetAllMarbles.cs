@@ -20,6 +20,7 @@ public class GetAllMarbles : MonoBehaviour
     public void GetCategoryList()
     {
         string url = Url.apiUrl + Url.marbleApi;
+        Debug.Log(url);
         WWWRequestTC w = new WWWRequestTC();
         w.Get(url, (Data, isSucess) =>
         {

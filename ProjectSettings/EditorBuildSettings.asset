@@ -11,12 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CostScene.unity
     guid: 445304da616c79347b1910f00e3ec60a
-  - enabled: 0
-    path: Assets/ToastNotificationMessage/Tutorial/Demo/CustomMessages.unity
-    guid: eb7104c7f189ff4429f20691a5d86857
-  - enabled: 0
-    path: Assets/ToastNotificationMessage/Tutorial/Demo/ShowCase.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 0da47ddfaa03a2c4c98de2aad19faed8,
       type: 2}
