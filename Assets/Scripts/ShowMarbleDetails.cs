@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -5,11 +7,11 @@ using UnityEngine.UI;
 
 public class ShowMarbleDetails : MonoBehaviour
 {
-    [HideInInspector] public StoreMarbleDetails storeMarbleDetails;
-    [HideInInspector] public SyncMarbleDetails syncMarbleDetails;
+    public StoreMarbleDetails storeMarbleDetails;
+    public SyncMarbleDetails syncMarbleDetails;
 
     public MarbleDetail marbleDetailsWithCategoryID;
-    public Texture[] m_Textures;
+    //public Texture[] m_Textures;
 
     FetchQRData fetchQRData;
     WWWRequestTC requestTC;
@@ -29,7 +31,7 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public UnityEvent OnDataLoadOnce;
 
-    private void Start()
+    private async void Start()
     {
         requestTC = new WWWRequestTC();
         fetchQRData = FindObjectOfType<FetchQRData>(true);
@@ -52,16 +54,18 @@ public class ShowMarbleDetails : MonoBehaviour
             if (marble.id == marbleDetailsWithCategoryID.id)
             {
                 texture = fetchQRData.TopMarbleImage.texture;
-                m_Textures = fetchQRData.boxImageTexture;
+                //m_Textures = fetchQRData.boxImageTexture;
             }
-        });
+        }); 
     }
+
     void SetWishlist(bool val)
     {
         Debug.Log("Before Assign check name: " + gameObject.name);
         IsWishlisted = val;
         syncMarbleDetails.SyncMarbleWishlistedValue(this, syncMarbleDetails.gridMarbles, IsWishlisted);
     }
+
     public void SetImage(Texture t)
     {
         image.texture = t;
@@ -74,22 +78,22 @@ public class ShowMarbleDetails : MonoBehaviour
 
     public void SetData()
     {
-        ThreadedImageDownloader.Instance.DownloadAndProcessImage
-        (
-            marbleDetailsWithCategoryID.main_img,
-            image,
-            (success) =>
-            {
-                if (success) CheckAllImageLoaded();
-            },
-            () =>
-            {
-                CheckInWishList();
-            }
-        );
-
-        //GetImage(marbleDetailsWithCategoryID.main_img, image);  Old Method for downloading images
         MarbleTextDetails();
+        //Debug.Log(marbleDetailsWithCategoryID.main_img);
+        GetImage(marbleDetailsWithCategoryID.main_img, image).Forget();
+        //ThreadedImageDownloader.Instance.DownloadAndProcessImage
+        //(
+        //    marbleDetailsWithCategoryID.main_img,
+        //    image,
+        //    (success) =>
+        //    {
+        //        if (success) CheckAllImageLoaded();
+        //    },
+        //    () =>
+        //    {
+        //        CheckInWishList();
+        //    }
+        //);
     }
 
     private void CheckInWishList()
@@ -102,12 +106,12 @@ public class ShowMarbleDetails : MonoBehaviour
         {
             //Debug.Log(marbleDetail.marble_name);
             IsWishlisted = marbleDetail.isSelected;
-            m_Textures = marbleDetail.textures;
+            //m_Textures = marbleDetail.textures;
             texture = marbleDetail.mainTexture;
         }
-        
+
         //SpecificMarbleDetails marbleDetail = null;
-        
+
         /*foreach (var m in storeMarbleDetails.list)
         {
             Debug.Log(m.marble_name);
@@ -126,7 +130,6 @@ public class ShowMarbleDetails : MonoBehaviour
         price = marbleDetailsWithCategoryID.price;
         tileID = marbleDetailsWithCategoryID.id;
         categoryID = marbleDetailsWithCategoryID.category_id;
-        
         gameObject.name = marbleName + 1;
     }
 
@@ -136,14 +139,15 @@ public class ShowMarbleDetails : MonoBehaviour
         priceText.text = price + " sq/ft";
     }
 
-    void GetImage(string url, RawImage image)
+    async UniTask GetImage(string url, RawImage image)
     {
         WWWRequestTC w = new WWWRequestTC();
-        w.GetTexture(url, (str, rawTex, isSucess) =>
+        await w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
                 CheckAllImageLoaded();
+                CheckInWishList();
                 TextureScale.Bilinear(rawTex, 200, 200);
                 image.texture = rawTex;
                 texture = rawTex;
@@ -155,13 +159,13 @@ public class ShowMarbleDetails : MonoBehaviour
 
     private void CheckAllImageLoaded()
     {
-        var d_image = MarbleLoader.downlaodedImageCount;
         var t_image = MarbleLoader.totalImageCount;
+        var d_image = MarbleLoader.downlaodedImageCount;
         MarbleLoader.downlaodedImageCount++;
-
+        Debug.Log("totalImage: " + t_image + " dlImage: " + d_image);
         if (MarbleLoader.totalImageCount == MarbleLoader.downlaodedImageCount)
         {
-            StopLoader();
+            //StopLoader();
         }
     }
 
@@ -182,7 +186,7 @@ public class ShowMarbleDetails : MonoBehaviour
         price = specificMarbleDetails.price;
         categoryID = specificMarbleDetails.category_id;
         texture = specificMarbleDetails.mainTexture;
-        m_Textures = specificMarbleDetails.textures;
+        //m_Textures = specificMarbleDetails.textures;
         IsWishlisted = specificMarbleDetails.isSelected;
         //Debug.Log("Current Object name: " + gameObject.name + " " + IsWishlisted);
     }
@@ -197,7 +201,7 @@ public class ShowMarbleDetails : MonoBehaviour
             price = price,
             category_id = categoryID,
             mainTexture = texture,
-            textures = m_Textures,
+            //textures = m_Textures,
             isSelected = IsWishlisted
         };
     }

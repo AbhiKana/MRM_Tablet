@@ -17,8 +17,8 @@ public class SpecificMarbleDetails
     public string modify_at;
     public string url;
 
-    public Texture mainTexture, circleImg;
-    public Texture[] textures;
+    public Texture mainTexture/*, circleImg*/;
+    //public Texture[] textures;
 
     public int availability;
     public int category_id;
@@ -51,13 +51,11 @@ public class StoreMarbleDetails : MonoBehaviour
     {
         OnToggleClick();
         tileDetailsList = FindObjectOfType<TileDetailsList>();
-        //SelectionTileDetails.OnMarbleDeselected.AddListener(RemoveMarble);
-        fetchQRData.OnDataLoaded.AddListener(() =>
-        {
-            ShowMarbleData();
-        });
+        //SelectionTileDetails.OnMarbleDeselected.AddListener(RemoveMarble);      
     }
 
+
+    //Assigned in Inspecter on FetchQRData gameobject Unity Event OnDataLoaded
     public void ShowMarbleData()
     {
         var data = _marbleQrDatascritable._marbleApiData.marbleDetails;
@@ -76,8 +74,8 @@ public class StoreMarbleDetails : MonoBehaviour
         marbleDetails.id = data.id;
 
         marbleDetails.mainTexture = fetchQRData.TopMarbleImage.texture;
-        marbleDetails.circleImg = fetchQRData.CircleImage.texture;
-        marbleDetails.textures = fetchQRData.boxImageTexture;
+        //marbleDetails.circleImg = fetchQRData.CircleImage.texture;
+        //marbleDetails.textures = fetchQRData.boxImageTexture;
 
 
         if (AlreadyExists(marbleDetails.id, list))
@@ -102,16 +100,16 @@ public class StoreMarbleDetails : MonoBehaviour
             if (item.id == id)
             {
                 Debug.Log("Load Image");
-                item.textures = null;
+                //item.textures = null;
                 
                 if (item.mainTexture == null)
                     item.mainTexture = marbleDetails.mainTexture;
 
-                if (item.circleImg == null)
-                    item.circleImg = marbleDetails.circleImg;
+                //if (item.circleImg == null)
+                //    item.circleImg = marbleDetails.circleImg;
 
-                if (item.textures == null)
-                    item.textures = marbleDetails.textures;
+                //if (item.textures == null)
+                //    item.textures = marbleDetails.textures;
             }
         }
     }
@@ -123,16 +121,16 @@ public class StoreMarbleDetails : MonoBehaviour
             if (item.id == id)
             {
                 Debug.Log("Load Image");
-                item.textures = null;
+                //item.textures = null;
 
                 if (item.mainTexture == null)
                     item.mainTexture = showMarble.image.texture;
 
-                if (item.circleImg == null)
-                    item.circleImg = showMarble.m_Textures[0];
+                //if (item.circleImg == null)
+                //    item.circleImg = showMarble.m_Textures[0];
 
-                if (item.textures == null)
-                    item.textures = showMarble.m_Textures;
+                //if (item.textures == null)
+                //    item.textures = showMarble.m_Textures;
             }
         }
     }
@@ -179,8 +177,8 @@ public class StoreMarbleDetails : MonoBehaviour
             url = marbleDetails.url,
             marble_name = marbleDetails.marble_name,
             mainTexture = marbleDetails.mainTexture,
-            circleImg = marbleDetails.circleImg,
-            textures = marbleDetails.textures,
+            //circleImg = marbleDetails.circleImg,
+            //textures = marbleDetails.textures,
 
             dimension = marbleDetails.dimension,
             material = marbleDetails.material,
@@ -279,7 +277,7 @@ public class StoreMarbleDetails : MonoBehaviour
         marbleDetails.modify_at = string.Empty;
 
         marbleDetails.mainTexture = null;
-        marbleDetails.circleImg = null;
+        //marbleDetails.circleImg = null;
 
         marbleDetails.availability = 0;
         marbleDetails.category_id = 0;

@@ -1,4 +1,5 @@
 using AirFishLab.ScrollingList;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,22 +16,22 @@ public class GetMRMDetails : MonoBehaviour
 
     private void Start()
     {
-        viewMrmButton.onClick.AddListener(()=>
+        viewMrmButton.onClick.AddListener(async ()=>
         {
             string id = currentSelectedMarble.tileID.ToString();
             //ViewMarbleDetails(id);
-            ViewMarbleDetails();
+            await ViewMarbleDetails();
         });
     }
 
-    void ViewMarbleDetails()
+    private async UniTask ViewMarbleDetails()
     {
-        currentSelectedMarble.GetComponent<MarbleItemController>().OnDetailsButtonClicked();
+        await currentSelectedMarble.GetComponent<MarbleItemController>().OnDetailsButtonClicked();
     }
 
-    public void ViewMarbleDetails(string id)
+    public async UniTask ViewMarbleDetails(string id)
     {
-        fetchQRData.LoadData(id);
+        await fetchQRData.LoadData(id);
     }
 
     public void LoadMarbleDetails(string id)

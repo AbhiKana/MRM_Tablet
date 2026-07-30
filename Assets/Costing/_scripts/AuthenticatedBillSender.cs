@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using Udar.SceneManager;
 using UnityEngine;
 
@@ -10,12 +11,12 @@ public class AuthenticatedBillSender : DataTransmissionController
     [SerializeField] SceneFieldRef sceneField;
     [SerializeField] StoreMarbleDetails storeMarbleDetails;
     [SerializeField] ConnectionStateManager connectionStateManager;
-    protected override void CheckLoginData()
+    protected override async UniTask CheckLoginData()
     {
         if (storeMarbleDetails.list.Count == 0)
             marbleSelectionPrompt.SetActive(true);
         else
-            base.CheckLoginData();
+            await base.CheckLoginData();
     }
 
     protected override void ControlObjectActivation()

@@ -17,9 +17,11 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     void GetMarble()
     {
-        Invoke(nameof(GetSelectedMarbleList), 0.5f);
+        //Invoke(nameof(GetSelectedMarbleList), 0.5f);
+        GetSelectedMarbleList();
     }
 
+    //Used in GetAllMarbles.cs Unity Event OnLoadData
     public void GetSelectedMarbleList()
     {
         Debug.Log("Instantiate Marbles");
@@ -30,8 +32,7 @@ public class ListOfMarblesInventory : MonoBehaviour
             marbleObj.transform.SetParent(parentObjectToSpawn);
             marbleObj.transform.localScale = Vector3.one;
 
-            ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();
-            marbleLoader.gameObject.name = marble.name;
+            ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();           
             marble.image.texture = noof_Marbles[i].image.texture;
             marble.texture = noof_Marbles[i].image.texture;
             marble.marbleName = noof_Marbles[i].marbleName;

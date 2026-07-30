@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +22,7 @@ public class MarbleItemController : MonoBehaviour
     private void Start()
     {
         if (viewButton != null)
-            viewButton.onClick.AddListener(OnDetailsButtonClicked);
+            viewButton.onClick.AddListener(async () => await OnDetailsButtonClicked());
 
         if (wishlistToggle != null)
         {
@@ -71,15 +72,15 @@ public class MarbleItemController : MonoBehaviour
         }
     }
 
-    public void OnDetailsButtonClicked()
+    public async UniTask OnDetailsButtonClicked()
     {
-        if (showMarbleDetails.texture != null && showMarbleDetails.m_Textures != null && showMarbleDetails.m_Textures.Length > 0)
+        if (showMarbleDetails.texture != null /*&& showMarbleDetails.m_Textures != null && showMarbleDetails.m_Textures.Length > 0*/)
         {
             Debug.Log("<color=blue>Load Second Time</color>");
             MarbleDetail current_detail = AssignCurrentMarbleDetails();
             //Debug.LogError("Check marble name: " + current_detail.marble_name);
             fetchQrData.LoadMarbleTextData(current_detail.marble_name, current_detail.description, current_detail.dimension, current_detail.material, current_detail.finish, current_detail.availability.ToString(), current_detail.price);
-            fetchQrData.LoadedMarbleImageData(showMarbleDetails.texture, showMarbleDetails.m_Textures[0], showMarbleDetails.m_Textures);
+            fetchQrData.LoadedMarbleImageData(showMarbleDetails.texture, null, null);
             getMRMDetails.storeMarbleDetails.SetToggleValue(showMarbleDetails.IsWishlisted);
 
             //showMarbleDetails.IsWishlisted = fetchQrData.
@@ -91,7 +92,7 @@ public class MarbleItemController : MonoBehaviour
             //manager.HandleLoaderPage(true);
             Loader.Instance.LoaderActivation(true);
             string id = showMarbleDetails.tileID.ToString();
-            getMRMDetails.ViewMarbleDetails(id);
+            await getMRMDetails.ViewMarbleDetails(id);
             getMRMDetails.storeMarbleDetails.listOfMarbleDetails.Add(showMarbleDetails);
         }
         Debug.Log($"Marble Details - Name: {showMarbleDetails.marbleName}");
@@ -126,8 +127,8 @@ public class MarbleItemController : MonoBehaviour
             current_marbleDetails.finish = current_detail.finish;
             current_marbleDetails.price = current_detail.price;
             current_marbleDetails.mainTexture = showMarbleDetails.texture;
-            current_marbleDetails.circleImg = showMarbleDetails.m_Textures[0];
-            current_marbleDetails.textures = showMarbleDetails.m_Textures;
+            //current_marbleDetails.circleImg = showMarbleDetails.m_Textures[0];
+            //current_marbleDetails.textures = showMarbleDetails.m_Textures;
             current_marbleDetails.isSelected = showMarbleDetails.IsWishlisted;
             Debug.Log("Before wishlist check: " + showMarbleDetails.IsWishlisted);
             return current_detail;
@@ -182,24 +183,24 @@ public class MarbleItemController : MonoBehaviour
         specificMarbleDetails.isSelected = showMarbleDetails.IsWishlisted;
         specificMarbleDetails.url = marble.main_img;
 
-        if (showMarbleDetails.m_Textures == null)
-        {
-            Debug.Log("<color=green>Loading first time</color>");
-            specificMarbleDetails.textures = new Texture[5];
-        }
-        else
-        {
-            Debug.Log("<color=blue>Loading second time</color>");
-            specificMarbleDetails.textures = showMarbleDetails.m_Textures;
-        }
+        //if (showMarbleDetails.m_Textures == null)
+        //{
+        //    Debug.Log("<color=green>Loading first time</color>");
+        //    specificMarbleDetails.textures = new Texture[5];
+        //}
+        //else
+        //{
+        //    Debug.Log("<color=blue>Loading second time</color>");
+        //    specificMarbleDetails.textures = showMarbleDetails.m_Textures;
+        //}
 
         if (!detailViewer.AlreadyExists(marble.id, detailViewer.list))
         {
             detailViewer.list.Add(specificMarbleDetails);
 
             var marbleOverview = detailViewer.listOfMarbleDetails;
-            
-            if(!marbleOverview.Contains(showMarbleDetails)) 
+
+            if (!marbleOverview.Contains(showMarbleDetails))
                 marbleOverview.Add(showMarbleDetails);
         }
     }

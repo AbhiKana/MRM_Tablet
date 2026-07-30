@@ -57,7 +57,6 @@ public class MarbleDetail
     public int availability;
     public int category_id;
     public string main_img;
-    public List<string> texture_img;
 }
 
 

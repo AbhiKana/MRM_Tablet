@@ -1,5 +1,7 @@
+using Cysharp.Threading.Tasks;
 using System.Collections;
 using System.Net;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 
@@ -7,10 +9,11 @@ public class UpdateCMSURL : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI textStatus;
     [SerializeField] TMP_InputField cmsIPInputField;
+    [SerializeField] UnityEngine.UI.Button continueButton;
 
     [SerializeField] GameObject[] clientConnectObject;
 
-    private void Start()
+    private async void Start()
     {
         if (PlayerPrefs.HasKey(nameof(cmsIPInputField)))
         {
@@ -19,23 +22,18 @@ public class UpdateCMSURL : MonoBehaviour
         }
     }
 
-    public void SubmitButtonForCMSIP()
+    public async void SubmitButtonForCMSIP()
     {
         bool isvalid = IPAddress.TryParse(cmsIPInputField.text, out IPAddress address);
         if (!isvalid) return;
+        continueButton.interactable = false;
         PlayerPrefs.SetString(nameof(cmsIPInputField), address.ToString());
         textStatus.text = string.Empty;
-        DelayThis();
-    }
+        UpdateBaseIPDelay();
+    }   
 
-    private void DelayThis()
-    {
-        StartCoroutine(UpdateBaseIPDelay());
-    }
-
-    IEnumerator UpdateBaseIPDelay()
-    {
-        yield return new WaitForSeconds(0.2f);       
+    async void UpdateBaseIPDelay()
+    {           
         Url.baseIp = cmsIPInputField.text;
         Url.apiUrl = "http://" + Url.baseIp + "/mrm_showroom/";
         Debug.Log(Url.apiUrl);
@@ -43,12 +41,13 @@ public class UpdateCMSURL : MonoBehaviour
         form.AddField("id", "1");
         WWWRequestTC tC = new WWWRequestTC();
         string url = Url.apiUrl + Url.appStatus;
-        tC.Post(form, url, (responseJson, isSuccess) =>
+        await tC.Post( url, form, new HeaderDataClass[0], (responseJson, isSuccess) =>
         {
             if (!isSuccess)
             {
                 textStatus.text = "Unable to connect to the server!";
                 textStatus.color = Color.red;
+                continueButton.interactable = true;
                 return;
             }
             AppStatus appStatus = JsonUtility.FromJson<AppStatus>(responseJson);
@@ -57,6 +56,7 @@ public class UpdateCMSURL : MonoBehaviour
                 textStatus.text = "App Not Authorised";
                 textStatus.color = Color.red;
                 Debug.Log("App Not Authorised.");
+                continueButton.interactable = true;
                 return;
             }
 

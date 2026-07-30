@@ -21,6 +21,7 @@ public class ToggleSpriteChange : MonoBehaviour
 
         if (getImage)
             image = GetComponent<Image>();
+        OnToggleClicked();
     }
 
     public void OnToggleClicked()

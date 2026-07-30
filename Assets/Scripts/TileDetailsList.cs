@@ -28,6 +28,7 @@ public class TileDetailsList : MonoBehaviour
     {
         uI_Manager = FindObjectOfType<UI_Manager>();
     }
+
     private void SpawnMarbleDetails()
     {
         for (int i = 0; i < noof_marble; i++)
@@ -59,20 +60,20 @@ public class TileDetailsList : MonoBehaviour
 
             Debug.Log("Processing marble: " + currentMarbleName);
 
-            var details = storeMarbleDetails.list[i].textures;
-            if (details == null || details.Length == 0)
-            {
-                Loader.Instance.LoaderActivation(true);  
-                //storeMarbleDetails.loader.gameObject.SetActive(true);
-                LoadImageInBG loadImageInBG = marbleDetail.GetComponent<LoadImageInBG>();
-                loadImageInBG.LoadMarbleImageData();
-                Debug.Log("Textures not loaded - starting download");
-            }
-            else
-            {
-                noof_imagedownload++;
-                Debug.Log("Textures already loaded");
-            }
+            //var details = storeMarbleDetails.list[i].textures;
+            //if (details == null || details.Length == 0)
+            //{
+            //    Loader.Instance.LoaderActivation(true);  
+            //    //storeMarbleDetails.loader.gameObject.SetActive(true);
+            //    LoadImageInBG loadImageInBG = marbleDetail.GetComponent<LoadImageInBG>();
+            //    loadImageInBG.LoadMarbleImageData();
+            //    Debug.Log("Textures not loaded - starting download");
+            //}
+            //else
+            //{
+            //    noof_imagedownload++;
+            //    Debug.Log("Textures already loaded");
+            //}
 
             var imageLoader = marbleDetail.GetComponent<LoadImageInBG>();
             imageLoader.OnBGImageDownload.AddListener(HandleLoading);
@@ -123,19 +124,19 @@ public class TileDetailsList : MonoBehaviour
             if (mrmDet.mainTexture != null)
                 mRM_Details.TopMarbleImage.texture = mrmDet.mainTexture;
 
-            if (mrmDet.textures != null && mrmDet.textures.Length > 0)
-            {
-                if (mrmDet.textures[0] != null)
-                    mRM_Details.CircleImage.texture = mrmDet.textures[0];
-            }
+            //if (mrmDet.textures != null && mrmDet.textures.Length > 0)
+            //{
+            //    if (mrmDet.textures[0] != null)
+            //        mRM_Details.CircleImage.texture = mrmDet.textures[0];
+            //}
 
-            if (mrmDet.textures != null && mrmDet.textures.Length > 0)
-            {
-                for (int j = 0; j < mRM_Details.BgImages.Length; j++)
-                {
-                    mRM_Details.BgImages[j].texture = mrmDet.textures[j];
-                }
-            }
+            //if (mrmDet.textures != null && mrmDet.textures.Length > 0)
+            //{
+            //    for (int j = 0; j < mRM_Details.BgImages.Length; j++)
+            //    {
+            //        mRM_Details.BgImages[j].texture = mrmDet.textures[j];
+            //    }
+            //}
         }
     }
 }

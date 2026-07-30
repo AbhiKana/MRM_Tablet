@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using UnityEngine;
 
 
@@ -16,16 +18,16 @@ public class MarbleUploader : DataTransmissionController
         emailValidation2.gameObject.SetActive(false);
     }
 
-    protected override void UpdateUser(MessageFormat m)
+    protected override async UniTask UpdateUser(MessageFormat m)
     {
-        base.UpdateUser(m);
+        await base.UpdateUser(m);
         Invoke(nameof(Pdf_apiCall), 1f);
         //Pdf_Generate(m.MessageValue);
     }
 
-    protected override void SaveUserData(EmailValidation email)
+    protected override async UniTask SaveUserData(EmailValidation email)
     {
-        base.SaveUserData(email);
+        await base.SaveUserData(email);
         Invoke(nameof(Pdf_apiCall),1f);
     }
 
@@ -33,16 +35,16 @@ public class MarbleUploader : DataTransmissionController
     {
         if (!userData.storeUserData.already_register)
         {
-            Pdf_Generate(userData.storeUserData.user_id);
+            Pdf_Generate(userData.storeUserData.user_id).Forget();
         }
         else
         {
             //Updated user
-            Pdf_Generate(userData.storeUserData.user_id);
+            Pdf_Generate(userData.storeUserData.user_id).Forget();
         }
     }
 
-    private void Pdf_Generate(string user_id)
+    private async UniTask Pdf_Generate(string user_id)
     {
         string pdfUrl = Url.apiUrl + Url.pdf;
 
@@ -50,7 +52,7 @@ public class MarbleUploader : DataTransmissionController
         form.AddField(user_id_object.nameVal, user_id);
 
         WWWRequestTC w = new WWWRequestTC();
-        w.Post(form, pdfUrl, (formData, isSuccess) =>
+        await w.Post(pdfUrl, form, new HeaderDataClass[0], (formData, isSuccess) =>
         {
             if (isSuccess)
                 Debug.Log("PDF Generated");

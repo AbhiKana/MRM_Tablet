@@ -1,14 +1,16 @@
+using Cysharp.Threading.Tasks;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LoadImageInBG : MonoBehaviour
 {
-    [HideInInspector]public ShowMarbleDetails showMarbleDetails;
+    [HideInInspector] public ShowMarbleDetails showMarbleDetails;
     [SerializeField] RawImage dummy;
     WWWRequestTC requestTC;
-    int totalImageCount, downlaodedImageCount;
+    public int totalImageCount, downlaodedImageCount;
 
     public UnityEvent OnBGImageDownload = new UnityEvent();
     Action onComplete;
@@ -26,24 +28,24 @@ public class LoadImageInBG : MonoBehaviour
         });
     }
 
-    public void LoadMarbleImageData()
-    {
-        var marbleDet = showMarbleDetails.marbleDetailsWithCategoryID;
-        if (marbleDet.texture_img.Count > 0)
-        {
-            if (showMarbleDetails.m_Textures.Length < 1)
-                showMarbleDetails.m_Textures = new Texture[5];
+    //public async UniTask LoadMarbleImageData()
+    //{
+    //    var marbleDet = showMarbleDetails.marbleDetailsWithCategoryID;
+    //    if (marbleDet.texture_img.Count > 0)
+    //    {
+    //        if (showMarbleDetails.m_Textures.Length < 1)
+    //            showMarbleDetails.m_Textures = new Texture[5];
 
-            totalImageCount = marbleDet.texture_img.Count;
-           // GetImageUsingthread(marbleDet.texture_img.ToArray());
+    //        totalImageCount = marbleDet.texture_img.Count;
+    //       // GetImageUsingthread(marbleDet.texture_img.ToArray());
             
-            for (int i = 0; i < marbleDet.texture_img.Count; i++)
-            {
-                //GetImageUsingthread(marbleDet.texture_img[i], i);
-                GetImage(marbleDet.texture_img[i], i);
-            }
-        }
-    }
+    //        for (int i = 0; i < marbleDet.texture_img.Count; i++)
+    //        {
+    //            //GetImageUsingthread(marbleDet.texture_img[i], i);
+    //            await GetImage(marbleDet.texture_img[i], i);
+    //        }
+    //    }
+    //}
     void GetImageUsingthread(string[] url)
     {
         int count = 0;
@@ -53,7 +55,7 @@ public class LoadImageInBG : MonoBehaviour
             dummy,
             (success) =>
             {
-                showMarbleDetails.m_Textures[count] = dummy.texture;
+                //showMarbleDetails.m_Textures[count] = dummy.texture;
                 if(success)
                     CheckAllImageLoaded();
             },
@@ -67,15 +69,16 @@ public class LoadImageInBG : MonoBehaviour
             (value)=> { count++; CheckAllImageLoaded(); showMarbleDetails.m_Textures[value] = dummy.texture; }
         );*/
     }
-    void GetImage(string url, int textureIndex)
+
+    async UniTask GetImage(string url, int textureIndex)
     {
         WWWRequestTC w = new WWWRequestTC();
-        w.GetTexture(url, (str, rawTex, isSucess) =>
+        await w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
                 TextureScale.Bilinear(rawTex, 200, 200);
-                showMarbleDetails.m_Textures[textureIndex] = rawTex;
+                //showMarbleDetails.m_Textures[textureIndex] = rawTex;
                 CheckAllImageLoaded();
             }
             else

@@ -21,7 +21,7 @@ public class MarbleLoader : MonoBehaviour
 
     public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
     public static UnityEvent OnMarbleLoaded;
-    
+
     public void GetAllAvailableMarbles()
     {
         StartCoroutine(StoreMarblesInList());
@@ -29,11 +29,11 @@ public class MarbleLoader : MonoBehaviour
 
     IEnumerator StoreMarblesInList()
     {
-        if (!IsAllImageDownloaded)
-        {
-            Loader.Instance.LoaderActivation(true);   
-        }
-            yield return new WaitForSeconds(0.5f);
+        //if (!IsAllImageDownloaded)
+        //{
+        //    Loader.Instance.LoaderActivation(true);
+        //}
+        yield return new WaitForSeconds(0.5f);
         foreach (Transform transform in circularScrollingList.transform)
         {
             var showDetails = transform.GetComponent<ShowMarbleDetails>();
@@ -43,8 +43,9 @@ public class MarbleLoader : MonoBehaviour
                 listOfAllMarbles.Add(showDetails);
             }
         }
-        SetMarbleDetails(listOfAllMarbles);
         SpawnCategoryList();
+        SetMarbleDetails(listOfAllMarbles);
+        getAllMarbles.OnDataLoaded?.Invoke();
     }
 
     bool IsCategorySpawn = false;
@@ -63,10 +64,10 @@ public class MarbleLoader : MonoBehaviour
                 Toggle toggle = g.GetComponent<Toggle>();
                 toggle.group = CategoryParent.GetComponent<ToggleGroup>();
                 toggle.GetComponentInChildren<TextMeshProUGUI>().text = category[i].category_name;
-                
+
                 ToggleSpriteChange t = toggle.GetComponent<ToggleSpriteChange>();
                 t.OnToggleClicked();
-                
+
                 t.GetComponent<CategoryToggle>().categoryId = category[i].category_id;
             }
             IsCategorySpawn = true;
@@ -74,16 +75,13 @@ public class MarbleLoader : MonoBehaviour
     }
 
     public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
-    {
-        List<string> url = new List<string>();
+    {      
         if (!IsAllImageDownloaded)
         {
-            var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
-            url.Clear();
+            var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;           
             for (int i = 0; i < showMarbleDetails.Count; i++)
             {
                 showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
-                url.Add(showMarbleDetails[i].marbleDetailsWithCategoryID.main_img);
                 showMarbleDetails[i].SetData();
             }
         }

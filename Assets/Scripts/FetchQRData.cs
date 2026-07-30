@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -8,15 +10,15 @@ public class FetchQRData : MonoBehaviour
     [SerializeField] UI_Manager ui;
     public MarbleQRDATA _marbleQrDatascritable;
     public SpecificMarbleDetails _specificMarbleDetails;
-    
+
     // Text details info
     [SerializeField] TextMeshProUGUI MarbleName, MarbleDetails;
     [SerializeField] TextMeshProUGUI MarbleDimension, MarbleType, MarbleOrigin, MarbleAvailability, MarblePrice;
     public RawImage CircleImage, TopMarbleImage;
-    
+
     [SerializeField] string fetchedData;
-    
-    public RawImage[] BgImages;    
+
+    public RawImage[] BgImages;
     public Texture[] boxImageTexture;
 
     //public bool IsDetailView = false;
@@ -30,36 +32,36 @@ public class FetchQRData : MonoBehaviour
     [SerializeField] int downlaodedImageCount = 0;
 
     private void Start()
-    {   
-        QRScanner.OnQRDetect.AddListener(LoadData);
+    {
+        QRScanner.OnQRDetect.AddListener(async (data) => await LoadData(data));
         OnDataLoaded.AddListener(() =>
         {
             //if (!IsDetailView)
             ui.OpenPage(3);
-            StoreTexture();
+            //StoreTexture();
         });
     }
 
-    public void LoadData(string data)
+    public async UniTask LoadData(string data)
     {
         Debug.Log(data);
         string url = Url.apiUrl + Url.marbleDetails;
-       
+
         WWWForm form = new WWWForm();
         form.AddField("id", data);
         WWWRequestTC w = new WWWRequestTC();
-        w.Post(form, url, (Data, isSucess) =>
+        await w.Post(url, form, new HeaderDataClass[0], async (Data, isSucess) =>
         {
             if (isSucess)
             {
                 fetchedData = Data;
-                Debug.Log("QR scanned data: "+fetchedData);
+                Debug.Log("QR scanned data: " + fetchedData);
                 _marbleQrDatascritable._marbleApiData = JsonUtility.FromJson<MarbleApiData>(Data);
 
                 if (_marbleQrDatascritable._marbleApiData.success)
                 {
                     LoadMarbleTextData();
-                    LoadMarbleImageData();
+                    await LoadMarbleImageData();
                 }
                 else
                 {
@@ -67,7 +69,7 @@ public class FetchQRData : MonoBehaviour
                     Debug.Log("Couldn't fetch data");
                 }
             }
-            else 
+            else
             {
                 OnDataLoadError?.Invoke();
                 Debug.Log("Couldn't fetch data");
@@ -75,17 +77,17 @@ public class FetchQRData : MonoBehaviour
         });
     }
 
-    public void LoadedData(string data) 
+    public void LoadedData(string data)
     {
     }
-    
+
     // load marble text data after QR scan From Scriptable object
     void LoadMarbleTextData()
     {
         var marble = _marbleQrDatascritable._marbleApiData.marbleDetails;
-        MarbleName.text =marble.marble_name;
+        MarbleName.text = marble.marble_name;
         MarbleDetails.text = marble.description;
-        MarbleDimension.text =marble.dimension;
+        MarbleDimension.text = marble.dimension;
         MarbleType.text = marble.material;
         MarbleOrigin.text = marble.finish;
         MarbleAvailability.text = marble.availability.ToString();
@@ -105,30 +107,27 @@ public class FetchQRData : MonoBehaviour
     {
         var marbleDet = _specificMarbleDetails;
         TopMarbleImage.texture = mainTexture;
-        CircleImage.texture = circleImg;
-        for (int i = 0; i < marbleDet.textures.Length; i++)
-        {
-            BgImages[i].texture = textures[i];
-        }
+        //CircleImage.texture = circleImg;
+        //for (int i = 0; i < marbleDet.textures.Length; i++)
+        //{
+        //    BgImages[i].texture = textures[i];
+        //}
     }
     // load marble Image data after QR scan From Scriptable object
-    void LoadMarbleImageData()
+    async UniTask LoadMarbleImageData()
     {
         var marbleDet = _marbleQrDatascritable._marbleApiData.marbleDetails;
-        if (marbleDet.texture_img.Count > 0)
-        {
-            GetImageTop(marbleDet.main_img, TopMarbleImage);
-
-            totalImageCount = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
-
-            GetImage(marbleDet.texture_img[0], CircleImage);
-
-            var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
-            for (int i = 1; i < count; i++)
-            {
-                GetImage(marbleDet.texture_img[i], BgImages[i - 1]);
-            }
-        }
+        await GetImageTop(marbleDet.main_img, TopMarbleImage);
+        //if (marbleDet.texture_img.Count > 0)
+        //{
+        //    totalImageCount = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
+        //    GetImage(marbleDet.texture_img[0], CircleImage);
+        //    var count = _marbleQrDatascritable._marbleApiData.marbleDetails.texture_img.Count;
+        //    for (int i = 1; i < count; i++)
+        //    {
+        //        GetImage(marbleDet.texture_img[i], BgImages[i - 1]);
+        //    }
+        //}
     }
     void StoreTexture()
     {
@@ -138,10 +137,10 @@ public class FetchQRData : MonoBehaviour
             boxImageTexture[i] = BgImages[i].texture;
         }
     }
-    void GetImage(string url, RawImage image)
+    async UniTask GetImage(string url, RawImage image)
     {
         WWWRequestTC w = new WWWRequestTC();
-        w.GetTexture(url, (str, rawTex, isSucess) => 
+        await w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
@@ -161,15 +160,17 @@ public class FetchQRData : MonoBehaviour
                 Debug.Log("Couldn't fetch image data");
         });
     }
-    void GetImageTop(string url, RawImage image)
+    async UniTask GetImageTop(string url, RawImage image)
     {
         WWWRequestTC w = new WWWRequestTC();
-        w.GetTexture(url, (str, rawTex, isSucess) =>
+        await w.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
+                TextureScale.Bilinear(rawTex, 200, 200);
                 //Debug.LogError("URL main: " + url + " " + image.name);
                 image.texture = rawTex;
+                OnDataLoaded?.Invoke();
             }
             else
                 Debug.Log("Couldn't fetch image data");

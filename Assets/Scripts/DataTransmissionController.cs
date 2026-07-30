@@ -1,4 +1,6 @@
+using Cysharp.Threading.Tasks;
 using System.Text;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -17,11 +19,11 @@ public abstract class DataTransmissionController : MonoBehaviour
 
     public string data;
     public bool OnConfigButtonClick;
-    
+
     public UnityEvent OnDataSave;
-    
+
     protected abstract void ControlObjectActivation();
-    
+
     private void Start()
     {
         requestTC = new WWWRequestTC();
@@ -34,23 +36,23 @@ public abstract class DataTransmissionController : MonoBehaviour
 
     protected virtual void EventHandler()
     {
-        DataSenderButton.onClick.AddListener(() =>
+        DataSenderButton.onClick.AddListener(async () =>
         {
-            CheckLoginData();
+            await CheckLoginData();
             //OnConfigButtonClick = true;
         });
 
-        emailValidation2.EmailSuccess.AddListener(() =>
+        emailValidation2.EmailSuccess.AddListener(async () =>
         {
             if (OnConfigButtonClick)
-                SaveUserData(emailValidation2);
+                await SaveUserData(emailValidation2);
         });
 
         OnDataSave.AddListener(ControlObjectActivation);
     }
 
 
-    protected virtual void CheckLoginData()
+    protected virtual async UniTask CheckLoginData()
     {
         if (!emailValidation.isCredentialsEntered && !emailValidation2.isCredentialsEntered)
         {
@@ -58,90 +60,90 @@ public abstract class DataTransmissionController : MonoBehaviour
             emailValidation2.gameObject.SetActive(true);
             manager.AddPageHistory(emailValidation2.gameObject);
 
-            emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(() =>
+            emailValidation2.transform.Find("LoginPage").transform.Find("ButtonGroups").transform.Find("Share").GetComponent<Button>().onClick.AddListener(async () =>
             {
                 OnDataSave?.Invoke();
-                SaveUserData(emailValidation2);
+                await SaveUserData(emailValidation2);
             });
         }
         else
         {
             if (emailValidation.isCredentialsEntered)
             {
-                SaveUserData(emailValidation);
+                await SaveUserData(emailValidation);
                 OnConfigButtonClick = true;
                 OnDataSave?.Invoke();
             }
             else
             {
-                SaveUserData(emailValidation2);
+                await SaveUserData(emailValidation2);
                 OnConfigButtonClick = true;
                 OnDataSave?.Invoke();
             }
         }
     }
 
-    protected virtual void SaveUserData(EmailValidation email)
+    protected virtual async UniTask SaveUserData(EmailValidation email)
     {
         Debug.Log("Get response from CMS");
         //if (!userData.storeUserData.success)
         //{
-            string url = Url.apiUrl + Url.saveUserData;
-            WWWForm form = new WWWForm();
-            form.AddField("name", email.NameinputField.text);
-            form.AddField("email", email.EmailinputField.text);
-            form.AddField("marble_id", GetSelectedMarble_ID());
-            form.AddField("tab_id", Tab_ID.GetID());
+        string url = Url.apiUrl + Url.saveUserData;
+        WWWForm form = new WWWForm();
+        form.AddField("name", email.NameinputField.text);
+        form.AddField("email", email.EmailinputField.text);
+        form.AddField("marble_id", GetSelectedMarble_ID());
+        form.AddField("tab_id", Tab_ID.GetID());
 
-            //if (socketConnectionChecker != null)
+        //if (socketConnectionChecker != null)
 
-            Debug.Log("Get response");
-            WWWRequestTC w = new WWWRequestTC();
-            w.Post(form, url, (Data, isSuccess) =>
+        Debug.Log("Get response");
+        WWWRequestTC w = new WWWRequestTC();
+        await w.Post(url, form, new HeaderDataClass[0], async (Data, isSuccess) =>
+        {
+            Debug.Log("Response Data: " + Data);
+            if (isSuccess)
             {
-                Debug.Log("Response Data: " + Data);
-                if (isSuccess)
+                userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+                MessageFormat messageFormat = new MessageFormat
                 {
-                    userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
-                    MessageFormat messageFormat = new MessageFormat
-                    {
-                        MessageKey = "user_id",
-                        MessageValue = userData.storeUserData.user_id
-                    };
+                    MessageKey = "user_id",
+                    MessageValue = userData.storeUserData.user_id
+                };
 
-                    if (userData.storeUserData.already_register)
-                    {
-                        Debug.Log("<color=red>Update User</color>");
-                        UpdateUser(messageFormat);
-                    }
-                    else
-                    {
-                        Debug.Log("<color=red>Update User</color>");
-                        data = JsonUtility.ToJson(messageFormat);
-                        OnDataSave?.Invoke();
-                    }
+                if (userData.storeUserData.already_register)
+                {
+                    Debug.Log("<color=red>Update User</color>");
+                    await UpdateUser(messageFormat);
                 }
                 else
                 {
-                    Debug.Log("<color=red>Not success/color>");
+                    Debug.Log("<color=red>Update User</color>");
+                    data = JsonUtility.ToJson(messageFormat);
+                    OnDataSave?.Invoke();
                 }
-            });
-       // }
-        //else
-       // {
-           /* Debug.Log("Get response from CMS 2");
-
-            MessageFormat messageFormat = new MessageFormat
+            }
+            else
             {
-                MessageKey = "user_id",
-                MessageValue = userData.storeUserData.user_id
-            };
-            UpdateUser(messageFormat);*/
-      //  }
+                Debug.Log("<color=red>Not success/color>");
+            }
+        });
+        // }
+        //else
+        // {
+        /* Debug.Log("Get response from CMS 2");
+
+         MessageFormat messageFormat = new MessageFormat
+         {
+             MessageKey = "user_id",
+             MessageValue = userData.storeUserData.user_id
+         };
+         UpdateUser(messageFormat);*/
+        //  }
     }
 
 
-    protected virtual void UpdateUser(MessageFormat m)
+    protected virtual async UniTask UpdateUser(MessageFormat m)
     {
         string updateUrl = Url.apiUrl + Url.updateUserData;
 
@@ -152,7 +154,7 @@ public abstract class DataTransmissionController : MonoBehaviour
 
         Debug.Log("<color=red>Use API for Update User</color>");
         WWWRequestTC w = new WWWRequestTC();
-        w.Post(updateForm, updateUrl, (UpdateData, isSuccess) =>
+        await w.Post(updateUrl, updateForm, new HeaderDataClass[0], (UpdateData, isSuccess) =>
         {
             if (isSuccess)
             {
@@ -160,7 +162,7 @@ public abstract class DataTransmissionController : MonoBehaviour
                 data = JsonUtility.ToJson(m);
                 //OnDataSave?.Invoke();
             }
-            else 
+            else
             {
                 Debug.Log("<color=red>Update User false</color>");
             }

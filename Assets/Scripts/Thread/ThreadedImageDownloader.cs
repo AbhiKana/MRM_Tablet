@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class ThreadedImageDownloader : MonoBehaviour
 {
-
     private static readonly HttpClient _httpClient = new HttpClient();
     private static ThreadedImageDownloader _instance;
     public static ThreadedImageDownloader Instance
@@ -125,7 +124,7 @@ public class ThreadedImageDownloader : MonoBehaviour
 
         int totalDownloads = urls.Length;
         int completedDownloads = 0;
-
+        Debug.Log("totalDownloads: " + totalDownloads + " & completedDownloads: " + completedDownloads);
         for (int i = 0; i < urls.Length; i++)
         {
             int index = i; // Capture current index for closure
@@ -163,6 +162,7 @@ public class ThreadedImageDownloader : MonoBehaviour
                 });
             });
         }
+        Debug.Log("totalDownloads: " + totalDownloads + " & completedDownloads: " + completedDownloads);
     }
 
     // Overload for single image download

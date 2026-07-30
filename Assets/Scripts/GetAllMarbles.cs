@@ -1,3 +1,5 @@
+using Cysharp.Threading.Tasks;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,31 +12,31 @@ public class GetAllMarbles : MonoBehaviour
     public UnityEvent OnAllMarbleDataLoaded;
     public UnityEvent OnDataLoaded;
 
-    private void Start()
+    private async void Start()
     {
        // requestTC = new WWWRequestTC();
-        GetCategoryList();
-        GetAllMarbleList();
+        await GetCategoryList();
+        await GetAllMarbleList();
     }
 
-    public void GetCategoryList()
+    public async UniTask GetCategoryList()
     {
         string url = Url.apiUrl + Url.marbleApi;
         Debug.Log(url);
         WWWRequestTC w = new WWWRequestTC();
-        w.Get(url, (Data, isSucess) =>
+        await w.Get(url, new HeaderDataClass[0], (Data, isSucess) =>
         {
             categories = JsonUtility.FromJson<Catergories>(Data);
         });
     }
 
-    public void GetAllMarbleList()
+    public async UniTask GetAllMarbleList()
     {
         WWWForm form = new WWWForm();
         string url = Url.apiUrl + Url.marbleDetails;
         GetMarblesList marbles;
         WWWRequestTC w = new WWWRequestTC();
-        w.Post(form, url, (Data, isSucess) =>
+        await w.Post(url, form, new HeaderDataClass[0], (Data, isSucess) =>
         {
             if (isSucess)
             {

@@ -13,16 +13,21 @@ MonoBehaviour:
   m_Name: MarbleQrDataObject
   m_EditorClassIdentifier: 
   _marbleApiData:
-    success: 0
+    success: 1
     marbleDetails:
-      id: 0
-      marble_name: 
-      description: 
-      dimension: 
-      material: 
-      finish: 
-      price: 
-      availability: 0
-      category_id: 0
-      main_img: 
-      texture_img: []
+      id: 110
+      marble_name: Tiger Onyx
+      description: Test
+      dimension: 240X240
+      material: Test
+      finish: Test
+      price: 1500
+      availability: 40
+      category_id: 4
+      main_img: http://192.168.1.65/mrm_showroom/uploads/marble/main_images/1746443986_Tiger_Onyx_Tiled.png
+      texture_img:
+      - http://192.168.1.65/mrm_showroom/uploads/marble/texture_images/1746443986_1743662605_image_333.png
+      - http://192.168.1.65/mrm_showroom/uploads/marble/texture_images/1746443986_1743662605_image_335.png
+      - http://192.168.1.65/mrm_showroom/uploads/marble/texture_images/1746443986_1743662605_image_336.png
+      - http://192.168.1.65/mrm_showroom/uploads/marble/texture_images/1746443986_1743662605_image_337.png
+      - http://192.168.1.65/mrm_showroom/uploads/marble/texture_images/1746442277_1743662605_image_337.png

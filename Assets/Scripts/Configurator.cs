@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ public class Configurator : DataTransmissionController
         TCP_ClientController.OnServerDisconnected -= ResetConfig;
     }
 
-    protected override void CheckLoginData()
+    protected override async UniTask CheckLoginData()
     {
         if (!connectViaInput.IsConnectedToServer)
         {
@@ -28,7 +29,7 @@ public class Configurator : DataTransmissionController
             connectViaInput.panel.GetComponentInChildren<Button>().onClick.AddListener(GetCheckLoginData);
         }
         else
-            base.CheckLoginData();
+           await base.CheckLoginData();
     }
 
     private async void GetCheckLoginData()
@@ -39,7 +40,7 @@ public class Configurator : DataTransmissionController
         if (connectViaInput.IsConnectedToServer)
         {
             Debug.Log("Check Client connected");            
-            base.CheckLoginData();
+            await base.CheckLoginData();
         }
     }
 
