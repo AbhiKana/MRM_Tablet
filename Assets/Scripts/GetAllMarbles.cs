@@ -7,14 +7,12 @@ public class GetAllMarbles : MonoBehaviour
 {
     public MarbleList allMarbles;
     public Catergories categories;
-    //public WWWRequestTC requestTC;
 
     public UnityEvent OnAllMarbleDataLoaded;
     public UnityEvent OnDataLoaded;
 
     private async void Start()
     {
-       // requestTC = new WWWRequestTC();
         await GetCategoryList();
         await GetAllMarbleList();
     }
@@ -23,25 +21,19 @@ public class GetAllMarbles : MonoBehaviour
     {
         string url = Url.apiUrl + Url.marbleApi;
         Debug.Log(url);
-        WWWRequestTC w = new WWWRequestTC();
-        await w.Get(url, new HeaderDataClass[0], (Data, isSucess) =>
-        {
-            categories = JsonUtility.FromJson<Catergories>(Data);
-        });
+        var (json,success) =  await WWWRequestTC.Get(url, new HeaderDataClass[0]);
+        if(success) categories = JsonUtility.FromJson<Catergories>(json);
     }
 
     public async UniTask GetAllMarbleList()
     {
         WWWForm form = new WWWForm();
         string url = Url.apiUrl + Url.marbleDetails;
-        GetMarblesList marbles;
-        WWWRequestTC w = new WWWRequestTC();
-        await w.Post(url, form, new HeaderDataClass[0], (Data, isSucess) =>
+        await WWWRequestTC.Post(url, form, new HeaderDataClass[0], (Data, isSucess) =>
         {
             if (isSucess)
             {
-                marbles = JsonUtility.FromJson<GetMarblesList>(Data);
-                allMarbles.getMarblesList = marbles;
+                allMarbles.getMarblesList = JsonUtility.FromJson<GetMarblesList>(Data);
                 OnAllMarbleDataLoaded?.Invoke();
             }
         });

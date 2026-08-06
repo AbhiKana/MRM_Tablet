@@ -51,8 +51,7 @@ public class MarbleUploader : DataTransmissionController
         WWWForm form = new WWWForm();
         form.AddField(user_id_object.nameVal, user_id);
 
-        WWWRequestTC w = new WWWRequestTC();
-        await w.Post(pdfUrl, form, new HeaderDataClass[0], (formData, isSuccess) =>
+        await WWWRequestTC.Post(pdfUrl, form, new HeaderDataClass[0], (formData, isSuccess) =>
         {
             if (isSuccess)
                 Debug.Log("PDF Generated");

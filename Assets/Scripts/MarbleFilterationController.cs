@@ -1,20 +1,24 @@
 using AirFishLab.ScrollingList;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
+public enum MarbleFilterType
+{
+    Category,
+    Tile
+}
+
 public class MarbleFilterationController : MonoBehaviour
 {
-    GetAllMarbles getAllMarbles;
+    [SerializeField] private GetAllMarbles getAllMarbles;
+    [SerializeField] private MarbleLoader marbleLoader;
     [SerializeField] Transform inventoryContainer; // Assign the parent of all marble items
     [SerializeField] bool isCircularList = false;
 
-    public UnityEvent<int>  OnCategorySelection = new UnityEvent<int>();
+    public UnityEvent<int> OnCategorySelection = new UnityEvent<int>();
     public UnityEvent OnCategoryAlreadySelected = new UnityEvent();
 
-    private void Start()
-    {
-        getAllMarbles = FindObjectOfType<GetAllMarbles>();
-    }
     public void FilterByCategory(int selectedCategory)
     {
         CircularScrollingList csList = inventoryContainer.GetComponent<CircularScrollingList>();
@@ -23,40 +27,70 @@ public class MarbleFilterationController : MonoBehaviour
         {
             OnCategoryAlreadySelected?.Invoke();
             Debug.Log("Category Already Selected");
-            SetParenting(selectedCategory);
+            SetParenting(MarbleFilterType.Category, selectedCategory);
         }
         else
         {
             Debug.Log("Category Selection First time");
-            SetParenting(selectedCategory);
+            SetParenting(MarbleFilterType.Category, selectedCategory);
         }
     }
 
-    private void SetParenting(int selectedCategory)
+    private void SetParenting(MarbleFilterType type, int selectedCategory)
     {
-        foreach (Transform child in inventoryContainer)
+        foreach (var child in marbleLoader.listOfMarblesInventory.listOfAllMarbles)
         {
-            SetActiveStatus(selectedCategory, child);
+            SetActiveStatus(type, selectedCategory, child);
         }
 
         if (isCircularList)
             OnCategorySelection.Invoke(selectedCategory);
     }
 
-    private void SetActiveStatus(int selectedCategory, Transform child)
+    private void SetActiveStatus(MarbleFilterType type, int selectedCategory, ShowMarbleDetails child)
     {
-        ShowMarbleDetails item = child.GetComponent<ShowMarbleDetails>();
-        if (item != null)
+        Debug.Log(child.name);
+        if (child != null)
         {
-            if (selectedCategory == 0)
+            switch (type)
             {
-                //Debug.LogError(item.gameObject.name);
-                child.gameObject.SetActive(true);
+                case MarbleFilterType.Category:
+                    if (selectedCategory == 0)
+                    {
+                        child.gameObject.SetActive(true);
+                    }
+                    else
+                    {
+                        child.gameObject.SetActive(child.categoryID == selectedCategory);
+                    }
+                    break;
+                case MarbleFilterType.Tile:
+                    Debug.Log(child.name + child.tileID + (child.tileID == selectedCategory));
+                    child.gameObject.SetActive(child.tileID == selectedCategory);
+                    break;
             }
-            else
-            {
-                child.gameObject.SetActive(item.categoryID == selectedCategory);
-            }
+        }
+    }
+
+    public void SearchMarbleByName(TMPro.TMP_InputField tMP_Input)
+    {
+        string name = tMP_Input.text;
+        Debug.Log(name);
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            SetParenting(MarbleFilterType.Category, 0);
+            Debug.Log("null");
+            return;
+        }
+        marbleLoader.listOfMarblesInventory.listOfAllMarbles.ForEach(m => {m.gameObject.SetActive(false); });
+        var myKeys = FuzzyMatcher.SearchKeysByValue(marbleLoader.marbleKeyValue, name, maxTyposPerWord: 2);
+        if (myKeys == null || myKeys.Count <= 0) return;
+        foreach (var key in myKeys)
+        {
+            Debug.Log(key);
+            var child = marbleLoader.listOfMarblesInventory.listOfAllMarbles.FirstOrDefault(x => x.tileID == key);
+            Debug.Log(child.name);
+            SetActiveStatus(MarbleFilterType.Tile, key, child);
         }
     }
 }

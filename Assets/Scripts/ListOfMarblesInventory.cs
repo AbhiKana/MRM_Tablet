@@ -12,7 +12,7 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     private void Start()
     {
-        getMarbles.OnDataLoaded.AddListener(GetMarble);
+        //getMarbles.OnDataLoaded.AddListener(GetMarble);
     }
 
     void GetMarble()
@@ -28,28 +28,35 @@ public class ListOfMarblesInventory : MonoBehaviour
         var noof_Marbles = marbleLoader.listOfAllMarbles;
         for (int i = 0; i < noof_Marbles.Count; i++)
         {
-            GameObject marbleObj = Instantiate(tilePrefab).gameObject;
-            marbleObj.transform.SetParent(parentObjectToSpawn);
-            marbleObj.transform.localScale = Vector3.one;
-
-            ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();           
-            marble.image.texture = noof_Marbles[i].image.texture;
-            marble.texture = noof_Marbles[i].image.texture;
-            marble.marbleName = noof_Marbles[i].marbleName;
-            //Debug.Log("<color=yellow> Assign Image </color>");
-            marble.price = noof_Marbles[i].price;
-            marble.tileID = noof_Marbles[i].tileID;
-            marble.categoryID = noof_Marbles[i].categoryID;
-            marble.IsWishlisted = noof_Marbles[i].IsWishlisted;
-            marble.ShowData();
+            GridPrefabInstantiate(noof_Marbles[i]);
         }
 
-        SetMarbleDetails(listOfAllMarbles);
+        //SetMarbleDetails(listOfAllMarbles);
+    }
+
+    public void GridPrefabInstantiate(ShowMarbleDetails noof_Marbles)
+    {
+        GameObject marbleObj = Instantiate(tilePrefab).gameObject;
+        marbleObj.transform.SetParent(parentObjectToSpawn);
+        marbleObj.transform.localScale = Vector3.one;
+
+        ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();
+        noof_Marbles.syncShowMarbleDetail = marble;
+        marbleObj.name = marble.marbleName = noof_Marbles.marbleName;
+        marble.image.texture = noof_Marbles.image.texture;
+        marble.texture = noof_Marbles.image.texture;
+        //Debug.Log("<color=yellow> Assign Image </color>");
+        marble.price = noof_Marbles.price;
+        marble.tileID = noof_Marbles.tileID;
+        marble.categoryID = noof_Marbles.categoryID;
+        marble.IsWishlisted = noof_Marbles.IsWishlisted;
+        marble.marbleDetailsWithCategoryID = noof_Marbles.marbleDetailsWithCategoryID;
+        marble.ShowData();
+        listOfAllMarbles.Add(marble);
     }
 
     public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
     {
-
         foreach (Transform transform in parentObjectToSpawn.transform)
         {
             var showDetails = transform.GetComponent<ShowMarbleDetails>();

@@ -11,15 +11,10 @@ public class CategoryToggle : MonoBehaviour
 
     void Awake()
     {
+       
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(OnToggleChanged);
-    }
-
-    private void Start()
-    {
-        filterManager = GameObject.FindGameObjectWithTag("FilterManager").GetComponent<MarbleFilterationController>();
-        circularMarbleFilterization = GameObject.FindGameObjectWithTag("CircularFilter").GetComponent<MarbleFilterationController>();
-    }
+    }  
 
     void OnToggleChanged(bool isOn)
     {

@@ -9,17 +9,16 @@ public class LoadImageInBG : MonoBehaviour
 {
     [HideInInspector] public ShowMarbleDetails showMarbleDetails;
     [SerializeField] RawImage dummy;
-    WWWRequestTC requestTC;
+
     public int totalImageCount, downlaodedImageCount;
 
     public UnityEvent OnBGImageDownload = new UnityEvent();
-    Action onComplete;
+
     void Start()
     {
-        requestTC = new WWWRequestTC();
         showMarbleDetails = GetComponent<ShowMarbleDetails>();
 
-        OnBGImageDownload.AddListener(()=>
+        OnBGImageDownload.AddListener(() =>
         {
             var dataSync = showMarbleDetails.syncMarbleDetails;
             dataSync.SyncMarbleArrayTexture(showMarbleDetails, dataSync.marqueeMarbles);
@@ -38,7 +37,7 @@ public class LoadImageInBG : MonoBehaviour
 
     //        totalImageCount = marbleDet.texture_img.Count;
     //       // GetImageUsingthread(marbleDet.texture_img.ToArray());
-            
+
     //        for (int i = 0; i < marbleDet.texture_img.Count; i++)
     //        {
     //            //GetImageUsingthread(marbleDet.texture_img[i], i);
@@ -56,7 +55,7 @@ public class LoadImageInBG : MonoBehaviour
             (success) =>
             {
                 //showMarbleDetails.m_Textures[count] = dummy.texture;
-                if(success)
+                if (success)
                     CheckAllImageLoaded();
             },
             () => { count++; Debug.Log("Count: " + count); }
@@ -72,8 +71,7 @@ public class LoadImageInBG : MonoBehaviour
 
     async UniTask GetImage(string url, int textureIndex)
     {
-        WWWRequestTC w = new WWWRequestTC();
-        await w.GetTexture(url, (str, rawTex, isSucess) =>
+        await WWWRequestTC.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {

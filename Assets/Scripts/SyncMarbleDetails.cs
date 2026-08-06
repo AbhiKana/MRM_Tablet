@@ -22,7 +22,7 @@ public class SyncMarbleDetails : MonoBehaviour
     void StoreMarblesInList()
     {
         marqueeMarbles = marqueeMarblesParent.GetComponentsInChildren<ShowMarbleDetails>(true);
-        Invoke(nameof(GetGridMarble), 0.5f);
+        GetGridMarble();
     }
 
     void GetGridMarble()
@@ -42,7 +42,6 @@ public class SyncMarbleDetails : MonoBehaviour
                 {
                     var data = marqueeMarbles[i].DataToSend();
                     gridMarbles[i].StoreRoomTextures(data);
-
                     return;
                 }
             }
@@ -57,15 +56,14 @@ public class SyncMarbleDetails : MonoBehaviour
                 {
                     var data = gridMarbles[i].DataToSend();
                     marqueeMarbles[i].StoreRoomTextures(data);
-
                     return;
                 }
             }
         });
     }
+
     public void SyncMarbleWishlistedValue(ShowMarbleDetails source, ShowMarbleDetails[] marbles, bool val)
     {
-
         foreach (ShowMarbleDetails show in marbles)
         {
             //Debug.Log("Iswishlist to be on: " + source.ToString());

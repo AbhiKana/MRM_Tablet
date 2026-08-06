@@ -1,4 +1,5 @@
 using Cysharp.Threading.Tasks;
+using System.Threading;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -21,15 +22,14 @@ public class FetchQRData : MonoBehaviour
     public RawImage[] BgImages;
     public Texture[] boxImageTexture;
 
-    //public bool IsDetailView = false;
-
-    WWWRequestTC requestTC;
+    //public bool IsDetailView = false;   
 
     public UnityEvent OnDataLoaded;
     public UnityEvent OnDataLoadError;
 
     [SerializeField] int totalImageCount = 0;
     [SerializeField] int downlaodedImageCount = 0;
+    private CancellationTokenSource qrTextureToken = new CancellationTokenSource();
 
     private void Start()
     {
@@ -49,8 +49,7 @@ public class FetchQRData : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("id", data);
-        WWWRequestTC w = new WWWRequestTC();
-        await w.Post(url, form, new HeaderDataClass[0], async (Data, isSucess) =>
+        await WWWRequestTC.Post(url, form, new HeaderDataClass[0], async (Data, isSucess) =>
         {
             if (isSucess)
             {
@@ -85,13 +84,17 @@ public class FetchQRData : MonoBehaviour
     void LoadMarbleTextData()
     {
         var marble = _marbleQrDatascritable._marbleApiData.marbleDetails;
-        MarbleName.text = marble.marble_name;
-        MarbleDetails.text = marble.description;
-        MarbleDimension.text = marble.dimension;
-        MarbleType.text = marble.material;
-        MarbleOrigin.text = marble.finish;
-        MarbleAvailability.text = marble.availability.ToString();
+        _specificMarbleDetails.id = marble.id;
+        _specificMarbleDetails.marble_name = MarbleName.text = marble.marble_name;
+        _specificMarbleDetails.description = MarbleDetails.text = marble.description;
+        _specificMarbleDetails.dimension = MarbleDimension.text = marble.dimension;
+        _specificMarbleDetails.material = MarbleType.text = marble.material;
+        _specificMarbleDetails.finish = MarbleOrigin.text = marble.finish;
         MarblePrice.text = marble.price + " sq/ft";
+        _specificMarbleDetails.price = marble.price;
+        _specificMarbleDetails.url = marble.main_img;
+        MarbleAvailability.text = marble.availability.ToString();
+        _specificMarbleDetails.availability = marble.availability;
     }
     public void LoadMarbleTextData(string marble_name, string description, string dimension, string material, string finish, string availibility, string price)
     {
@@ -139,8 +142,7 @@ public class FetchQRData : MonoBehaviour
     }
     async UniTask GetImage(string url, RawImage image)
     {
-        WWWRequestTC w = new WWWRequestTC();
-        await w.GetTexture(url, (str, rawTex, isSucess) =>
+        await WWWRequestTC.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
@@ -160,20 +162,23 @@ public class FetchQRData : MonoBehaviour
                 Debug.Log("Couldn't fetch image data");
         });
     }
+
     async UniTask GetImageTop(string url, RawImage image)
-    {
-        WWWRequestTC w = new WWWRequestTC();
-        await w.GetTexture(url, (str, rawTex, isSucess) =>
+    {        
+        CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
+        qrTextureToken.Token,
+        this.GetCancellationTokenOnDestroy());
+        await WWWRequestTC.GetTexture(url, (str, rawTex, isSucess) =>
         {
             if (isSucess)
             {
-                TextureScale.Bilinear(rawTex, 200, 200);
+                TextureScale.Bilinear(rawTex, 100, 100);
                 //Debug.LogError("URL main: " + url + " " + image.name);
                 image.texture = rawTex;
                 OnDataLoaded?.Invoke();
             }
             else
                 Debug.Log("Couldn't fetch image data");
-        });
+        }, linkedCts.Token, true);
     }
 }

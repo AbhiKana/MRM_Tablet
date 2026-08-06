@@ -1,13 +1,19 @@
+using AirFishLab.ScrollingList;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
-using System.Collections;
-using AirFishLab.ScrollingList;
-using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class MarbleLoader : MonoBehaviour
 {
+    public StoreMarbleDetails storeMarbleDetails;
+    public SyncMarbleDetails syncMarbleDetails;
+
+    public ListOfMarblesInventory listOfMarblesInventory;
+
     [SerializeField] CircularScrollingList circularScrollingList;
     [SerializeField] GetAllMarbles getAllMarbles;
 
@@ -22,22 +28,15 @@ public class MarbleLoader : MonoBehaviour
     public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
     public static UnityEvent OnMarbleLoaded;
 
+    public Dictionary<int, string> marbleKeyValue = new Dictionary<int, string>();
+
+    bool IsCategorySpawn = false;
+
     public void GetAllAvailableMarbles()
     {
-        StartCoroutine(StoreMarblesInList());
-    }
-
-    IEnumerator StoreMarblesInList()
-    {
-        //if (!IsAllImageDownloaded)
-        //{
-        //    Loader.Instance.LoaderActivation(true);
-        //}
-        yield return new WaitForSeconds(0.5f);
-        foreach (Transform transform in circularScrollingList.transform)
+        foreach (var listbox in circularScrollingList._listBoxes)
         {
-            var showDetails = transform.GetComponent<ShowMarbleDetails>();
-            //showDetails.IsWishlisted = 
+            var showDetails = listbox.GetComponent<ShowMarbleDetails>();
             if (!listOfAllMarbles.Contains(showDetails))
             {
                 listOfAllMarbles.Add(showDetails);
@@ -48,7 +47,6 @@ public class MarbleLoader : MonoBehaviour
         getAllMarbles.OnDataLoaded?.Invoke();
     }
 
-    bool IsCategorySpawn = false;
     public void SpawnCategoryList()
     {
         if (!IsCategorySpawn)
@@ -75,28 +73,47 @@ public class MarbleLoader : MonoBehaviour
     }
 
     public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
-    {      
+    {
         if (!IsAllImageDownloaded)
         {
-            var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;           
-            for (int i = 0; i < showMarbleDetails.Count; i++)
+            var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
+            int chunk = 8;
+            for (int i = 0; i < showMarbleDetails.Count; i += chunk)
             {
-                showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
-                showMarbleDetails[i].SetData();
+                int end = Math.Min(i + chunk, showMarbleDetails.Count);
+                for (int j = i; j < end; j++)
+                    SingleShowMarbleWithIndex(showMarbleDetails, mDetails, j);
             }
         }
+    }
+
+    private void SingleShowMarbleWithIndex(List<ShowMarbleDetails> showMarbleDetails, List<MarbleDetail> mDetails, int i)
+    {
+        marbleKeyValue[mDetails[i].id] = mDetails[i].marble_name;
+        showMarbleDetails[i].storeMarbleDetails = storeMarbleDetails;
+        showMarbleDetails[i].syncMarbleDetails = syncMarbleDetails;
+        showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
+        showMarbleDetails[i].SetData();
+        listOfMarblesInventory.GridPrefabInstantiate(showMarbleDetails[i]);
     }
 
     public void OnDataLoadedSucessfully()
     {
         IsAllImageDownloaded = true;
-        downlaodedImageCount = 0;
+        //downlaodedImageCount = 0;
     }
 
-    public void GetTotalImageCount()
+
+    //Assgined to GetAllMarbles.cs on event OnAllMarbleDataLoaded
+    public async void GetTotalImageCount()
     {
         totalImageCount = getAllMarbles.allMarbles.getMarblesList.marbleDetails.Count;
         Debug.Log($"Total image count: {totalImageCount}");
-    }
+        while (!circularScrollingList.CheckIsInitialized())
+        {
+            await Task.Yield();
+        }
+        GetAllAvailableMarbles();
+    }   
 }
 

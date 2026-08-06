@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -10,42 +11,41 @@ public class HeaderDataClass
     public string headerName;
     public string headerstring;
 }
-public class WWWRequestTC
+public static class WWWRequestTC
 {
-    public class TempWebRequest : MonoBehaviour { }
+    private static readonly SemaphoreSlim _concurrencyGate = new SemaphoreSlim(8, 20);
 
-    private static TempWebRequest tempWebRequest;
-    private Coroutine signInPostCoroutine;
-
-    public WWWRequestTC()
-    {
-        if (tempWebRequest == null)
-            tempWebRequest = new GameObject("TempWebRequest").AddComponent<TempWebRequest>();
-    }
-
-    public async UniTask Get(string _url, HeaderDataClass[] headers, Action<string, bool> _Callback, CancellationToken token = default)
+    public static async UniTask<(string responseJson, bool success)> Get(string _url, HeaderDataClass[] headers, CancellationToken token = default)
     {
         if (token.IsCancellationRequested)
-        {
-            _Callback.Invoke("request cancel", false);
-            return;
-        }
+            return ("request cancel", false);
 
         try
         {
-            await LogIn(_url, headers, (responseJson, isSuccess) =>
+            using (UnityWebRequest www = UnityWebRequest.Get(_url))
             {
-                _Callback.Invoke(responseJson, isSuccess);
-            }, token);
+                for (int i = 0; i < headers?.Length; i++)
+                    www.SetRequestHeader(headers[i].headerName, headers[i].headerstring);
 
+                await www.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                if (www.result != UnityWebRequest.Result.Success)
+                    return (www.error, false);
+
+                return (www.downloadHandler.text, true);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            return ("operation cancel", false);
         }
         catch (Exception ex)
         {
             Debug.LogError($"Operation failed but handled: {ex.Message}");
-            _Callback?.Invoke("operation cancel", false);
+            return ("operation cancel", false);
         }
     }
-    private async UniTask LogIn(string _url, HeaderDataClass[] headers, Action<string, bool> _callback, CancellationToken token = default)
+    private static async UniTask LogIn(string _url, HeaderDataClass[] headers, Action<string, bool> _callback, CancellationToken token = default)
     {
         Debug.Log($"[DEBUG] URL: {_url}");
         Debug.Log($"[DEBUG] Headers Count: {headers?.Length ?? 0}");
@@ -122,7 +122,7 @@ public class WWWRequestTC
         }
     }
 
-    public async UniTask Post<T>(string _url, T _form, HeaderDataClass[] headers, Action<string, bool> _Callback, CancellationToken token = default)
+    public static async UniTask Post<T>(string _url, T _form, HeaderDataClass[] headers, Action<string, bool> _Callback, CancellationToken token = default)
     {
         if (token.IsCancellationRequested)
         {
@@ -144,7 +144,7 @@ public class WWWRequestTC
         }
     }
 
-    private async UniTask LogIn<T>(string _url, T _form, HeaderDataClass[] headers, Action<string, bool> _callback, CancellationToken token)
+    private static async UniTask LogIn<T>(string _url, T _form, HeaderDataClass[] headers, Action<string, bool> _callback, CancellationToken token)
     {
         using (UnityWebRequest www = CreateRequest(_url, _form))
         {
@@ -168,7 +168,7 @@ public class WWWRequestTC
         }
     }
 
-    private UnityWebRequest CreateRequest<T>(string url, T formData)
+    private static UnityWebRequest CreateRequest<T>(string url, T formData)
     {
         if (formData is WWWForm wwwForm)
         {
@@ -201,16 +201,14 @@ public class WWWRequestTC
     }
     */
 
-    public async UniTask GetTexture(string url, Action<string, Texture2D, bool> cb, CancellationToken token = default)
+    public static async UniTask GetTexture(string url, Action<string, Texture2D, bool> cb, CancellationToken token = default, bool isUrgent = false)
     {
-        var result = await GetTextureUniTask(url, token);
+        var result = await GetTextureUniTask(url, token, isUrgent);
         cb?.Invoke(result.message, result.texture, result.success);
     }
-
-    private readonly SemaphoreSlim _concurrencyGate = new SemaphoreSlim(8, 20);
-
-    public async UniTask<(string message, Texture2D texture, bool success)> GetTextureUniTask(
-    string url, CancellationToken token = default)
+   
+    public static async UniTask<(string message, Texture2D texture, bool success)> GetTextureUniTask(
+    string url, CancellationToken token = default, bool isUrgent = false)
     {
         if (token.IsCancellationRequested)
             return ("Request canceled before starting.", null, false);
@@ -218,9 +216,16 @@ public class WWWRequestTC
         bool acquired = false;
         try
         {
-            await _concurrencyGate.WaitAsync(token);
-            acquired = true;
-            return await DownloadTextureAsync(url, token);
+            if (isUrgent)
+            {
+                return await DownloadTextureAsync(url, token);
+            }
+            else
+            {
+                await _concurrencyGate.WaitAsync(token);
+                acquired = true;
+                return await DownloadTextureAsync(url, token);
+            }
         }
         catch (OperationCanceledException)
         {
@@ -232,10 +237,17 @@ public class WWWRequestTC
         }
     }
 
-    private async UniTask<(string, Texture2D, bool)> DownloadTextureAsync(string url, CancellationToken token)
+    private static async UniTask<(string, Texture2D, bool)> DownloadTextureAsync(string url, CancellationToken token)
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
         {
+            token.Register(() =>
+            {
+                if (!www.isDone)
+                {
+                    www.Abort();
+                }
+            });
             UniTask task = www.SendWebRequest().ToUniTask(cancellationToken: token);
             try
             {
@@ -243,7 +255,7 @@ public class WWWRequestTC
             }
             catch (OperationCanceledException)
             {
-                www.Abort();
+                //www.Abort();
                 throw;
             }
 
@@ -255,5 +267,32 @@ public class WWWRequestTC
             Texture2D tex = DownloadHandlerTexture.GetContent(www);
             return ("Success", tex, true);
         }
+    }
+
+    public static async UniTask<List<Texture2D>> DownloadBatchAsync(IReadOnlyList<string> urls, CancellationToken token = default)
+    {
+        if (urls == null || urls.Count == 0)
+            return new List<Texture2D>();
+
+        // Fire all requests at once. The SemaphoreSlim(8) inside GetTextureUniTask
+        // limits actual in-flight downloads to 8; the rest queue at WaitAsync.
+        var tasks = new UniTask<(string message, Texture2D texture, bool success)>[urls.Count];
+        for (int i = 0; i < urls.Count; i++)
+        {
+            tasks[i] = GetTextureUniTask(urls[i], token);
+        }
+
+        // WhenAll preserves order: results[i] corresponds to urls[i].
+        var results = await UniTask.WhenAll(tasks);
+
+        var textures = new List<Texture2D>(results.Length);
+        for (int i = 0; i < results.Length; i++)
+        {
+            if (results[i].success && results[i].texture != null)
+                textures.Add(results[i].texture);
+            else
+                Debug.LogWarning($"Failed {urls[i]}: {results[i].message}");
+        }
+        return textures;
     }
 }

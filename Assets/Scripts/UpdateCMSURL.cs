@@ -13,7 +13,7 @@ public class UpdateCMSURL : MonoBehaviour
 
     [SerializeField] GameObject[] clientConnectObject;
 
-    private async void Start()
+    private void Start()
     {
         if (PlayerPrefs.HasKey(nameof(cmsIPInputField)))
         {
@@ -22,7 +22,7 @@ public class UpdateCMSURL : MonoBehaviour
         }
     }
 
-    public async void SubmitButtonForCMSIP()
+    public void SubmitButtonForCMSIP()
     {
         bool isvalid = IPAddress.TryParse(cmsIPInputField.text, out IPAddress address);
         if (!isvalid) return;
@@ -39,9 +39,8 @@ public class UpdateCMSURL : MonoBehaviour
         Debug.Log(Url.apiUrl);
         WWWForm form = new WWWForm();
         form.AddField("id", "1");
-        WWWRequestTC tC = new WWWRequestTC();
         string url = Url.apiUrl + Url.appStatus;
-        await tC.Post( url, form, new HeaderDataClass[0], (responseJson, isSuccess) =>
+        await WWWRequestTC.Post( url, form, new HeaderDataClass[0], (responseJson, isSuccess) =>
         {
             if (!isSuccess)
             {

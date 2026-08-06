@@ -13,7 +13,6 @@ public abstract class DataTransmissionController : MonoBehaviour
 
     protected UserData userData;
     protected UI_Manager manager;
-    protected WWWRequestTC requestTC;
     protected GetAllMarbles getAllMarbles;
     protected SelectionPanelController SelectionPanelController;
 
@@ -25,8 +24,7 @@ public abstract class DataTransmissionController : MonoBehaviour
     protected abstract void ControlObjectActivation();
 
     private void Start()
-    {
-        requestTC = new WWWRequestTC();
+    {        
         manager = FindAnyObjectByType<UI_Manager>();
         userData = FindAnyObjectByType<UserData>();
         EventHandler();
@@ -98,8 +96,7 @@ public abstract class DataTransmissionController : MonoBehaviour
         //if (socketConnectionChecker != null)
 
         Debug.Log("Get response");
-        WWWRequestTC w = new WWWRequestTC();
-        await w.Post(url, form, new HeaderDataClass[0], async (Data, isSuccess) =>
+        await WWWRequestTC.Post(url, form, new HeaderDataClass[0], async (Data, isSuccess) =>
         {
             Debug.Log("Response Data: " + Data);
             if (isSuccess)
@@ -153,8 +150,7 @@ public abstract class DataTransmissionController : MonoBehaviour
         updateForm.AddField("tab_id", Tab_ID.GetID());
 
         Debug.Log("<color=red>Use API for Update User</color>");
-        WWWRequestTC w = new WWWRequestTC();
-        await w.Post(updateUrl, updateForm, new HeaderDataClass[0], (UpdateData, isSuccess) =>
+        await WWWRequestTC.Post(updateUrl, updateForm, new HeaderDataClass[0], (UpdateData, isSuccess) =>
         {
             if (isSuccess)
             {

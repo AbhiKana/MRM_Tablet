@@ -41,7 +41,7 @@ public class ThreadedImageDownloader : MonoBehaviour
                         Texture2D texture = new Texture2D(2, 2);
                         if (texture.LoadImage(imageData))
                         {
-                            TextureScale.Bilinear(texture, 200, 200);
+                            TextureScale.Bilinear(texture, 100, 100);
                             targetImage = texture;
                             success = true;
                         }
