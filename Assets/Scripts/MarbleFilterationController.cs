@@ -75,21 +75,17 @@ public class MarbleFilterationController : MonoBehaviour
     public void SearchMarbleByName(TMPro.TMP_InputField tMP_Input)
     {
         string name = tMP_Input.text;
-        Debug.Log(name);
         if (string.IsNullOrWhiteSpace(name))
         {
             SetParenting(MarbleFilterType.Category, 0);
-            Debug.Log("null");
             return;
         }
         marbleLoader.listOfMarblesInventory.listOfAllMarbles.ForEach(m => {m.gameObject.SetActive(false); });
         var myKeys = FuzzyMatcher.SearchKeysByValue(marbleLoader.marbleKeyValue, name, maxTyposPerWord: 2);
         if (myKeys == null || myKeys.Count <= 0) return;
         foreach (var key in myKeys)
-        {
-            Debug.Log(key);
-            var child = marbleLoader.listOfMarblesInventory.listOfAllMarbles.FirstOrDefault(x => x.tileID == key);
-            Debug.Log(child.name);
+        {          
+            var child = marbleLoader.listOfMarblesInventory.listOfAllMarbles.FirstOrDefault(x => x.tileID == key);           
             SetActiveStatus(MarbleFilterType.Tile, key, child);
         }
     }

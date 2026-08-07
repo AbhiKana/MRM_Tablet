@@ -24,7 +24,7 @@ public abstract class DataTransmissionController : MonoBehaviour
     protected abstract void ControlObjectActivation();
 
     private void Start()
-    {        
+    {
         manager = FindAnyObjectByType<UI_Manager>();
         userData = FindAnyObjectByType<UserData>();
         EventHandler();
@@ -96,35 +96,34 @@ public abstract class DataTransmissionController : MonoBehaviour
         //if (socketConnectionChecker != null)
 
         Debug.Log("Get response");
-        await WWWRequestTC.Post(url, form, new HeaderDataClass[0], async (Data, isSuccess) =>
+        var (Data, isSuccess) = await WWWRequestTC.Post(url, form, new HeaderDataClass[0]);
+        Debug.Log("Response Data: " + Data);
+        if (isSuccess)
         {
-            Debug.Log("Response Data: " + Data);
-            if (isSuccess)
+            userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
+            MessageFormat messageFormat = new MessageFormat
             {
-                userData.storeUserData = JsonUtility.FromJson<StoreUserData>(Data);
-                MessageFormat messageFormat = new MessageFormat
-                {
-                    MessageKey = "user_id",
-                    MessageValue = userData.storeUserData.user_id
-                };
+                MessageKey = "user_id",
+                MessageValue = userData.storeUserData.user_id
+            };
 
-                if (userData.storeUserData.already_register)
-                {
-                    Debug.Log("<color=red>Update User</color>");
-                    await UpdateUser(messageFormat);
-                }
-                else
-                {
-                    Debug.Log("<color=red>Update User</color>");
-                    data = JsonUtility.ToJson(messageFormat);
-                    OnDataSave?.Invoke();
-                }
+            if (userData.storeUserData.already_register)
+            {
+                Debug.Log("<color=red>Update User</color>");
+                await UpdateUser(messageFormat);
             }
             else
             {
-                Debug.Log("<color=red>Not success/color>");
+                Debug.Log("<color=red>Update User</color>");
+                data = JsonUtility.ToJson(messageFormat);
+                OnDataSave?.Invoke();
             }
-        });
+        }
+        else
+        {
+            Debug.Log("<color=red>Not success/color>");
+        }
+
         // }
         //else
         // {
@@ -150,19 +149,18 @@ public abstract class DataTransmissionController : MonoBehaviour
         updateForm.AddField("tab_id", Tab_ID.GetID());
 
         Debug.Log("<color=red>Use API for Update User</color>");
-        await WWWRequestTC.Post(updateUrl, updateForm, new HeaderDataClass[0], (UpdateData, isSuccess) =>
+        var (UpdateData, isSuccess) = await WWWRequestTC.Post(updateUrl, updateForm, new HeaderDataClass[0]);
+        if (isSuccess)
         {
-            if (isSuccess)
-            {
-                Debug.Log("User updated with marble ID");
-                data = JsonUtility.ToJson(m);
-                //OnDataSave?.Invoke();
-            }
-            else
-            {
-                Debug.Log("<color=red>Update User false</color>");
-            }
-        });
+            Debug.Log("User updated with marble ID");
+            data = JsonUtility.ToJson(m);
+            //OnDataSave?.Invoke();
+        }
+        else
+        {
+            Debug.Log("<color=red>Update User false</color>");
+        }
+
     }
 
     public string GetSelectedMarble_ID()

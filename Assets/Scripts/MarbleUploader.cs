@@ -12,7 +12,7 @@ public class MarbleUploader : DataTransmissionController
     protected override void ControlObjectActivation()
     {
         Debug.Log("<color=green>OnDataSave Invoke</color>");
-        if(thanksForSharingObj != null)
+        if (thanksForSharingObj != null)
             thanksForSharingObj.SetActive(true);
         manager.AddPageHistory(thanksForSharingObj);
         emailValidation2.gameObject.SetActive(false);
@@ -28,7 +28,7 @@ public class MarbleUploader : DataTransmissionController
     protected override async UniTask SaveUserData(EmailValidation email)
     {
         await base.SaveUserData(email);
-        Invoke(nameof(Pdf_apiCall),1f);
+        Invoke(nameof(Pdf_apiCall), 1f);
     }
 
     private void Pdf_apiCall()
@@ -51,10 +51,8 @@ public class MarbleUploader : DataTransmissionController
         WWWForm form = new WWWForm();
         form.AddField(user_id_object.nameVal, user_id);
 
-        await WWWRequestTC.Post(pdfUrl, form, new HeaderDataClass[0], (formData, isSuccess) =>
-        {
-            if (isSuccess)
-                Debug.Log("PDF Generated");
-        });
+        var (formData, isSuccess) = await WWWRequestTC.Post(pdfUrl, form, new HeaderDataClass[0]);
+        if (isSuccess)
+            Debug.Log("PDF Generated");
     }
 }

@@ -1,8 +1,11 @@
 using AirFishLab.ScrollingList;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
+using Unity.Collections;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -32,7 +35,7 @@ public class MarbleLoader : MonoBehaviour
 
     bool IsCategorySpawn = false;
 
-    public void GetAllAvailableMarbles()
+    public async UniTaskVoid GetAllAvailableMarbles()
     {
         foreach (var listbox in circularScrollingList._listBoxes)
         {
@@ -43,7 +46,7 @@ public class MarbleLoader : MonoBehaviour
             }
         }
         SpawnCategoryList();
-        SetMarbleDetails(listOfAllMarbles);
+        await SetMarbleDetails(listOfAllMarbles);
         getAllMarbles.OnDataLoaded?.Invoke();
     }
 
@@ -72,18 +75,18 @@ public class MarbleLoader : MonoBehaviour
         }
     }
 
-    public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
+    public async UniTask SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
     {
-        if (!IsAllImageDownloaded)
+        var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
+        int chunk = 8;
+        for (int i = 0; i < showMarbleDetails.Count; i += chunk)
         {
-            var mDetails = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
-            int chunk = 8;
-            for (int i = 0; i < showMarbleDetails.Count; i += chunk)
-            {
-                int end = Math.Min(i + chunk, showMarbleDetails.Count);
-                for (int j = i; j < end; j++)
-                    SingleShowMarbleWithIndex(showMarbleDetails, mDetails, j);
-            }
+            int end = Math.Min(i + chunk, showMarbleDetails.Count);
+            for (int j = i; j < end; j++)
+                SingleShowMarbleWithIndex(showMarbleDetails, mDetails, j);
+
+            // Yield to the next frame. This stops the hang.
+            await UniTask.Yield();
         }
     }
 
@@ -95,6 +98,27 @@ public class MarbleLoader : MonoBehaviour
         showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
         showMarbleDetails[i].SetData();
         listOfMarblesInventory.GridPrefabInstantiate(showMarbleDetails[i]);
+
+        var world = World.DefaultGameObjectInjectionWorld;
+        if (world != null && world.IsCreated)
+        {
+            var em = world.EntityManager;
+            var query = em.CreateEntityQuery(typeof(MarbleStateData));
+            var states = query.ToComponentDataArray<MarbleStateData>(Allocator.TempJob);
+
+            for (int e = 0; e < states.Length; e++)
+            {
+                if (states[e].MarbleId == mDetails[i].id)
+                {
+                    Entity entity = query.ToEntityArray(Allocator.TempJob)[e];
+                    em.AddComponentObject(entity, new MarbleGameObjectLink { View = showMarbleDetails[i] });
+                    break;
+                }
+            }
+
+            states.Dispose();
+            query.Dispose();
+        }
     }
 
     public void OnDataLoadedSucessfully()
@@ -114,6 +138,6 @@ public class MarbleLoader : MonoBehaviour
             await Task.Yield();
         }
         GetAllAvailableMarbles();
-    }   
+    }
 }
 

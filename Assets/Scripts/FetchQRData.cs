@@ -49,31 +49,29 @@ public class FetchQRData : MonoBehaviour
 
         WWWForm form = new WWWForm();
         form.AddField("id", data);
-        await WWWRequestTC.Post(url, form, new HeaderDataClass[0], async (Data, isSucess) =>
+        var (Data, isSucess) = await WWWRequestTC.Post(url, form, new HeaderDataClass[0]);
+        if (isSucess)
         {
-            if (isSucess)
-            {
-                fetchedData = Data;
-                Debug.Log("QR scanned data: " + fetchedData);
-                _marbleQrDatascritable._marbleApiData = JsonUtility.FromJson<MarbleApiData>(Data);
+            fetchedData = Data;
+            Debug.Log("QR scanned data: " + fetchedData);
+            _marbleQrDatascritable._marbleApiData = JsonUtility.FromJson<MarbleApiData>(Data);
 
-                if (_marbleQrDatascritable._marbleApiData.success)
-                {
-                    LoadMarbleTextData();
-                    await LoadMarbleImageData();
-                }
-                else
-                {
-                    OnDataLoadError?.Invoke();
-                    Debug.Log("Couldn't fetch data");
-                }
+            if (_marbleQrDatascritable._marbleApiData.success)
+            {
+                LoadMarbleTextData();
+                await LoadMarbleImageData();
             }
             else
             {
                 OnDataLoadError?.Invoke();
                 Debug.Log("Couldn't fetch data");
             }
-        });
+        }
+        else
+        {
+            OnDataLoadError?.Invoke();
+            Debug.Log("Couldn't fetch data");
+        }
     }
 
     public void LoadedData(string data)
@@ -164,7 +162,7 @@ public class FetchQRData : MonoBehaviour
     }
 
     async UniTask GetImageTop(string url, RawImage image)
-    {        
+    {
         CancellationTokenSource linkedCts = CancellationTokenSource.CreateLinkedTokenSource(
         qrTextureToken.Token,
         this.GetCancellationTokenOnDestroy());

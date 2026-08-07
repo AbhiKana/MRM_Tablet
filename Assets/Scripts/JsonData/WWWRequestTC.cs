@@ -122,25 +122,34 @@ public static class WWWRequestTC
         }
     }
 
-    public static async UniTask Post<T>(string _url, T _form, HeaderDataClass[] headers, Action<string, bool> _Callback, CancellationToken token = default)
+    public static async UniTask<(string responseJson, bool isSuccess)> Post<T>(string _url, T _form, HeaderDataClass[] headers, CancellationToken token = default)
     {
-        if (token.IsCancellationRequested)
-        {
-            _Callback.Invoke("request cancel", false);
-            return;
-        }
+        if (token.IsCancellationRequested)        
+            return ("request cancel", false);
 
         try
         {
-            await LogIn(_url, _form, headers, (responseJson, isSuccess) =>
+            using (UnityWebRequest www = CreateRequest(_url, _form))
             {
-                _Callback.Invoke(responseJson, isSuccess);
-            }, token);
+                for (int i = 0; i < headers?.Length; i++)
+                    www.SetRequestHeader(headers[i].headerName, headers[i].headerstring);
+
+                await www.SendWebRequest().ToUniTask(cancellationToken: token);
+
+                if (www.result != UnityWebRequest.Result.Success)
+                    return (www.error, false);
+
+                return (www.downloadHandler.text, true);
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            return ("operation cancel", false);
         }
         catch (Exception ex)
         {
             Debug.LogError($"Operation failed but handled: {ex.Message}");
-            _Callback?.Invoke("operation cancel", false);
+            return ("operation cancel", false);
         }
     }
 
@@ -182,24 +191,7 @@ public static class WWWRequestTC
             //www.SetRequestHeader("Accept", "application/json");
             return www;
         }
-    }
-
-    /*public void GetTexture(string _url, Action<string, Texture2D, bool> _Callback)
-    {
-        //if (GetTextureCoroutine != null)
-        //    tempWebRequest.StopCoroutine(GetTextureCoroutine);
-
-        //GetTextureCoroutine = tempWebRequest.StartCoroutine(LogIn(_url, (responseJson, texture, isSuccess) =>
-        //{
-        //    _Callback.Invoke(responseJson, texture, isSuccess);
-        //}));
-
-        GetTextureCoroutine = tempWebRequest.StartCoroutine(LogIn(_url, (responseJson, texture, isSuccess) =>
-        {
-            _Callback.Invoke(responseJson, texture, isSuccess);
-        }));
-    }
-    */
+    }   
 
     public static async UniTask GetTexture(string url, Action<string, Texture2D, bool> cb, CancellationToken token = default, bool isUrgent = false)
     {

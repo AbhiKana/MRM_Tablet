@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
-using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -11,8 +12,15 @@ public class GetAllMarbles : MonoBehaviour
     public UnityEvent OnAllMarbleDataLoaded;
     public UnityEvent OnDataLoaded;
 
+    private EntityManager entityManager;
+
     private async void Start()
     {
+        var world = World.DefaultGameObjectInjectionWorld;
+        if (world == null || !world.IsCreated) return;
+
+        entityManager = world.EntityManager;
+
         await GetCategoryList();
         await GetAllMarbleList();
     }
@@ -21,58 +29,46 @@ public class GetAllMarbles : MonoBehaviour
     {
         string url = Url.apiUrl + Url.marbleApi;
         Debug.Log(url);
-        var (json,success) =  await WWWRequestTC.Get(url, new HeaderDataClass[0]);
-        if(success) categories = JsonUtility.FromJson<Catergories>(json);
+        var (json, success) = await WWWRequestTC.Get(url, new HeaderDataClass[0]);
+        if (success) categories = JsonUtility.FromJson<Catergories>(json);
     }
 
     public async UniTask GetAllMarbleList()
     {
         WWWForm form = new WWWForm();
         string url = Url.apiUrl + Url.marbleDetails;
-        await WWWRequestTC.Post(url, form, new HeaderDataClass[0], (Data, isSucess) =>
+        var (Data, isSucess) = await WWWRequestTC.Post(url, form, new HeaderDataClass[0]);
+        if (isSucess)
         {
-            if (isSucess)
-            {
-                allMarbles.getMarblesList = JsonUtility.FromJson<GetMarblesList>(Data);
-                OnAllMarbleDataLoaded?.Invoke();
-            }
-        });
-    }
-
-    /*public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
-    {
-        if (!IsAllImageDownloaded)
-        {
-            var mDetails = allMarbles.marbleDetails;
-            for (int i = 0; i < showMarbleDetails.Count; i++)
-            {
-                GetImage(mDetails[i].img, showMarbleDetails[i].image);
-                showMarbleDetails[i].tileName = mDetails[i].marble_name;
-                showMarbleDetails[i].tileID = mDetails[i].id;
-            }
+            allMarbles.getMarblesList = JsonUtility.FromJson<GetMarblesList>(Data);
+            CreateMarbleEntities();
+            OnAllMarbleDataLoaded?.Invoke();
         }
     }
-    int totalImageCount = 0;
-    int downlaodedImageCount = 0;
-    void GetImage(string url, RawImage image)
-    {
-        requestTC.GetTexture(url, (str, rawTex, isSucess) =>
-        {
-            if (isSucess)
-            {
-                image.texture = rawTex;
-                downlaodedImageCount++;
 
-                if (totalImageCount == downlaodedImageCount)
-                {
-                    IsAllImageDownloaded = true;
-                    OnDataLoaded?.Invoke();
-                    Debug.Log("All Image downloaded");
-                   downlaodedImageCount = 0;
-                }
-            }
-            else
-                Debug.Log("Couldn't fetch image data");
-        });
-    }*/
+    private void CreateMarbleEntities()
+    {
+        // Only put unmanaged (struct) components in the archetype
+        var archetype = entityManager.CreateArchetype(typeof(MarbleStateData));
+
+        foreach (var detail in allMarbles.getMarblesList.marbleDetails)
+        {
+            // 1. Create the entity
+            Entity entity = entityManager.CreateEntity(archetype);
+
+            // 2. Set the unmanaged data (SetComponent, not SetComponentData)
+            entityManager.SetComponentData(entity, new MarbleStateData
+            {
+                MarbleId = detail.id,
+                CategoryId = detail.category_id,
+                IsWishlisted = false,
+                IsImageDownloaded = false
+            });
+
+            // 3. Add the managed component (MarbleGameObjectLink) dynamically.
+            // We leave the View null for now; it gets assigned in MarbleLoader.SingleShowMarbleWithIndex
+            entityManager.AddComponentObject(entity, new MarbleGameObjectLink { View = null });
+        }
+    }
+
 }
