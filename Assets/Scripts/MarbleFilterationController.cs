@@ -48,8 +48,7 @@ public class MarbleFilterationController : MonoBehaviour
     }
 
     private void SetActiveStatus(MarbleFilterType type, int selectedCategory, ShowMarbleDetails child)
-    {
-        Debug.Log(child.name);
+    {        
         if (child != null)
         {
             switch (type)
@@ -64,8 +63,7 @@ public class MarbleFilterationController : MonoBehaviour
                         child.gameObject.SetActive(child.categoryID == selectedCategory);
                     }
                     break;
-                case MarbleFilterType.Tile:
-                    Debug.Log(child.name + child.tileID + (child.tileID == selectedCategory));
+                case MarbleFilterType.Tile:                   
                     child.gameObject.SetActive(child.tileID == selectedCategory);
                     break;
             }
