@@ -92,7 +92,7 @@ public class MarbleLoader : MonoBehaviour
 
     private void SingleShowMarbleWithIndex(List<ShowMarbleDetails> showMarbleDetails, List<MarbleDetail> mDetails, int i)
     {
-        marbleKeyValue[mDetails[i].id] = mDetails[i].marble_name;
+        //marbleKeyValue[mDetails[i].id] = mDetails[i].marble_name;
         showMarbleDetails[i].storeMarbleDetails = storeMarbleDetails;
         showMarbleDetails[i].syncMarbleDetails = syncMarbleDetails;
         showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];

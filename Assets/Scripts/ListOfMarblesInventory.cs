@@ -57,6 +57,7 @@ public class ListOfMarblesInventory : MonoBehaviour
         int chunkSize = 5; // Spawn 5 items per frame to prevent hang
         for (int i = 0; i < mDetails.Count; i++)
         {
+            marbleLoader.marbleKeyValue[mDetails[i].id] = mDetails[i].marble_name;
             GridPrefabInstantiate(mDetails[i]);
 
             if (i % chunkSize == 0 && i > 0)
