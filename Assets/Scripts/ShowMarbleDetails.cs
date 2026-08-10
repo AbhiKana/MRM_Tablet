@@ -155,7 +155,7 @@ public class ShowMarbleDetails : MonoBehaviour
                 TextureScale.Bilinear(rawTex, 100, 100);
                 image.texture = rawTex;
                 texture = rawTex;
-                syncMarbleDetails.SyncMarbleArrayTexture(this, new ShowMarbleDetails[] { syncShowMarbleDetail });
+                //syncMarbleDetails.SyncMarbleArrayTexture(this, new ShowMarbleDetails[] { syncShowMarbleDetail });
             }
             else
                 Debug.Log("Couldn't fetch image data");

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class ListOfMarblesInventory : MonoBehaviour
 {
@@ -10,53 +12,99 @@ public class ListOfMarblesInventory : MonoBehaviour
 
     public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
 
+    // Unity's Official Object Pool
+    private ObjectPool<GameObject> tilePool;
+    private List<GameObject> activeObjects = new List<GameObject>();
+
+    private void Awake()
+    {
+        // Initialize the pool
+        tilePool = new ObjectPool<GameObject>(
+            createFunc: () => Instantiate(tilePrefab),
+            actionOnGet: (obj) => obj.SetActive(true),
+            actionOnRelease: (obj) => obj.SetActive(false),
+            actionOnDestroy: (obj) => Destroy(obj),
+            collectionCheck: false,
+            defaultCapacity: 20,
+            maxSize: 2000
+        );
+    }
+
     private void Start()
     {
-        //getMarbles.OnDataLoaded.AddListener(GetMarble);
+        // Listen to the data loaded event to trigger grid spawning
+        getMarbles.OnDataLoaded.AddListener(GetMarble);
     }
 
     void GetMarble()
     {
-        //Invoke(nameof(GetSelectedMarbleList), 0.5f);
         GetSelectedMarbleList();
     }
 
-    //Used in GetAllMarbles.cs Unity Event OnLoadData
     public void GetSelectedMarbleList()
     {
-        Debug.Log("Instantiate Marbles");
-        var noof_Marbles = marbleLoader.listOfAllMarbles;
-        for (int i = 0; i < noof_Marbles.Count; i++)
-        {
-            GridPrefabInstantiate(noof_Marbles[i]);
-        }
-
-        //SetMarbleDetails(listOfAllMarbles);
+        // Start async spawning to prevent hang
+        SpawnMarblesAsync().Forget();
     }
 
-    public void GridPrefabInstantiate(ShowMarbleDetails noof_Marbles)
+    private async UniTaskVoid SpawnMarblesAsync()
     {
-        GameObject marbleObj = Instantiate(tilePrefab).gameObject;
-        marbleObj.transform.SetParent(parentObjectToSpawn);
+        Debug.Log("Instantiate Marbles via Object Pool");
+
+        // Read directly from the JSON data, NOT from the Marquee boxes
+        var mDetails = getMarbles.allMarbles.getMarblesList.marbleDetails;
+
+        int chunkSize = 5; // Spawn 5 items per frame to prevent hang
+        for (int i = 0; i < mDetails.Count; i++)
+        {
+            GridPrefabInstantiate(mDetails[i]);
+
+            if (i % chunkSize == 0 && i > 0)
+            {
+                await UniTask.Yield();
+            }
+        }
+    }
+
+    // Now accepts MarbleDetail (JSON data) instead of ShowMarbleDetails
+    public void GridPrefabInstantiate(MarbleDetail marbleDetail)
+    {
+        GameObject marbleObj = tilePool.Get();
+        marbleObj.transform.SetParent(parentObjectToSpawn, false);
         marbleObj.transform.localScale = Vector3.one;
 
         ShowMarbleDetails marble = marbleObj.GetComponent<ShowMarbleDetails>();
-        noof_Marbles.syncShowMarbleDetail = marble;
-        marbleObj.name = marble.marbleName = noof_Marbles.marbleName;
-        marble.image.texture = noof_Marbles.image.texture;
-        marble.texture = noof_Marbles.image.texture;
-        //Debug.Log("<color=yellow> Assign Image </color>");
-        marble.price = noof_Marbles.price;
-        marble.tileID = noof_Marbles.tileID;
-        marble.categoryID = noof_Marbles.categoryID;
-        marble.IsWishlisted = noof_Marbles.IsWishlisted;
-        marble.marbleDetailsWithCategoryID = noof_Marbles.marbleDetailsWithCategoryID;
+
+        marbleObj.name = marble.marbleName = marbleDetail.marble_name;
+        marble.price = marbleDetail.price;
+        marble.tileID = marbleDetail.id;
+        marble.categoryID = marbleDetail.category_id;
+        marble.marbleDetailsWithCategoryID = marbleDetail;
+
+        // IMPORTANT CHANGE: Call SetData() so the Grid tile downloads its own image.
+        // Previously, the Marquee was downloading images and syncing them, 
+        // but since the Marquee is now virtualized to 7 boxes, the Grid must fetch its own.
+        marble.SetData();
         marble.ShowData();
+
         listOfAllMarbles.Add(marble);
+        activeObjects.Add(marbleObj);
+    }
+
+    // Call this if you ever need to clear the grid (e.g., changing categories)
+    public void ClearGrid()
+    {
+        foreach (var obj in activeObjects)
+        {
+            tilePool.Release(obj);
+        }
+        activeObjects.Clear();
+        listOfAllMarbles.Clear();
     }
 
     public void SetMarbleDetails(List<ShowMarbleDetails> showMarbleDetails)
     {
+        // This remains unchanged
         foreach (Transform transform in parentObjectToSpawn.transform)
         {
             var showDetails = transform.GetComponent<ShowMarbleDetails>();
@@ -66,13 +114,5 @@ public class ListOfMarblesInventory : MonoBehaviour
                 showDetails.gameObject.name = showDetails.marbleName;
             }
         }
-
-        var mDetails = getMarbles.allMarbles.getMarblesList.marbleDetails;
-        for (int i = 0; i < showMarbleDetails.Count; i++)
-        {
-            showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
-            //showMarbleDetails[i].MarbleTextDetails();
-        }
-        
     }
 }

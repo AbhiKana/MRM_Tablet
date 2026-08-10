@@ -97,7 +97,7 @@ public class MarbleLoader : MonoBehaviour
         showMarbleDetails[i].syncMarbleDetails = syncMarbleDetails;
         showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
         showMarbleDetails[i].SetData();
-        listOfMarblesInventory.GridPrefabInstantiate(showMarbleDetails[i]);
+        //listOfMarblesInventory.GridPrefabInstantiate(showMarbleDetails[i]);
 
         var world = World.DefaultGameObjectInjectionWorld;
         if (world != null && world.IsCreated)
