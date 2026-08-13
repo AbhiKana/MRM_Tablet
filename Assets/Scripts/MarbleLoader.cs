@@ -28,6 +28,7 @@ public class MarbleLoader : MonoBehaviour
 
     bool IsAllImageDownloaded;
 
+    public VirtualMarbleGrid virtualGrid;
     public List<ShowMarbleDetails> listOfAllMarbles = new List<ShowMarbleDetails>();
     public static UnityEvent OnMarbleLoaded;
 
@@ -35,7 +36,7 @@ public class MarbleLoader : MonoBehaviour
 
     bool IsCategorySpawn = false;
 
-    public async UniTaskVoid GetAllAvailableMarbles()
+    public void GetAllAvailableMarbles()
     {
         foreach (var listbox in circularScrollingList._listBoxes)
         {
@@ -45,8 +46,13 @@ public class MarbleLoader : MonoBehaviour
                 listOfAllMarbles.Add(showDetails);
             }
         }
+
         SpawnCategoryList();
-        await SetMarbleDetails(listOfAllMarbles);
+
+        // Pass the JSON data directly to the Virtual Grid instead of spawning 1000 objects
+        var allMarbleData = getAllMarbles.allMarbles.getMarblesList.marbleDetails;     
+        //virtualGrid.InitializeGrid(allMarbleData);
+
         getAllMarbles.OnDataLoaded?.Invoke();
     }
 

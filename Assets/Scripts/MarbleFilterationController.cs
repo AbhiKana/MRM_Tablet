@@ -1,4 +1,5 @@
 using AirFishLab.ScrollingList;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -13,7 +14,8 @@ public class MarbleFilterationController : MonoBehaviour
 {
     [SerializeField] private GetAllMarbles getAllMarbles;
     [SerializeField] private MarbleLoader marbleLoader;
-    [SerializeField] Transform inventoryContainer; // Assign the parent of all marble items
+    [SerializeField] private VirtualMarbleGrid virtualGrid;
+
     [SerializeField] bool isCircularList = false;
 
     public UnityEvent<int> OnCategorySelection = new UnityEvent<int>();
@@ -21,70 +23,84 @@ public class MarbleFilterationController : MonoBehaviour
 
     public void FilterByCategory(int selectedCategory)
     {
-        CircularScrollingList csList = inventoryContainer.GetComponent<CircularScrollingList>();
+        CircularScrollingList csList = FindObjectOfType<CircularScrollingList>();
+        if (csList != null && getAllMarbles != null && getAllMarbles.allMarbles.getMarblesList != null)
+        {
+            if (csList.ListBoxes.Length < getAllMarbles.allMarbles.getMarblesList.marbleDetails.Count)
+            {
+                OnCategoryAlreadySelected?.Invoke();
+            }
+        }
 
-        if (csList != null && csList.ListBoxes.Length < getAllMarbles.allMarbles.getMarblesList.marbleDetails.Count)
-        {
-            OnCategoryAlreadySelected?.Invoke();
-            Debug.Log("Category Already Selected");
-            SetParenting(MarbleFilterType.Category, selectedCategory);
-        }
-        else
-        {
-            Debug.Log("Category Selection First time");
-            SetParenting(MarbleFilterType.Category, selectedCategory);
-        }
-    }
-
-    private void SetParenting(MarbleFilterType type, int selectedCategory)
-    {
-        foreach (var child in marbleLoader.listOfMarblesInventory.listOfAllMarbles)
-        {
-            SetActiveStatus(type, selectedCategory, child);
-        }
+        ApplyFilter(MarbleFilterType.Category, selectedCategory);
 
         if (isCircularList)
             OnCategorySelection.Invoke(selectedCategory);
     }
 
-    private void SetActiveStatus(MarbleFilterType type, int selectedCategory, ShowMarbleDetails child)
-    {        
-        if (child != null)
+    private void ApplyFilter(MarbleFilterType type, int selectedValue)
+    {
+        // 1. Safety check: Make sure the data and the grid actually exist before filtering
+        if (getAllMarbles == null || getAllMarbles.allMarbles == null || getAllMarbles.allMarbles.getMarblesList == null || virtualGrid == null)
         {
-            switch (type)
+            Debug.LogWarning("Filter called before data or grid was ready!");
+            return;
+        }
+
+        var originalData = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
+        List<MarbleDetail> filteredData = new List<MarbleDetail>();
+
+        if (type == MarbleFilterType.Category)
+        {
+            if (selectedValue == 0)
             {
-                case MarbleFilterType.Category:
-                    if (selectedCategory == 0)
-                    {
-                        child.gameObject.SetActive(true);
-                    }
-                    else
-                    {
-                        child.gameObject.SetActive(child.categoryID == selectedCategory);
-                    }
-                    break;
-                case MarbleFilterType.Tile:                   
-                    child.gameObject.SetActive(child.tileID == selectedCategory);
-                    break;
+                filteredData = new List<MarbleDetail>(originalData);
+            }
+            else
+            {
+                foreach (var marble in originalData)
+                {
+                    if (marble.category_id == selectedValue)
+                        filteredData.Add(marble);
+                }
             }
         }
+        else if (type == MarbleFilterType.Tile)
+        {
+            foreach (var marble in originalData)
+            {
+                if (marble.id == selectedValue)
+                    filteredData.Add(marble);
+            }
+        }
+
+        virtualGrid.InitializeGrid(filteredData);
     }
 
     public void SearchMarbleByName(TMPro.TMP_InputField tMP_Input)
     {
         string name = tMP_Input.text;
+
         if (string.IsNullOrWhiteSpace(name))
         {
-            SetParenting(MarbleFilterType.Category, 0);
+            ApplyFilter(MarbleFilterType.Category, 0);
             return;
         }
-        marbleLoader.listOfMarblesInventory.listOfAllMarbles.ForEach(m => {m.gameObject.SetActive(false); });
+
+        var originalData = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
+        List<MarbleDetail> filteredData = new List<MarbleDetail>();
+
         var myKeys = FuzzyMatcher.SearchKeysByValue(marbleLoader.marbleKeyValue, name, maxTyposPerWord: 2);
-        if (myKeys == null || myKeys.Count <= 0) return;
-        foreach (var key in myKeys)
-        {          
-            var child = marbleLoader.listOfMarblesInventory.listOfAllMarbles.FirstOrDefault(x => x.tileID == key);           
-            SetActiveStatus(MarbleFilterType.Tile, key, child);
+
+        if (myKeys != null && myKeys.Count > 0)
+        {
+            foreach (var marble in originalData)
+            {
+                if (myKeys.Contains(marble.id))
+                    filteredData.Add(marble);
+            }
         }
+
+        virtualGrid.InitializeGrid(filteredData);
     }
 }

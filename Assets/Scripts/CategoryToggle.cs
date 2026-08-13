@@ -10,8 +10,7 @@ public class CategoryToggle : MonoBehaviour
     private Toggle toggle;
 
     void Awake()
-    {
-       
+    {       
         toggle = GetComponent<Toggle>();
         toggle.onValueChanged.AddListener(OnToggleChanged);
     }  
@@ -21,7 +20,7 @@ public class CategoryToggle : MonoBehaviour
         if (isOn)
         {
             filterManager.FilterByCategory(categoryId);
-            circularMarbleFilterization.FilterByCategory(categoryId);
+            //circularMarbleFilterization.FilterByCategory(categoryId);
         }
     }
 }

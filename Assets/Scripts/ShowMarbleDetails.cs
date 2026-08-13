@@ -78,6 +78,25 @@ public class ShowMarbleDetails : MonoBehaviour
         image.texture = t;
     }
 
+    // Add this to ShowMarbleDetails.cs
+    public void UpdateData(MarbleDetail newDetails)
+    {
+        // 1. Cancel any ongoing image download from the previous marble this tile displayed
+        textureToken?.Cancel();
+        textureToken = new System.Threading.CancellationTokenSource();
+
+        // 2. Update the data
+        marbleDetailsWithCategoryID = newDetails;
+
+        // 3. Update the UI text instantly
+        MarbleTextDetails();
+        ShowData();
+
+        // 4. Reset the image to blank and start downloading the new image
+        //image.texture = null;
+        GetImage(newDetails.main_img, image).Forget();
+    }
+
     public void SetData()
     {
         MarbleTextDetails();
