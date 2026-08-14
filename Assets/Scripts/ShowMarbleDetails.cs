@@ -18,7 +18,8 @@ public class ShowMarbleDetails : MonoBehaviour
     FetchQRData fetchQRData;
     public RawImage image;
 
-    public Texture texture;
+    public Texture originalTexture;
+    public Texture scaledTexture;
     public string marbleName;
     public string price;
 
@@ -55,7 +56,7 @@ public class ShowMarbleDetails : MonoBehaviour
             var marble = fetchQRData._marbleQrDatascritable._marbleApiData.marbleDetails;
             if (marble.id == marbleDetailsWithCategoryID.id)
             {
-                texture = fetchQRData.TopMarbleImage.texture;
+                originalTexture = fetchQRData.TopMarbleImage.texture;
                 //m_Textures = fetchQRData.boxImageTexture;
             }
         });
@@ -83,7 +84,7 @@ public class ShowMarbleDetails : MonoBehaviour
     {
         // 1. Cancel any ongoing image download from the previous marble this tile displayed
         textureToken?.Cancel();
-        textureToken = new System.Threading.CancellationTokenSource();
+        textureToken = new CancellationTokenSource();
 
         // 2. Update the data
         marbleDetailsWithCategoryID = newDetails;
@@ -128,7 +129,7 @@ public class ShowMarbleDetails : MonoBehaviour
             //Debug.Log(marbleDetail.marble_name);
             IsWishlisted = marbleDetail.isSelected;
             //m_Textures = marbleDetail.textures;
-            texture = marbleDetail.mainTexture;
+            originalTexture = marbleDetail.mainTexture;
         }
 
         //SpecificMarbleDetails marbleDetail = null;
@@ -168,12 +169,19 @@ public class ShowMarbleDetails : MonoBehaviour
             if (this == null || image == null) return;
 
             if (isSucess)
-            {
-                CheckAllImageLoaded();
+            {                
                 CheckInWishList();
-                TextureScale.Bilinear(rawTex, 100, 100);
-                image.texture = rawTex;
-                texture = rawTex;
+                originalTexture = rawTex;
+                Texture2D srcTex = originalTexture as Texture2D;
+                Texture2D tempTex = new Texture2D(originalTexture.width, originalTexture.height, TextureFormat.RGBA32, false);
+                if (srcTex != null)
+                {
+                    tempTex.SetPixels(srcTex.GetPixels());
+                    tempTex.Apply();
+                }
+                TextureScale.Bilinear(tempTex, 200, 200);
+                scaledTexture = tempTex;
+                image.texture = scaledTexture;
                 //syncMarbleDetails.SyncMarbleArrayTexture(this, new ShowMarbleDetails[] { syncShowMarbleDetail });
             }
             else
@@ -210,7 +218,7 @@ public class ShowMarbleDetails : MonoBehaviour
         marbleName = specificMarbleDetails.marble_name;
         price = specificMarbleDetails.price;
         categoryID = specificMarbleDetails.category_id;
-        image.texture = texture = specificMarbleDetails.mainTexture;
+        image.texture = originalTexture = specificMarbleDetails.mainTexture;
         //m_Textures = specificMarbleDetails.textures;
         IsWishlisted = specificMarbleDetails.isSelected;
         //Debug.Log("Current Object name: " + gameObject.name + " " + IsWishlisted);
@@ -225,7 +233,7 @@ public class ShowMarbleDetails : MonoBehaviour
             marble_name = marbleName,
             price = price,
             category_id = categoryID,
-            mainTexture = texture,
+            mainTexture = originalTexture,
             //textures = m_Textures,
             isSelected = IsWishlisted
         };

@@ -124,7 +124,7 @@ public static class WWWRequestTC
 
     public static async UniTask<(string responseJson, bool isSuccess)> Post<T>(string _url, T _form, HeaderDataClass[] headers, CancellationToken token = default)
     {
-        if (token.IsCancellationRequested)        
+        if (token.IsCancellationRequested)
             return ("request cancel", false);
 
         try
@@ -191,14 +191,14 @@ public static class WWWRequestTC
             //www.SetRequestHeader("Accept", "application/json");
             return www;
         }
-    }   
+    }
 
     public static async UniTask GetTexture(string url, Action<string, Texture2D, bool> cb, CancellationToken token = default, bool isUrgent = false)
     {
         var result = await GetTextureUniTask(url, token, isUrgent);
         cb?.Invoke(result.message, result.texture, result.success);
     }
-   
+
     public static async UniTask<(string message, Texture2D texture, bool success)> GetTextureUniTask(
     string url, CancellationToken token = default, bool isUrgent = false)
     {
@@ -233,27 +233,25 @@ public static class WWWRequestTC
     {
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
         {
-            token.Register(() =>
-            {
-                if (!www.isDone)
-                {
-                    www.Abort();
-                }
-            });
+            // UniTask automatically aborts the www and throws OperationCanceledException 
+            // if the token is triggered. No manual token.Register is needed!
             UniTask task = www.SendWebRequest().ToUniTask(cancellationToken: token);
+
             try
             {
                 await task;
             }
             catch (OperationCanceledException)
             {
-                //www.Abort();
+                // Cancellation occurred, UniTask already aborted the request.
+                // The 'using' block will safely Dispose() the www object.
                 throw;
             }
 
             if (www.result != UnityWebRequest.Result.Success)
                 return (www.error, null, false);
 
+            // Optional: Yielding to ensure texture is fully readable on main thread
             await UniTask.Yield(PlayerLoopTiming.PostLateUpdate, token);
 
             Texture2D tex = DownloadHandlerTexture.GetContent(www);

@@ -1,10 +1,17 @@
+using Alchemy.Serialization;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Pool;
+using UnityEngine.UI;
 
-public class VirtualMarbleGrid : MonoBehaviour
+[AlchemySerialize]
+public partial class VirtualMarbleGrid : MonoBehaviour
 {
+
+    public int ActiveCount => _activeCells.Count;
+    public int CountInPool => _pool.CountInactive;
+
     [SerializeField] ScrollRect scrollRect;
     [SerializeField] RectTransform viewport;
     [SerializeField] GameObject tilePrefab;
@@ -12,9 +19,11 @@ public class VirtualMarbleGrid : MonoBehaviour
     [SerializeField] Vector2 cellSize = new Vector2(397, 1027);
     [SerializeField] Vector2 spacing = new Vector2(10, 10);
 
-    private List<MarbleDetail> _data = new List<MarbleDetail>();
+    public List<MarbleDetail> _data = new List<MarbleDetail>();
     private ObjectPool<GameObject> _pool;
-    private Dictionary<int, GameObject> _activeCells = new Dictionary<int, GameObject>();
+
+
+    public Dictionary<int, GameObject> _activeCells = new Dictionary<int, GameObject>();
 
     private int _columns;
     private float _prefabHeight;
@@ -23,9 +32,10 @@ public class VirtualMarbleGrid : MonoBehaviour
     private float _contentHeight;
     private float _viewportHeight;
 
+    private int _currentMaxSize = 10;
+
     private void OnEnable()
     {
-        EnsurePoolInitialized();
         scrollRect.onValueChanged.AddListener(OnScroll);
 
         // If data was assigned while this object was disabled, build it now that we are enabled.
@@ -41,20 +51,45 @@ public class VirtualMarbleGrid : MonoBehaviour
         ClearActiveCells();
     }
 
-    private void EnsurePoolInitialized()
+    private void EnsurePoolInitialized(int desiredMaxSize)
     {
-        if (_pool == null)
+        // If the pool exists and the size hasn't changed, do nothing
+        if (_pool != null && _currentMaxSize == desiredMaxSize) return;
+
+        // If the pool exists but the screen rotated/resized, clear the old pool first
+        if (_pool != null)
         {
-            _pool = new ObjectPool<GameObject>(
-                createFunc: () => Instantiate(tilePrefab),
-                actionOnGet: (obj) => obj.SetActive(true),
-                actionOnRelease: (obj) => Destroy(obj),
-                actionOnDestroy: (obj) => Destroy(obj),
-                collectionCheck: false, // Turned off to prevent hard-crashes during filtering, pool logic handles safety now
-                defaultCapacity: 20,
-                maxSize: 50
-            );
+            ClearActiveCells();
+            _pool.Clear(); // Empties the pool
         }
+
+        _currentMaxSize = desiredMaxSize;
+
+        _pool = new ObjectPool<GameObject>(
+            createFunc: () =>
+            {
+                Debug.Log($"[Pool] CREATE (total created so far)");
+                return Instantiate(tilePrefab);
+            },
+            actionOnGet: (obj) =>
+            {
+                obj.SetActive(true);
+                Debug.Log($"[Pool] GET / ADD active. Active count after = {_activeCells.Count + 1}");
+            },
+            actionOnRelease: (obj) =>
+            {
+                obj.SetActive(false);
+                Debug.Log($"[Pool] RELEASE. Active count before = {_activeCells.Count}");
+            },
+            actionOnDestroy: (obj) =>
+            {
+                Debug.Log("[Pool] DESTROY (overflowed maxSize)");
+                Destroy(obj);
+            },
+            collectionCheck: true,
+            defaultCapacity: desiredMaxSize, // Pre-allocate memory for this many
+            maxSize: desiredMaxSize
+        );
     }
 
     // 1. Called by MarbleFilterationController
@@ -73,8 +108,7 @@ public class VirtualMarbleGrid : MonoBehaviour
     // 2. Does the actual clearing and layout calculation
     private void RebuildGrid()
     {
-        EnsurePoolInitialized();
-        ClearActiveCells();
+        if (_pool != null) ClearActiveCells();
 
         // Force the Content RectTransform to Top-Center
         scrollRect.content.anchorMin = new Vector2(0.5f, 1f);
@@ -97,6 +131,17 @@ public class VirtualMarbleGrid : MonoBehaviour
         // Fallback if width is still 0 for some reason
         if (viewportWidth <= 0) viewportWidth = 1000;
 
+        _columns = Mathf.Max(1, Mathf.FloorToInt(viewportWidth / _prefabWidth));
+
+        int visibleRows = Mathf.CeilToInt(_viewportHeight / _prefabHeight) + 1; // +1 for partial rows
+        int bufferSize = _columns * 3; // 2 extra rows for smooth fast scrolling
+        int calculatedMaxSize = (visibleRows * _columns) + bufferSize;
+
+        // 2. Initialize the pool with the correct size!
+        EnsurePoolInitialized(calculatedMaxSize);
+        // ---------------------------------
+
+
         // Handle empty data
         if (_data.Count == 0)
         {
@@ -105,9 +150,8 @@ public class VirtualMarbleGrid : MonoBehaviour
             return;
         }
 
-        _columns = Mathf.Max(1, Mathf.FloorToInt(viewportWidth / _prefabWidth));
-        int rows = Mathf.CeilToInt((float)_data.Count / _columns);
 
+        int rows = Mathf.CeilToInt((float)_data.Count / _columns);
         _contentHeight = (rows * _prefabHeight) + spacing.y;
         scrollRect.content.sizeDelta = new Vector2(viewportWidth, _contentHeight);
 
@@ -138,8 +182,7 @@ public class VirtualMarbleGrid : MonoBehaviour
     private void UpdateVisibleCells()
     {
         if (_data == null || _data.Count == 0) return;
-
-        EnsurePoolInitialized();
+        if (_pool == null) return;
 
         float maxScroll = Mathf.Max(0, _contentHeight - _viewportHeight);
         float yOffset = (1f - scrollRect.normalizedPosition.y) * maxScroll;
@@ -160,6 +203,7 @@ public class VirtualMarbleGrid : MonoBehaviour
             int row = kvp.Key / _columns;
             if (row < firstVisibleRow || row > lastVisibleRow)
             {
+                Debug.Log($"RELEASE index={kvp.Key} row={row}");
                 _pool.Release(kvp.Value);
                 keysToRemove.Add(kvp.Key);
             }
@@ -177,6 +221,7 @@ public class VirtualMarbleGrid : MonoBehaviour
             GameObject cell;
             if (!_activeCells.ContainsKey(i))
             {
+                Debug.Log($"ADD index={i} row={i / _columns} col={i % _columns}");
                 cell = _pool.Get();
                 cell.transform.SetParent(scrollRect.content, false);
                 cell.transform.localScale = Vector3.one;

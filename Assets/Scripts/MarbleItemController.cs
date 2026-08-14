@@ -74,13 +74,13 @@ public class MarbleItemController : MonoBehaviour
 
     public async UniTask OnDetailsButtonClicked()
     {
-        if (showMarbleDetails.texture != null /*&& showMarbleDetails.m_Textures != null && showMarbleDetails.m_Textures.Length > 0*/)
+        if (showMarbleDetails.originalTexture != null /*&& showMarbleDetails.m_Textures != null && showMarbleDetails.m_Textures.Length > 0*/)
         {
             Debug.Log("<color=blue>Load Second Time</color>");
             MarbleDetail current_detail = AssignCurrentMarbleDetails();
             //Debug.LogError("Check marble name: " + current_detail.marble_name);
             fetchQrData.LoadMarbleTextData(current_detail.marble_name, current_detail.description, current_detail.dimension, current_detail.material, current_detail.finish, current_detail.availability.ToString(), current_detail.price);
-            fetchQrData.LoadedMarbleImageData(showMarbleDetails.texture, null, null);
+            fetchQrData.LoadedMarbleImageData(showMarbleDetails.originalTexture, null, null);
             getMRMDetails.storeMarbleDetails.SetToggleValue(showMarbleDetails.IsWishlisted);
 
             //showMarbleDetails.IsWishlisted = fetchQrData.
@@ -126,7 +126,7 @@ public class MarbleItemController : MonoBehaviour
             current_marbleDetails.material = current_detail.material;
             current_marbleDetails.finish = current_detail.finish;
             current_marbleDetails.price = current_detail.price;
-            current_marbleDetails.mainTexture = showMarbleDetails.texture;
+            current_marbleDetails.mainTexture = showMarbleDetails.originalTexture;
             //current_marbleDetails.circleImg = showMarbleDetails.m_Textures[0];
             //current_marbleDetails.textures = showMarbleDetails.m_Textures;
             current_marbleDetails.isSelected = showMarbleDetails.IsWishlisted;

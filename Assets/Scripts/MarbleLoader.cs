@@ -2,10 +2,10 @@ using AirFishLab.ScrollingList;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Collections;
-using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -50,9 +50,8 @@ public class MarbleLoader : MonoBehaviour
         SpawnCategoryList();
 
         // Pass the JSON data directly to the Virtual Grid instead of spawning 1000 objects
-        var allMarbleData = getAllMarbles.allMarbles.getMarblesList.marbleDetails;     
-        //virtualGrid.InitializeGrid(allMarbleData);
-
+        var allMarbleData = getAllMarbles.allMarbles.getMarblesList.marbleDetails;
+        marbleKeyValue = allMarbleData.ToDictionary(marble => marble.id, marble => marble.marble_name);
         getAllMarbles.OnDataLoaded?.Invoke();
     }
 
@@ -103,28 +102,7 @@ public class MarbleLoader : MonoBehaviour
         showMarbleDetails[i].syncMarbleDetails = syncMarbleDetails;
         showMarbleDetails[i].marbleDetailsWithCategoryID = mDetails[i];
         showMarbleDetails[i].SetData();
-        //listOfMarblesInventory.GridPrefabInstantiate(showMarbleDetails[i]);
-
-        var world = World.DefaultGameObjectInjectionWorld;
-        if (world != null && world.IsCreated)
-        {
-            var em = world.EntityManager;
-            var query = em.CreateEntityQuery(typeof(MarbleStateData));
-            var states = query.ToComponentDataArray<MarbleStateData>(Allocator.TempJob);
-
-            for (int e = 0; e < states.Length; e++)
-            {
-                if (states[e].MarbleId == mDetails[i].id)
-                {
-                    Entity entity = query.ToEntityArray(Allocator.TempJob)[e];
-                    em.AddComponentObject(entity, new MarbleGameObjectLink { View = showMarbleDetails[i] });
-                    break;
-                }
-            }
-
-            states.Dispose();
-            query.Dispose();
-        }
+        //listOfMarblesInventory.GridPrefabInstantiate(showMarbleDetails[i]);        
     }
 
     public void OnDataLoadedSucessfully()
